@@ -5,7 +5,7 @@ const NavView = ({ data1, data2, data3, heading1, heading2, heading3 }) => {
     // heading1, heading2, heading3 --> datatype = String
     
   return (
-    <div className="bg-gray-50">
+    <div className=" index bg-gray-50 ">
       <div className="p-6 flex justify-between">
         <div className={!data1 && "hidden"}>
           <ul className="space-y-2">

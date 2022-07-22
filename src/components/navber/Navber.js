@@ -8,7 +8,7 @@ import "./navber.css";
 const Navber = () => {
   return (
     <div>
-      <nav className="bg-gray-200 border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800 z-50 ">
+      <nav className="bg-gray-200 border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800 ">
         <div className="container flex flex-wrap justify-between items-center mx-auto">
           <a href="https://flowbite.com/" className="flex items-center">
             <img src={logo} className="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
@@ -81,7 +81,7 @@ const Navber = () => {
                 >
                   Academics
                 </a>
-                <div className=" nav-hover-item hidden absolute top-4  pt-6 z-0  h-auto  bg-gray-200 shadow-md">
+                <div className=" nav-hover-item hidden absolute top-4  pt-6  h-auto  bg-gray-200 shadow-md">
                   <AcademicsNav />
                 </div>
               </li>
@@ -92,7 +92,7 @@ const Navber = () => {
                 >
                   Campus
                 </a>
-                <div className=" nav-hover-item hidden absolute top-4  pt-6 z-0  h-auto  bg-gray-200 shadow-md">
+                <div className=" nav-hover-item hidden absolute top-4  pt-6 h-auto  bg-gray-200 shadow-md">
                   <CampusNav />
                 </div>
               </li>
@@ -103,7 +103,7 @@ const Navber = () => {
                 >
                   About
                 </a>
-                <div className=" nav-hover-item hidden absolute top-4  pt-6 z-0  h-auto  bg-gray-200 shadow-md">
+                <div className=" nav-hover-item hidden absolute top-4  pt-6  h-auto  bg-gray-200 shadow-md">
                   <AboutNav />
                 </div>
               </li>

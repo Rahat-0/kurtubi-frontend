@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+/src/assets/video
+/src/assets/image
+
 # testing
 /coverage
 

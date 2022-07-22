@@ -1,13 +1,14 @@
 nav{
     transition: 1s;
 }
+
 @media  (min-width : 724px) {
     .nav-hover:hover > .nav-hover-item{
         display: block;
         min-width: 35rem;
         left: -7rem;
         transition: 1s;
-
+        z-index: 99999999;
     
     }
     
@@ -18,7 +19,7 @@ nav{
         min-width: 60rem;
         left: -20rem;
         transition: 1s;
-
+        z-index: 99999999;
     
     }
     
