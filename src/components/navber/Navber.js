@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../assets/image/logo.png";
 import AboutNav from "./AboutNav";
 import AcademicsNav from "./AcademicsNav";
@@ -6,9 +6,10 @@ import AdmissionNav from "./AdmissionNav";
 import CampusNav from "./CampusNav";
 import "./navber.css";
 const Navber = () => {
+  const [visible, setVisible] = useState(false)
   return (
     <div>
-      <nav className="bg-gray-200 border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800 ">
+      <nav className="fixed w-full z-50 bg-gray-200 border-gray-200 px-2 sm:px-4 py-2.5 rounded">
         <div className="container flex flex-wrap justify-between items-center mx-auto">
           <a href="https://flowbite.com/" className="flex items-center">
             <img src={logo} className="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
@@ -32,7 +33,8 @@ const Navber = () => {
             >
               <span className="sr-only">Open main menu</span>
               <svg
-                className=" w-6 h-6"
+                onClick={()=> setVisible(!visible)}
+                className={` ${visible && 'hidden'} w-6 h-6`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +46,8 @@ const Navber = () => {
                 ></path>
               </svg>
               <svg
-                className="hidden w-6 h-6"
+                onClick={()=> setVisible(!visible)}
+                className={` ${!visible && 'hidden'} w-6 h-6`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -58,10 +61,11 @@ const Navber = () => {
             </button>
           </div>
           <div
-            className=" justify-between items-center w-full md:flex md:w-auto md:order-1"
+            
+            className={ `  ${!visible && '-mt-96' } md:mt-0 transform transition-all justify-between items-center w-full md:flex md:w-auto md:order-1`}
             id="mobile-menu-4"
           >
-            <ul className="flex flex-col relative mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+            <ul onClick={()=> setVisible(false)} className=" md:flex flex-col relative mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
               <li className="nav-hover ">
                 <a
                   href="##"
@@ -103,7 +107,7 @@ const Navber = () => {
                 >
                   About
                 </a>
-                <div className=" nav-hover-item hidden absolute top-4  pt-6  h-auto  bg-gray-200 shadow-md">
+                <div className=" nav-hover-item hidden absolute top-4  pt-6  h-auto  bg-gray-200 shadow-md ">
                   <AboutNav />
                 </div>
               </li>
@@ -111,6 +115,7 @@ const Navber = () => {
           </div>
         </div>
       </nav>
+      <div className="md:bg-red-600 pt-14"></div>
     </div>
   );
 };

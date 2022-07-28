@@ -3,7 +3,7 @@ import React from 'react'
 const Card = ({color, title, paragraph, button, href}) => {
   return (
     <div>
-    <div className = {` ${color} text-white p-6 max-w-sm bg-white border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 m-2`} >
+    <div className = {` ${color} text-white p-5 bg-white`} >
         <a href="#3">
             <h5 class="mb-2 text-2xl font-bold text-white">{title}</h5>
         </a>

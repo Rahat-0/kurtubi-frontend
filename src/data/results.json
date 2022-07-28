@@ -1,0 +1,138 @@
+[
+    {
+        "type": "header",
+        "version": "5.1.0",
+        "comment": "Export to JSON plugin for PHPMyAdmin"
+    },
+    {
+        "type": "database",
+        "name": "kurtubi"
+    },
+    {
+        "type": "table",
+        "name": "results",
+        "database": "kurtubi",
+        "data": [
+            {
+                "result_id": "26",
+                "classes": "10",
+                "name": "rahat hasan",
+                "semester": "3",
+                "student_id": "1000",
+                "subject_name": "bangla",
+                "subject_result": "99",
+                "subject_ranking": "6",
+                "teacher_id": "202201",
+                "result_time": "2022-07-08 12:03:54.002412"
+            },
+            {
+                "result_id": "27",
+                "classes": "10",
+                "name": "mir rahat",
+                "semester": "2",
+                "student_id": "1000",
+                "subject_name": "math",
+                "subject_result": "93",
+                "subject_ranking": "2",
+                "teacher_id": "202200",
+                "result_time": "2022-07-08 12:03:08.234380"
+            },
+            {
+                "result_id": "28",
+                "classes": "7",
+                "name": "kobir",
+                "semester": "2",
+                "student_id": "1007",
+                "subject_name": "bangla",
+                "subject_result": "78",
+                "subject_ranking": "20",
+                "teacher_id": "202201",
+                "result_time": "2022-07-08 12:03:15.533629"
+            },
+            {
+                "result_id": "29",
+                "classes": "10",
+                "name": "sanular alom",
+                "semester": "3",
+                "student_id": "1001",
+                "subject_name": "math",
+                "subject_result": "65",
+                "subject_ranking": "34",
+                "teacher_id": "202200",
+                "result_time": "2022-07-09 16:00:40.414041"
+            },
+            {
+                "result_id": "30",
+                "classes": "10",
+                "name": "hisbullah akond",
+                "semester": "1",
+                "student_id": "1009",
+                "subject_name": "bangla",
+                "subject_result": "80",
+                "subject_ranking": "14",
+                "teacher_id": "202201",
+                "result_time": "2022-07-08 12:04:13.315084"
+            },
+            {
+                "result_id": "31",
+                "classes": "4",
+                "name": "ainal hok",
+                "semester": "2",
+                "student_id": "1001",
+                "subject_name": "math",
+                "subject_result": "88",
+                "subject_ranking": "9",
+                "teacher_id": "202200",
+                "result_time": "2022-07-08 12:04:24.750240"
+            },
+            {
+                "result_id": "32",
+                "classes": "8",
+                "name": "badhon ali",
+                "semester": "3",
+                "student_id": "1006",
+                "subject_name": "bangla",
+                "subject_result": "80",
+                "subject_ranking": "16",
+                "teacher_id": "202201",
+                "result_time": "2022-07-09 16:00:06.244110"
+            },
+            {
+                "result_id": "33",
+                "classes": "7",
+                "name": "riyad sikdar",
+                "semester": "5",
+                "student_id": "1002",
+                "subject_name": "biology",
+                "subject_result": "88",
+                "subject_ranking": "6",
+                "teacher_id": "202202",
+                "result_time": "2022-07-08 12:04:56.809441"
+            },
+            {
+                "result_id": "34",
+                "classes": "7",
+                "name": "md alom",
+                "semester": "3",
+                "student_id": "1001",
+                "subject_name": "biology",
+                "subject_result": "89",
+                "subject_ranking": "6",
+                "teacher_id": "202201",
+                "result_time": "2022-07-09 19:50:31.263729"
+            },
+            {
+                "result_id": "35",
+                "classes": "4",
+                "name": "rakib hasan",
+                "semester": "4",
+                "student_id": "1001",
+                "subject_name": "english",
+                "subject_result": "79",
+                "subject_ranking": "17",
+                "teacher_id": "202201",
+                "result_time": "2022-07-09 20:09:52.035572"
+            }
+        ]
+    }
+]

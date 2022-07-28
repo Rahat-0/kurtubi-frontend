@@ -1,0 +1,17 @@
+[
+{"type":"header","version":"5.1.0","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"kurtubi"},
+{"type":"table","name":"teachers","database":"kurtubi","data":
+[
+{"teacher_id":"202201","branch":"tangail branch","full_name":"azizul hok","email":"ajizulislam@gmail.com","gender":"","dob":"1992-08-16","designation":"senior professor","subject":"english","education":"ph.D","varsity_name":"harbard university, california.","phone":"+88017201575784","image":"avater.jpg","ispermit":"1","join_date":"0000-00-00 00:00:00"},
+{"teacher_id":"202202","branch":"tangail branch","full_name":"sanuar alom","email":"sanuar@gmail.com","gender":"","dob":"0000-00-00","designation":"assestent professor","subject":"bangla","education":"M.Sc","varsity_name":"jahangir nagar university","phone":"14215557","image":"avater.jpg","ispermit":"0","join_date":"0000-00-00 00:00:00"},
+{"teacher_id":"202203","branch":"tangail branch","full_name":"tusher khan","email":"tusher@gmail.com","gender":"","dob":"0000-00-00","designation":"teacher","subject":"math","education":"M.Sc","varsity_name":"jahangir nagar university","phone":"14215558","image":"avater.jpg","ispermit":"0","join_date":"0000-00-00 00:00:00"},
+{"teacher_id":"202204","branch":"dhaka branch","full_name":"fuad hasan","email":"fuad@gmail.com","gender":"","dob":"0000-00-00","designation":"teacher","subject":"bangla","education":"M.B.A","varsity_name":"jahangir nagar university","phone":"14215559","image":"avater.jpg","ispermit":"0","join_date":"0000-00-00 00:00:00"},
+{"teacher_id":"202205","branch":"dhaka branch","full_name":"rakibul hasan","email":"rakib@gmail.com","gender":"","dob":"0000-00-00","designation":"teacher","subject":"history","education":"M.Sc","varsity_name":"jahangir nagar university","phone":"14215560","image":"avater.jpg","ispermit":"0","join_date":"0000-00-00 00:00:00"},
+{"teacher_id":"202206","branch":"dhaka branch","full_name":"imranul sikdar","email":"imran@gmail.com","gender":"","dob":"0000-00-00","designation":"junior teacher","subject":"english","education":"B.B.A","varsity_name":"jahangir nagar university","phone":"14215561","image":"avater.jpg","ispermit":"0","join_date":"0000-00-00 00:00:00"},
+{"teacher_id":"202207","branch":"dhaka branch","full_name":"monirul islam","email":"monirul@gmail.com","gender":"","dob":"0000-00-00","designation":"assestent teacher","subject":"bangla","education":"M.Sc","varsity_name":"jahangir nagar university","phone":"14215562","image":"avater.jpg","ispermit":"0","join_date":"0000-00-00 00:00:00"},
+{"teacher_id":"202209","branch":"dhaka branch","full_name":"abdullah","email":"abdullah@gmail.com","gender":"male","dob":"1996-05-06","designation":"senior teacher","subject":"physics","education":"M.S.C","varsity_name":"m.m ali collage","phone":"01724584125","image":"teacher.jpg","ispermit":"0","join_date":"2022-07-09 10:02:08"},
+{"teacher_id":"202210","branch":"sokhipur branch","full_name":"md abdur rahman","email":"rahman@gmail.com","gender":"male","dob":"1994-04-02","designation":"junior teacher","subject":"physics","education":"B.Sc","varsity_name":"korotia collage","phone":"01724589685","image":"1657345581954Screenshot (1).png","ispermit":"0","join_date":"2022-07-09 10:08:22"}
+]
+}
+]

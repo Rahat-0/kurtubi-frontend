@@ -4,7 +4,7 @@ import Card from '../../components/layouts/Card'
 function HomeCard() {
   return (
     <div>
-        <div className=' flex flex-col md:flex-row md:justify-evenly md:items-stretch justify-center items-center'>
+        <div className=' grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4'>
         <Card 
         color='bg-gray-800'
         title = 'Lorem ipsum dolor.'
