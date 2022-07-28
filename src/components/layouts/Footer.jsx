@@ -171,20 +171,22 @@ const Footer = () => {
           <h5 className="text-3xl font-bold py-7 px-4">Subscribe Us!</h5>
           <form className="p-4 space-y-3">
             <input
+              data-aos="fade-up"
               className="block w-full p-4 bg-gray-700 outline-none border hover:border-yellow-400"
               placeholder="Enter your email address"
               type="email"
             />
             <input
+              data-aos="fade-down"
               className="block w-full p-4 font-bold text-2xl bg-blue-900 cursor-pointer border hover:bg-transparent hover:border-yellow-400"
               type="submit"
               value="Subscribe"
             />
           </form>
           <h6 className="text-3xl font-bold py-7 px-4">Connect With Us</h6>
-          <ul className="px-4 inline-grid grid-cols-6 sm:grid-cols-8 md:grid-cols-4 xl:grid-cols-5 place-items-end space-x-2 text-gray-300">
+          <ul  className="px-4 inline-grid grid-cols-6 sm:grid-cols-8 md:grid-cols-4 xl:grid-cols-5 place-items-end space-x-2 text-gray-300">
             {contactLink.map(({ link, logo }) => (
-              <li key={link}>
+              <li data-aos="fade-up" key={link}>
                 <a href={link} target="blank">
                   <span className="  inline-block bg-gray-600 p-1 rounded-full">
                     {logo}

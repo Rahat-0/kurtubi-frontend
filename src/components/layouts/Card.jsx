@@ -2,7 +2,7 @@ import React from 'react'
 
 const Card = ({color, title, paragraph, button, href}) => {
   return (
-    <div>
+    <div >
     <div className = {` ${color} text-white p-5 bg-white`} >
         <a href="#3">
             <h5 class="mb-2 text-2xl font-bold text-white">{title}</h5>
