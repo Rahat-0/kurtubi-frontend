@@ -14,7 +14,7 @@ const Navber = () => {
     ]
     return (
         <div
-         className={ `${visible  ? 'left-0' : '-left-72'}  md:left-0  transform transition-all bg-gray-200 w-72 fixed z-10 lg:overflow-scroll  h-screen `}>
+         className={ `${visible  ? 'left-0' : '-left-72'}  md:left-0  transform transition-all bg-gray-200 w-72 fixed z-40 lg:overflow-scroll  h-screen `}>
                 
                  <button onClick={()=>setVisible(!visible)} className='bg-red-900 absolute md:hidden w-3 h-14 rounded-r-3xl border-2 -right-2 top-0'></button>
             <div 

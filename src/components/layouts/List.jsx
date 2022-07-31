@@ -1,34 +1,58 @@
 import React from "react";
-import { useState } from "react";
-import {HiUserGroup, HiUsers, HiOutlineUserGroup} from 'react-icons/hi'
-import {FaUserLock} from 'react-icons/fa'
+import { useState, useRef } from "react";
+import ReactToPrint, {useReactToPrint} from 'react-to-print'
+import { HiUserGroup, HiUsers, HiOutlineUserGroup } from "react-icons/hi";
+import { FaUserLock } from "react-icons/fa";
 import CountCard from "./CountCard";
-const List = ({ data }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { setBranch } from "../../features/students/branchSlice";
+import Loading from "./Loading";
+import DataError from "./DataError";
+const List = ({ allBranch, counts }) => {
+  const componentRef = useRef()
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+  const dispatch = useDispatch();
 
-  const cardLogo ={
-    All : <HiUserGroup className="inline w-12 h-auto m-2 text-blue-900" />,
-    Branch : <HiOutlineUserGroup className="inline w-12 h-auto m-2 text-blue-600" />,
-    Class : < HiUsers className="inline w-12 h-auto m-2 text-blue-400" />,
-    Block : <FaUserLock className="inline w-12 h-auto m-2 text-red-400" />,
+  // redux state actions
+  const { isLoading, users, error } = useSelector((state) => state.student);
 
-  } 
+  // card logo items
+  const cardLogo = {
+    All: <HiUserGroup className="inline w-12 h-auto m-2 text-blue-900" />,
+    Branch: (
+      <HiOutlineUserGroup className="inline w-12 h-auto m-2 text-blue-600" />
+    ),
+    Class: <HiUsers className="inline w-12 h-auto m-2 text-blue-400" />,
+    Block: <FaUserLock className="inline w-12 h-auto m-2 text-red-400" />,
+  };
 
-
-  const [classes, setClasses] = useState("10");
-  const [subject, setsubject] = useState("english");
-  const [branch, setbranch] = useState("tangail branch");
+  // subject dropdown list
+  const subject = Array.from(new Set(users.map(({ subject }) => subject)));
+  const classes = Array.from(new Set(users.map(({ classes }) => classes)));
+  const branch = Array.from(new Set(allBranch.map(({ branch }) => branch)));
+  // initial state define
   const [search, setsearch] = useState("");
+  const [filterd, setfilterd] = useState({
+    subject: subject[0] || "",
+    classes: classes[0] || "10",
+    branch: "tangail branch",
+  });
+
+  // student filter handler
   const Stufiltered =
-    data[0].student_id &&
-    data.filter((value) => {
-      const clases = new RegExp(`^${classes}$`, "g");
+    users[0] &&
+    users[0].student_id &&
+    users.filter((value) => {
+      const clases = new RegExp(`^${filterd.classes}$`, "g");
       if (
-        value.student_id.includes(search) ||
-        value.phone.includes(search) ||
-        value.first_name.toLowerCase().includes(search.toLowerCase())
+        value.student_id.toString().includes(search) ||
+        value.phone.toString().includes(search) ||
+        value.name.toLowerCase().includes(search.toLowerCase())
       ) {
         if (
-          value.branch.toLowerCase().includes(branch.toLowerCase()) &&
+          value.branch.toLowerCase().includes(filterd.branch.toLowerCase()) &&
           value.classes.match(clases)
         ) {
           return value;
@@ -37,17 +61,19 @@ const List = ({ data }) => {
       return null;
     });
 
+  // teacher filter handler
   const Teachfiltered =
-    data[0].teacher_id &&
-    data.filter((value) => {
+    users[0] &&
+    users[0].teacher_id &&
+    users.filter((value) => {
       if (
-        value.teacher_id.includes(search) ||
-        value.phone.includes(search) ||
+        value.teacher_id.toString().includes(search) ||
+        value.phone.toString().includes(search) ||
         value.full_name.toLowerCase().includes(search.toLowerCase())
       ) {
         if (
-          value.branch.toLowerCase().includes(branch.toLowerCase()) &&
-          value.subject.toLowerCase().includes(subject.toLowerCase())
+          value.branch.toLowerCase().includes(filterd.branch.toLowerCase()) &&
+          value.subject.toLowerCase().includes(filterd.subject.toLowerCase())
         ) {
           return value;
         }
@@ -55,42 +81,103 @@ const List = ({ data }) => {
       return null;
     });
 
+  // branch handler
+  const branchHanlder = (e) => {
+    dispatch(setBranch(e.target.value));
+    setfilterd({ ...filterd, subject: subject[0], branch: e.target.value });
+  };
+
   return (
-    <div>
+    <div className="relative">
+      
+     { isLoading && <Loading /> }
+
+     { error && <DataError message={error} />}
+
       {/* <!-- here is the main div --> */}
       <h2 className="text-xl p-2 bg-gray-600 tracking-widest rounded-lg my-1 text-white">
         {Stufiltered ? "Student List" : "Teacher List"}
       </h2>
+      {/* student counter section  */}
+      {Stufiltered && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 text-white ">
+          <CountCard
+            link="/"
+            title="All Students"
+            image={cardLogo.All}
+            count={counts.count_student || 0}
+          />
+          <CountCard
+            link="/"
+            title={`Total Students of ${filterd.branch}`}
+            image={cardLogo.Branch}
+            count={counts.count_branch || 0}
+          />
+          <CountCard
+            link="/"
+            title={`Total Students of class  ${filterd.classes}`}
+            image={cardLogo.Class}
+            count={Stufiltered.length}
+          />
+          <CountCard
+            link="/"
+            title="Block Students"
+            image={cardLogo.Block}
+            count={counts.count_block || 0}
+          />
+        </div>
+      )}
+      {/* teacher counter section  */}
+      {Teachfiltered && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 text-white ">
+          <CountCard
+            link="/"
+            title="All Teachers"
+            image={cardLogo.All}
+            count={counts.count_teacher || 0}
+          />
+          <CountCard
+            link="/"
+            title={`Total Teachers of ${filterd.branch}`}
+            image={cardLogo.Branch}
+            count={counts.count_branch || 0}
+          />
+          <CountCard
+            link="/"
+            title={`Total Teachers of ${filterd.subject} subject`}
+            image={cardLogo.Class}
+            count={Teachfiltered.length}
+          />
+          <CountCard
+            link="/"
+            title={`Block ${Stufiltered ? "Students" : "Teachers"}`}
+            image={cardLogo.Block}
+            count={counts.count_block || 0}
+          />
+        </div>
+      )}
 
-      {Stufiltered && <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 text-white ">
-        <CountCard link='/' title="All Students" image={cardLogo.All} count={410} />
-        <CountCard link='/' title={`Total Students of ${branch}`} image={cardLogo.Branch} count={43} />
-        <CountCard link='/' title={`Total Students of class  ${classes}`} image={cardLogo.Class} count={Stufiltered.length} />
-        <CountCard link='/' title="Block Students"  image={cardLogo.Block} count={10} />
-      </div>}
-
-      {Teachfiltered && <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 text-white ">
-        <CountCard link='/' title="All Teachers" image={cardLogo.All} count={110} />
-        <CountCard link='/' title={`Total Teachers of ${branch}`} image={cardLogo.Branch} count={43} />
-        <CountCard link='/' title={`Total Teachers of ${subject} subject`} image={cardLogo.Class} count={Teachfiltered.length} />
-        <CountCard link='/' title={`Block ${Stufiltered ? "Students" : "Teachers"}`} image={cardLogo.Block} count={10} />
-      </div>}
+      {/* user filter section start from here  */}
       <div className=" overflow-x-auto relative shadow-md sm:rounded-lg">
+        {/* user branch section  */}
         <div className="hidden sm:flex justify-between items-center pb-4">
           <div>
             <select
-              onChange={(e) => setbranch(e.target.value)}
-              defaultValue="Tangail Branch"
-              className="outline-none"
+              onChange={branchHanlder}
+              value={filterd.branch}
+              className="outline-none capitalize"
               name="dropdown"
               id="dropdown"
             >
-              <option value="Tangail branch"> Tangail Branch</option>
-              <option value="Dhaka branch">Dhaka Branch</option>
-              <option value="Gazipur branch">Gazipur Branch</option>
-              <option value="Sokhipur branch">Sokhipur Branch</option>
+              {branch.map((branch) => (
+                <option key={branch} value={branch}>
+                  {branch}
+                </option>
+              ))}
             </select>
           </div>
+          <button onClick={handlePrint}>print</button>
+          {/* user search section  */}
           <label htmlFor="table-search" className="sr-only">
             Search
           </label>
@@ -119,9 +206,10 @@ const List = ({ data }) => {
             />
           </div>
         </div>
-
-        <table className="hidden sm:table w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        {/* user table start from here  */}
+        <table ref={componentRef} className=" sm:table w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            {/* student table headers start from here */}
             {Stufiltered && (
               <tr>
                 <th scope="col" className="py-3 px-6">
@@ -132,22 +220,20 @@ const List = ({ data }) => {
                 </th>
                 <th scope="col" className="py-3 px-6">
                   <select
-                    onChange={(e) => setClasses(e.target.value)}
-                    defaultValue="10"
+                    onChange={(e) =>
+                      setfilterd({ ...filterd, classes: e.target.value })
+                    }
+                    value={filterd.classes}
                     className="outline-none"
                     name=""
                     id=""
                   >
-                    <option value="1">class 1</option>
-                    <option value="2">class 2</option>
-                    <option value="3">class 3</option>
-                    <option value="4">class 4</option>
-                    <option value="5">class 5</option>
-                    <option value="6">class 6</option>
-                    <option value="7">class 7</option>
-                    <option value="8">class 8</option>
-                    <option value="9">class 9</option>
-                    <option value="10">class 10</option>
+                    {classes &&
+                      classes.map((classes) => (
+                        <option key={classes} value={classes}>
+                          class {classes}
+                        </option>
+                      ))}
                   </select>
                 </th>
                 <th scope="col" className="hidden lg:table-cell py-3 px-6">
@@ -161,7 +247,7 @@ const List = ({ data }) => {
                 </th>
               </tr>
             )}
-
+            {/* teacher table header start from here */}
             {Teachfiltered && (
               <tr>
                 <th scope="col" className="py-3 px-6">
@@ -172,16 +258,20 @@ const List = ({ data }) => {
                 </th>
                 <th scope="col" className="py-3 px-6">
                   <select
-                    onChange={(e) => setsubject(e.target.value)}
-                    defaultValue="english"
+                    onChange={(e) =>
+                      setfilterd({ ...filterd, subject: e.target.value })
+                    }
+                    defaultValue={filterd.subject}
                     className="outline-none"
                     name=""
                     id=""
                   >
-                    <option value="english">Subject [ English ]</option>
-                    <option value="math">Subject [ Math ]</option>
-                    <option value="bangla">Subject [ Bangla ]</option>
-                    <option value="biology">Subject [ Biology ]</option>
+                    {subject &&
+                      subject.map((subject) => (
+                        <option key={subject} value={subject}>
+                          Subject [ {subject} ]
+                        </option>
+                      ))}
                   </select>
                 </th>
                 <th scope="col" className="hidden lg:table-cell py-3 px-6">
@@ -197,30 +287,24 @@ const List = ({ data }) => {
             )}
           </thead>
           <tbody>
+            {/* student table body start from here  */}
             {Stufiltered &&
               Stufiltered.map(
-                ({
-                  first_name,
-                  last_name,
-                  student_id,
-                  classes,
-                  gender,
-                  phone,
-                }) => (
+                ({ name, student_id, classes, gender, phone, image, isblock }) => (
                   <tr
                     key={student_id}
-                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                    className={` ${isblock ? 'bg-red-400 text-white hover:text-white hover:bg-red-600' : 'hover:text-gray-900 bg-white'} border-b hover:bg-gray-100 ` }
                   >
                     <th
                       scope="row"
-                      className="py-4 flex items-center gap-3 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      className="py-4 flex items-center gap-3 px-6 font-medium whitespace-nowrap dark:text-white"
                     >
                       <img
                         className="w-12 h-12 object-cover rounded-full ring"
-                        src="./video.png"
-                        alt="##"
+                        src={`http://localhost:5000/images/${image}`}
+                        alt={image}
                       />
-                      <p> {first_name + " " + last_name} </p>
+                      <p> {name} </p>
                     </th>
                     <td className="py-4 px-6"> {student_id} </td>
                     <td className="py-4 px-6">{classes}</td>
@@ -237,22 +321,22 @@ const List = ({ data }) => {
                   </tr>
                 )
               )}
-
+            {/* teacher table body start from here  */}
             {Teachfiltered &&
               Teachfiltered.map(
-                ({ full_name, teacher_id, subject, gender, phone }) => (
+                ({ full_name, teacher_id, subject, gender, phone, image, isblock }) => (
                   <tr
                     key={teacher_id}
-                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                    className={` ${isblock ? 'bg-red-400 text-white hover:text-white hover:bg-red-600' : 'hover:text-gray-900 bg-white'} border-b hover:bg-gray-100 ` }
                   >
                     <th
                       scope="row"
-                      className="py-4 flex items-center gap-3 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      className="py-4 flex items-center gap-3 px-6 font-medium whitespace-nowrap dark:text-white"
                     >
                       <img
                         className="w-12 h-12 object-cover rounded-full ring"
-                        src="./video.png"
-                        alt="##"
+                        src={`http://localhost:5000/images/${image}`}
+                        alt={image}
                       />
                       <p> {full_name} </p>
                     </th>

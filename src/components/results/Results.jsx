@@ -1,14 +1,25 @@
-import React from "react";
+import React, {useRef} from "react";
+import { useReactToPrint } from 'react-to-print'
 import { useState } from "react";
 import data from "../../data/mock_results.json";
 import {FaPeopleArrows, FaUsers, FaCheckDouble, FaRegThumbsDown} from 'react-icons/fa'
 import CountCard from "../layouts/CountCard";
+// import Loading from "../layouts/Loading";
+// import DataError from "../layouts/DataError";
 const Results = () => {
+  // printing handler 
+  const componentRef = useRef()
+  const printHandler = useReactToPrint({
+    content : ()=> (componentRef.current)
+  })
+
+ 
   const info = data;
   const [inputs, setInputs] = useState({
     classes: "10",
     semester: "1",
-    subject_name: "",
+    subject_name: "english",
+    branch : 'tangail branch'
   });
   const cardLogo = {
     all : <FaUsers className="inline w-12 h-auto m-2 text-blue-900" />,
@@ -17,32 +28,27 @@ const Results = () => {
     top10 : <FaPeopleArrows className="inline w-12 h-auto m-2 text-green-900" />
   }
 
-  const subTag = info[0].subject_name && Array.from(new Set(info.map(({subject_name})=> subject_name )))
+  const subTag =  Array.from(new Set(info.map(({subject_name})=> subject_name )))
+  const semesterTag = Array.from(new Set(info.map(({ semester }) => semester)));
+  const classTag = Array.from(new Set(info.map(({ classes }) => classes)));
+  const branchTag = Array.from(new Set(info.map(({ branch }) => branch)));
+  
 
     const filterd = info.filter((value) => {
     const regClasses = new RegExp(`^${inputs.classes}$`, "g")
-    if (
-      value.classes.toString().match(regClasses) &&
-      value.semester.toString().includes(inputs.semester)
-    ) {
-      if (
-        value.subject_name.toLowerCase().includes(inputs.subject_name.toLowerCase())
-      ) {
-        return value;
-      }
-     
-    }
-    return null;
+    return value
   });
 
   const branchHandler =(e)=>{
-
+    setInputs({...inputs, branch : e.target.value})
   }
 
 
 
   return (
     <div className="relative">
+      {/* <Loading />
+      <DataError message={null} /> */}
       <h2 class="text-xl p-2 bg-gray-600 tracking-widest rounded-lg my-1 text-white">
         All Result
       </h2>
@@ -55,43 +61,37 @@ const Results = () => {
       <div className="flex justify-between rounded-lg text-sm bg-blue-300 py-1 my-1 items-center">
         <select
           onChange={branchHandler}
+          value={inputs.branch}
           className="w-full  p-1 mr-4 bg-transparent outline-none"
           name=""
           id=""
         >
-          <option value="tangail">tangail branch</option>
-          <option value="dhaka">dhaka branch</option>
-          <option value="sokhipur">sokhipur branch</option>
+          {branchTag.map((branch)=>(
+            <option key={branch} value={branch}>{branch}</option>
+          ))}
+         
         </select>
         <select
           onChange={(e)=>setInputs({...inputs, classes : e.target.value})}
-          defaultValue='10'
           className="w-full p-1 mx-4 bg-transparent outline-none"
           name=""
           id=""
         >
-          <option value="10">class 10</option>
-          <option value="9">class 9</option>
-          <option value="8">class 8</option>
-          <option value="7">class 7</option>
-          <option value="6">class 6</option>
-          <option value="5">class 5</option>
-          <option value="4">class 4</option>
-          <option value="3">class 3</option>
-          <option value="2">class 2</option>
-          <option value="1">class 1</option>
+          {classTag.sort().map((classes)=>(
+            <option key={classes} value={classes}>Class {classes}</option>
+          ))}
+
         </select>
         <select
           onChange={(e)=>setInputs({...inputs, semester : e.target.value})}
-          defaultValue='1'
           className="w-full p-1 mx-4 bg-transparent outline-none"
           name=""
           id=""
         >
-          <option value="1">semester 1</option>
-          <option value="2">semester 2</option>
-          <option value="3">semester 3</option>
-          <option value="4">semester 4</option>
+          {semesterTag.sort().map((semester)=>(
+            <option key={semester} value={semester}>Semester {semester}</option>
+          ))}
+          
         </select>
         <select
           onChange={(e)=>setInputs({...inputs, subject_name : e.target.value})}
@@ -104,10 +104,11 @@ const Results = () => {
             <option key={subject}>{subject}</option>
           ))}
         </select>
+          <button className="px-2 text-green-900 hover:text-red-900 hover:scale-110 transform w-full font-bold" onClick={printHandler}>PRINT</button>
       </div>
-      <div className=" overflow-x-auto relative shadow-md sm:rounded-lg">
+      <div  className=" overflow-x-auto relative shadow-md sm:rounded-lg">
         <div style={{height : '32.6rem', scrollBehavior : "revert"}} className="relative overflow-y-auto">
-          <table className="absolute w-full text-xs text-left text-gray-500 ">
+          <table ref={componentRef} className="absolute w-full text-xs text-left text-gray-500 ">
             <thead className=" text-gray-700 uppercase bg-gray-50 ">
               <tr>
                 <th scope="col" className="py-2 px-3">
