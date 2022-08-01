@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useRef } from "react";
-import ReactToPrint, {useReactToPrint} from 'react-to-print'
+import  {useReactToPrint} from 'react-to-print'
 import { HiUserGroup, HiUsers, HiOutlineUserGroup } from "react-icons/hi";
 import { FaUserLock } from "react-icons/fa";
 import CountCard from "./CountCard";
