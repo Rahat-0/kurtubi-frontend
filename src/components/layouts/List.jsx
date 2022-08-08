@@ -8,7 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { setBranch } from "../../features/students/branchSlice";
 import Loading from "./Loading";
 import DataError from "./DataError";
+import PopupUser from "./PopupUser";
+
+// eslint-disable-next-line no-unused-vars
+const localRootAPI = 'http://localhost:5000'
+// eslint-disable-next-line no-unused-vars
+const serverRootAPI = 'http://api.kurtubi.nuisters.com'
+const currentRootAPI = localRootAPI;
+
 const List = ({ allBranch, counts }) => {
+  
   const componentRef = useRef()
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -39,6 +48,7 @@ const List = ({ allBranch, counts }) => {
     classes: classes[0] || "10",
     branch: "tangail branch",
   });
+  const [singleUser, setSingleUser] = useState(false)
 
   // student filter handler
   const Stufiltered =
@@ -93,6 +103,7 @@ const List = ({ allBranch, counts }) => {
      { isLoading && <Loading /> }
 
      { error && <DataError message={error} />}
+     <PopupUser data = {singleUser} state = {[singleUser, setSingleUser]} />
 
       {/* <!-- here is the main div --> */}
       <h2 className="text-xl p-2 bg-gray-600 tracking-widest rounded-lg my-1 text-white">
@@ -202,7 +213,7 @@ const List = ({ allBranch, counts }) => {
               type="text"
               id="table-search"
               className="block p-2 pl-10 outline-none w-80 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300  "
-              placeholder="Search for id or phone"
+              placeholder="Search for name, id or phone"
             />
           </div>
         </div>
@@ -290,18 +301,22 @@ const List = ({ allBranch, counts }) => {
             {/* student table body start from here  */}
             {Stufiltered &&
               Stufiltered.map(
-                ({ name, student_id, classes, gender, phone, image, isblock }) => (
+                (studentInfo) => {
+                  const {name, student_id, classes, gender, phone, image, isblock} =  studentInfo
+                  return(
                   <tr
                     key={student_id}
                     className={` ${isblock ? 'bg-red-400 text-white hover:text-white hover:bg-red-600' : 'hover:text-gray-900 bg-white'} border-b hover:bg-gray-100 ` }
                   >
                     <th
+                      onClick={()=> setSingleUser(studentInfo)}
                       scope="row"
-                      className="py-4 flex items-center gap-3 px-6 font-medium whitespace-nowrap dark:text-white"
+                      className="py-4 flex items-center gap-3 px-6 cursor-pointer font-medium whitespace-nowrap dark:text-white"
                     >
                       <img
                         className="w-12 h-12 object-cover rounded-full ring"
-                        src={`http://localhost:5000/images/${image}`}
+                        
+                        src={`${currentRootAPI}/images/${image}`}
                         alt={image}
                       />
                       <p> {name} </p>
@@ -319,23 +334,28 @@ const List = ({ allBranch, counts }) => {
                       </a>
                     </td>
                   </tr>
-                )
+                  )
+                  
+                }
               )}
             {/* teacher table body start from here  */}
             {Teachfiltered &&
-              Teachfiltered.map(
-                ({ full_name, teacher_id, subject, gender, phone, image, isblock }) => (
+              Teachfiltered.map((teacherInfo) => {
+                  const { full_name, teacher_id, subject, gender, phone, image, isblock } = teacherInfo;
+                  return(
                   <tr
                     key={teacher_id}
                     className={` ${isblock ? 'bg-red-400 text-white hover:text-white hover:bg-red-600' : 'hover:text-gray-900 bg-white'} border-b hover:bg-gray-100 ` }
                   >
                     <th
+                      onClick={()=> setSingleUser(teacherInfo)}
                       scope="row"
-                      className="py-4 flex items-center gap-3 px-6 font-medium whitespace-nowrap dark:text-white"
+                      className="py-4 flex items-center gap-3 px-6 font-medium whitespace-nowrap cursor-pointer"
                     >
                       <img
                         className="w-12 h-12 object-cover rounded-full ring"
-                        src={`http://localhost:5000/images/${image}`}
+
+                        src={`${currentRootAPI}/images/${image}`}
                         alt={image}
                       />
                       <p> {full_name} </p>
@@ -353,7 +373,7 @@ const List = ({ allBranch, counts }) => {
                       </a>
                     </td>
                   </tr>
-                )
+              )}
               )}
           </tbody>
         </table>

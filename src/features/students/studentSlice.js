@@ -1,8 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import  axios from "axios"
 
+// eslint-disable-next-line no-unused-vars
+const localRootAPI = 'http://localhost:5000'
+// eslint-disable-next-line no-unused-vars
+const serverRootAPI = 'http://api.kurtubi.nuisters.com'
+const currentRootAPI = localRootAPI;
+
 export const studentData = createAsyncThunk('student/data', async ({user, branch})=>{
-    const response = await axios.get(`http://localhost:5000/api/${user}/all/${branch}`)
+    const response = await axios.get(`${currentRootAPI}/api/${user}/all/${branch}`)
     return response.data
 })
 

@@ -18,7 +18,7 @@ const Results = () => {
 const dispatch = useDispatch()
 const {results, isLoading, error} = useSelector((state)=> state.result)
 
-  // printing handler 
+// printing handler 
   const componentRef = useRef()
   const printHandler = useReactToPrint({
     content : ()=> (componentRef.current)

@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
+import UserProfile from "./components/userProfile/UserProfile";
 import Navber from "./components/navber/Navber";
 import Results from "./components/results/Results";
 import StudentList from "./components/students/StudentList";
@@ -15,6 +16,8 @@ function App() {
       <Navber />
       <Routes>
       <Route path='/' element={<Home />} />
+      <Route path='/user' element={<UserProfile />} />
+
       <Route path='admin/' element={<Admin />} >
         <Route path='/admin/dashboard' element={<Dashboard />} />
         <Route path='/admin/studentlist' element={<StudentList />} />

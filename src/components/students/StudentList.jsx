@@ -5,7 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { studentData } from "../../features/students/studentSlice";
 import List from "../layouts/List";
 import { useState } from "react";
+
+// eslint-disable-next-line no-unused-vars
+const localRootAPI = 'http://localhost:5000'
+// eslint-disable-next-line no-unused-vars
+const serverRootAPI = 'http://api.kurtubi.nuisters.com'
+const currentRootAPI = localRootAPI;
+
 const StudentList = () => {
+
   const [data, setData] = useState({
     branch : [{branch : 'tangail branch'}],
     counts : [{
@@ -24,8 +32,8 @@ const StudentList = () => {
   }, [branch, dispatch])
 
   const allBranchs = async ()=>{
-    const res = await axios.get('http://localhost:5000/api/student/branch')
-    const response = await axios.get(`http://localhost:5000/api/student/count/${branch}`)
+    const res = await axios.get(`${currentRootAPI}/api/student/branch`)
+    const response = await axios.get(`${currentRootAPI}/api/student/count/${branch}`)
     const counts = response.data;
     const branchs = res.data;
     setData({counts , branch : branchs })
