@@ -2,205 +2,177 @@ import React from 'react'
 import { useState } from 'react'
 
 const Profile = () => {
-    const [data, setData] = useState({
+  const [seeMore, setSeeMore] = useState(false)
+  const [addressEdit, setaddressEdit] = useState(false)
+  const address = 'fds'
 
-    })
   return (
-    <form onSubmit={(e)=>e.preventDefault()} className="md:w-8/12">
-            <h3 className="text-center md:text-left text-3xl p-2 bg-green-200 md:bg-white">
-              Public profile
-            </h3>
-            <div className="flex flex-col md:flex-row md:w-9/12  justify-center items-center">
-              <div className="flex justify-center w-56 h-56 m-2">
-                <img
-                  className=" shadow-2xl bg-cover w-60 h-60 object-cover text-center border-8 rounded-full"
-                  src={`../image/${data.profileImage}`}
-                  alt="profile pictures"
-                />
+    <div className="bg-gray-100">
+      <h3 className="text-center md:text-left text-3xl p-2 bg-green-200 md:bg-white">Profile</h3>
+
+      <div className="container mx-auto my-5 p-5">
+        <div className="md:flex no-wrap md:-mx-2 ">
+          {/* <!-- Left Side --> */}
+          <div className="w-full md:w-3/12 md:mx-2">
+            {/* <!-- Profile Card --> */}
+            <div className="bg-white p-3 border-t-4 border-green-400">
+              <div className="image overflow-hidden">
+                <img className="h-auto w-full mx-auto"
+                  src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
+                  alt="" />
               </div>
-              <div className="text-white mt-3">
-                <button className=" md:w-52 block md:ml-10 md:my-6 bg-green-500 w-80 my-2 rounded-lg py-2 hover:bg-green-800">
-                  Change picture
-                </button>
-
-                {data ? 
-                <>
-                  <button
-                    
-                    className=" md:w-52 block md:ml-10 md:my-6 bg-red-500 w-80 my-2 rounded-lg py-2 hover:bg-red-800"
-                  >
-                    Cancel
-                  </button>
-
-                  <button
-                    
-                    type='submit'
-                    className=" md:w-52 block md:ml-10 md:my-6 bg-red-500 w-80 my-2 rounded-lg py-2 hover:bg-red-800"
-                  >
-                    Save
-                  </button>
-                </>
-                :
-                  <button
-                  className=" md:w-52 block md:ml-10 md:my-6 bg-red-500 w-80 my-2 rounded-lg py-2 hover:bg-red-800"
-                  >
-                   Edit profile
-                  </button>
-                }
-                
-
-                
-              </div>
+              <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">Jane Doe</h1>
+              <h3 className="text-gray-600 font-lg text-semibold leading-6">Student</h3>
+              <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">Lorem ipsum dolor sit
+                amet
+                consectetur adipisicing elit.
+                Reprehenderit, eligendi dolorum sequi illum qui unde aspernatur non deserunt</p>
+              <ul
+                className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
+                <li className="flex items-center py-3">
+                  <span>Status</span>
+                  <span className="ml-auto"><span
+                    className="bg-green-500 py-1 px-2 rounded text-white text-sm">Active</span></span>
+                </li>
+                <li className="flex items-center py-3">
+                  <span>Student since</span>
+                  <span className="ml-auto">Nov 07, 2016</span>
+                </li>
+              </ul>
             </div>
-            <div className="flex flex-col  justify-center md:items-start items-center">
-              {data ? 
-// update avtivated section
-                <>
-                  <div className="flex flex-col md:m-2 md:flex-row md:w-9/12 md:space-x-5 justify-center items-center ">
-      {/* full Name component */}
-                    <ActiveInputComponent name={data.name} data={data} setData={setData} type='text' title="Full Name" field='name' />
-      {/* schoolID component */}
-                    <DisableInputComponent name={data.schoolId} data={data} setData={setData} type='number' title="SchoolID" field='schoolId' />
+            {/* <!-- End of profile card --> */}
+            <div className="my-4"></div>
+          </div>
+          {/* <!-- Right Side --> */}
+          <div className="w-full md:w-9/12 mx-2 h-64">
+            {/* <!-- Profile tab --> */}
+            {/* <!-- About Section --> */}
+            <div className="bg-white p-3 shadow-sm rounded-sm">
+              <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
+                <span className="text-green-500">
+                  <svg className="h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </span>
+                <span className="tracking-wide">About</span>
+              </div>
+              <div className="text-gray-700">
+                <div className="grid md:grid-cols-2 text-sm">
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Full Name</div>
+                    <div className="px-4 py-2">Jane</div>
                   </div>
-      {/* email component */}          
-                  <ActiveInputComponentTwo name={data.email} data={data} setData={setData} type='email' title="Email" field='email' />
-      {/* User Type component */}
-                  <DisableInputComponentTwo name={data.userType} data={data} setData={setData} type='text' title="User Type" field='userType' />
-      {/* mobileNumber component */}
-                  <ActiveInputComponentTwo name={data.mobile} data={data} setData={setData} type='number' title="Mobile" field='mobile' />
-                  
-      {/* gender component */}
-                  <div className="md:w-full md:m-2">
-                    <label className="block font-bold">gender</label>
-                    <select
-                      className="w-80 md:w-9/12 rounded-lg px-2 py-2 bg-green-100 outline-none"
-                      onChange={(e) => setData({ ...data, gender: e.target.value })}
-                      value={data.gender}
-                    >
-                      <option>male</option>
-                      <option>female</option>
-                    </select>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Student ID</div>
+                    <div className="px-4 py-2">201853082050</div>
                   </div>
-      {/* bio component */}
-                  <div className="md:w-full md:m-2">
-                    <label className="block font-bold">Bio</label>
-                    <textarea
-                      className="w-80 md:w-9/12 rounded-lg px-2 py-2 bg-green-100 outline-none"
-                      onChange={(e) => setData({ ...data, bio: e.target.value })}
-                      value={data.bio}
-                      type="textarea"
-                    />
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Gender</div>
+                    <div className="px-4 py-2">Male</div>
                   </div>
-                </>
-              
-              :
-// updata deactivate section 
-              <>
-                  <div className="flex flex-col md:m-2 md:flex-row md:w-9/12 md:space-x-5 justify-center items-center ">
-                    <DisableInputComponent name={data.name} data={data} setData={setData} type='text' title="Full Name" field='name' />
-                    <DisableInputComponent name={data.schoolId} data={data} setData={setData} type='number' title="SchoolID" field='schoolId' />
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Contact No.</div>
+                    <div className="px-4 py-2">+11 998001001</div>
                   </div>
-                  
-                  <DisableInputComponentTwo  name={data.email} data={data} setData={setData} type='email' title="Email" field='email' />
-
-                  <DisableInputComponentTwo name={data.userType} data={data} setData={setData} type='text' title="User Type" field='userType' />
-
-                  <DisableInputComponentTwo  name={data.mobile} data={data} setData={setData} type='number' title="Mobile" field='mobile' />
-                  
-
-                  <div className="md:w-full md:m-2">
-                    <label className="block font-bold">gender</label>
-                    <select
-                      className="w-80 md:w-9/12 rounded-lg px-2 py-2 bg-pink-100 outline-none"
-                      onChange={(e) => setData({ ...data, gender: e.target.value })}
-                      value={data.gender}
-                      disabled
-                    >
-                      <option>male</option>
-                      <option>female</option>
-                    </select>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Class</div>
+                    <div className="px-4 py-2">10</div>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Roll</div>
+                    <div className="px-4 py-2">43</div>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Email.</div>
+                    <div className="px-4 py-2">
+                      <a className="text-blue-800"
+                        href="mailto:jane@example.com">jane@example.com</a>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Birthday</div>
+                    <div className="px-4 py-2">Feb 06, 1998</div>
                   </div>
 
-                  <div className="md:w-full md:m-2">
-                    <label className="block font-bold">Bio</label>
-                    <textarea
-                      className="w-80 md:w-9/12 rounded-lg px-2 py-2 bg-pink-100 outline-none"
-                      onChange={(e) => setData({ ...data, bio: e.target.value })}
-                      value={data.bio}
-                      type="textarea"
-                      disabled
-                    />
-                  </div>
-                
-              </>
+                  {seeMore && <>
+                    <div className="grid grid-cols-2">
+                      <div className="px-4 py-2 font-semibold">Division</div>
+                      <div className="px-4 py-2">Dhaka</div>
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <div className="px-4 py-2 font-semibold">District</div>
+                      <div className="px-4 py-2">Tangail</div>
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <div className="px-4 py-2 font-semibold">Police Station</div>
+                      <div className="px-4 py-2">Kalihati</div>
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <div className="px-4 py-2 font-semibold">Post Office</div>
+                      <div className="px-4 py-2">Paikara</div>
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <div className="px-4 py-2 font-semibold">Village</div>
+                      <div className="px-4 py-2">Golora</div>
+                    </div>
+                  </>
+                  }
+                  {addressEdit && <>
+                    <div className="grid grid-cols-2">
+                      <div className="px-4 py-2 font-semibold">Division</div>
+                      <input type='text' className="px-4 py-2 my-1 bg-red-100 focus:bg-transparent" />
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <div className="px-4 py-2 font-semibold">District</div>
+                      <input type='text' className="px-4 py-2 my-1 bg-red-100 focus:bg-transparent" />
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <div className="px-4 py-2 font-semibold">Police Station</div>
+                      <input type='text' className="px-4 py-2 my-1 bg-red-100 focus:bg-transparent" />
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <div className="px-4 py-2 font-semibold">Post Office</div>
+                      <input type='text' className="px-4 py-2 my-1 bg-red-100 focus:bg-transparent" />
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <div className="px-4 py-2 font-semibold">Village</div>
+                      <input type='text' className="px-4 py-2 my-1 bg-red-100 focus:bg-transparent" />
+                    </div>
+                  </>
+                  }
+
+                </div>
+              </div>
+
+              {
+                address ?
+                  <button
+                    onClick={() => setSeeMore(!seeMore)}
+                    className="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">Show
+                    {seeMore ? ' Less' : ' Full'} Information
+                  </button>
+                  :
+                  <button
+                    onClick={() => setaddressEdit(true)}
+                    className="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
+                    Update Address
+                  </button>
               }
             </div>
-          </form>
+            {/* <!-- End of about section --> */}
+
+            <div className="my-4"></div>
+
+            {/* <!-- End of profile tab --> */}
+          </div>
+        </div>
+      </div>
+    </div>
+
   )
 }
 
-// active input prototype component
-const ActiveInputComponent =({name, data, setData, type, title, field})=>{
-    return(
-      <div className="md:w-6/12">
-        <label className="font-bold">{title}</label>
-          <input
-            className="block w-80 md:w-full rounded-lg px-2 py-2 bg-green-100 outline-none"
-            onChange={(e) => setData({ ...data, [field] : e.target.value })}
-            value={name}
-            type={type}
-          />
-        
-      </div>
-    )
-  }
-  
-  // deactive input prototype component
-  const DisableInputComponent =({name, data, setData, type, title, field})=>{
-    return(
-      <div className="md:w-6/12">
-        <label className="font-bold">{title}</label>
-          <input
-            className="block w-80 md:w-full rounded-lg px-2 py-2 bg-pink-100 outline-none"
-            onChange={(e) => setData({ ...data, [field] : e.target.value })}
-            value={name}
-            type={type}
-            disabled
-          />
-        
-      </div>
-    )
-  }
-  
-  // active input prototype componentTwo
-  const ActiveInputComponentTwo =({name, data, setData, type, title, field})=>{
-    return(
-      <div className="md:w-full md:m-2">
-                  <label className="block font-bold">{title}</label>
-                  <input
-                    className="w-80 md:w-9/12 rounded-lg px-2 py-2 bg-green-100 outline-none"
-                    onChange={(e) => setData({ ...data, [field]: e.target.value })}
-                    value={name}
-                    type={type}
-                  />
-                </div>
-    )
-  }
-  
-  // deactive input prototype componentTwo
-  const DisableInputComponentTwo =({name, data, setData, type, title, field})=>{
-    return(
-      <div className="md:w-full md:m-2">
-                  <label className="block font-bold">{title}</label>
-                  <input
-                    className="w-80 md:w-9/12 rounded-lg px-2 py-2 bg-pink-100 outline-none"
-                    onChange={(e) => setData({ ...data, [field]: e.target.value })}
-                    value={name}
-                    type={type}
-                    disabled
-                  />
-                </div>
-    )
-  }
 
 export default Profile

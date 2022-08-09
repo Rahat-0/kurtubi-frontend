@@ -23,7 +23,7 @@ const Result = () => {
     })
 
   return (
-    <div className="md:w-8/12 bg-gray-300 h-10">
+    <div className=" bg-gray-300 h-10">
         <h3 className="text-center md:text-left text-3xl p-2 bg-green-200 md:bg-white">Results</h3>
         <p className='p-2'>Kurtubi madrasah, tangail. <span className='font-extrabold'>RAFI MIR RAHAT HASAN</span>(201853082050), welcome to use Teaching Management System. </p>
 

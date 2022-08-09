@@ -5,7 +5,7 @@ import Profile from "./Profile";
 import Result from "./Result";
 
 function UserProfile() {
-
+  const [visible, setVisible] = useState(true)
   const [view, setview] = useState({
     setting : false,
     profile : true,
@@ -23,10 +23,12 @@ function UserProfile() {
         states={[deletes, setDelete, deactivate, setDeactivate]}
       /> */}
 
-      <div className=" md:flex md:justify-around min-h-screen">
-        <div className=" md:block md:w-3/12">
+      <div >
+{/* static user seciton (user navber) */}
+        <div  className={ `${visible  ? 'left-0' : '-left-72'}  md:left-0  transform transition-all bg-gray-200 w-72 fixed z-40 lg:overflow-scroll  h-screen `}>
+        <button onClick={()=>setVisible(!visible)} className='bg-red-900 absolute md:hidden w-3 h-14 rounded-r-3xl border-2 -right-2 top-0'></button>
           <h3 className="font-bold text-4xl py-3">Settings</h3>
-          <ul>
+          <ul onClick={()=> setVisible(false)}>
             <li
               className={`${
                 view.profile && "bg-red-300 text-white"
@@ -54,9 +56,13 @@ function UserProfile() {
             </li>
           </ul>
         </div>
-        {view.profile && <Profile />}
-        {view.setting && <Setting />}
-        {view.result && <Result />}
+
+{/* dynamic user section  */}
+        <div className='md:ml-72 bg-gray-40 p-3'>
+          {view.profile && <Profile />}
+          {view.setting && <Setting />}
+          {view.result && <Result />}
+        </div>
       </div>
       <ToastContainer />
     </div>
