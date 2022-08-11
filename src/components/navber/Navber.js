@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import logo from "../../assets/image/logo.png";
 import AboutNav from "./AboutNav";
 import AcademicsNav from "./AcademicsNav";
@@ -6,7 +7,10 @@ import AdmissionNav from "./AdmissionNav";
 import CampusNav from "./CampusNav";
 import "./navber.css";
 const Navber = () => {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState({
+    dropdown : false,
+    user : false
+  })
   return (
     <div>
       <nav className="fixed w-full z-50 bg-gray-200 border-gray-200 px-2 sm:px-4 py-2.5 rounded">
@@ -24,6 +28,64 @@ const Navber = () => {
             >
               Apply Now
             </button>
+
+            {/* dropdown start */}
+              
+          <div className="ml-3 relative"> 
+                  <div>
+                    <div 
+                    onClick={()=> setVisible({...visible, user : !visible.user})}
+                    className=" text-gray-200 cursor-pointer">
+                      <div className="bg-gray-800 flex text-sm rounded-full  focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 ">
+                        <span className="sr-only">Open user menu</span>
+                        <img
+                          className="h-8 w-8 rounded-full "
+                          src={logo}
+                          alt=""
+                        />
+                      </div>
+                    </div>
+
+                    <div onClick={()=>setVisible({...visible, user : false})} className={`${visible.user ? 'translate-x-0' : 'translate-x-64'} user-option transform transition-all `}>
+                      <div className="origin-top-right absolute right-0 mt-2 w-48  rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div>
+                            <Link
+                              to="/user"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
+                            >
+                              Your Profile
+                            </Link>
+                         
+                        </div>
+                        <div>
+                       
+                            <Link
+                              to="/user"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
+                            >
+                              Settings
+                            </Link>
+                       
+                        </div>
+                        <div>
+                 
+                            <a 
+                              href="##"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
+                            >
+                              Sign out
+                            </a>
+                      
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              
+              </div>
+
+
+{/* dropdown end */}
+           
             <button
               data-collapse-toggle="mobile-menu-4"
               type="button"
@@ -33,8 +95,8 @@ const Navber = () => {
             >
               <span className="sr-only">Open main menu</span>
               <svg
-                onClick={()=> setVisible(!visible)}
-                className={` ${visible && 'hidden'} w-6 h-6`}
+                onClick={()=> setVisible({...visible, dropdown : !visible.dropdown})}
+                className={` ${visible.dropdown && 'hidden'} w-6 h-6`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -46,8 +108,8 @@ const Navber = () => {
                 ></path>
               </svg>
               <svg
-                onClick={()=> setVisible(!visible)}
-                className={` ${!visible && 'hidden'} w-6 h-6`}
+                onClick={()=> setVisible({...visible, dropdown : !visible.dropdown})}
+                className={` ${!visible.dropdown && 'hidden'} w-6 h-6`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -62,10 +124,10 @@ const Navber = () => {
           </div>
           <div
             
-            className={ `  ${!visible && '-mt-96' } md:mt-0 transform transition-all justify-between items-center w-full md:flex md:w-auto md:order-1`}
+            className={ `  ${!visible.dropdown && '-mt-96' } md:mt-0 transform transition-all justify-between items-center w-full md:flex md:w-auto md:order-1`}
             id="mobile-menu-4"
           >
-            <ul onClick={()=> setVisible(false)} className=" md:flex flex-col relative mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+            <ul onClick={()=> setVisible({...visible, dropdown : false})} className=" md:flex flex-col relative mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
               <li className="nav-hover ">
                 <a
                   href="##"
@@ -110,9 +172,14 @@ const Navber = () => {
                 <div className=" nav-hover-item hidden absolute top-4  pt-6  h-auto  bg-gray-200 shadow-md ">
                   <AboutNav />
                 </div>
+
               </li>
             </ul>
           </div>
+
+
+
+
         </div>
       </nav>
       <div className="md:bg-red-600 pt-14"></div>

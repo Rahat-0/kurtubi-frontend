@@ -4,38 +4,23 @@ import  {useReactToPrint} from 'react-to-print'
 import { HiUserGroup, HiUsers, HiOutlineUserGroup } from "react-icons/hi";
 import { FaUserLock } from "react-icons/fa";
 import CountCard from "./CountCard";
-import { useDispatch, useSelector } from "react-redux";
-import { setBranch } from "../../features/students/branchSlice";
+import { useSelector } from "react-redux";
 import Loading from "./Loading";
 import DataError from "./DataError";
 import PopupUser from "./PopupUser";
+import rootapi from "../../rootAPI";
 
-// eslint-disable-next-line no-unused-vars
-const localRootAPI = 'http://localhost:5000'
-// eslint-disable-next-line no-unused-vars
-const serverRootAPI = 'http://api.kurtubi.nuisters.com'
-const currentRootAPI = localRootAPI;
-
-const List = ({ allBranch, counts }) => {
+const List = (props) => {
+  const { allBranch, counts } = props
+  const [setBranch] = props.branch
   
   const componentRef = useRef()
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
-  const dispatch = useDispatch();
 
   // redux state actions
-  const { isLoading, users, error } = useSelector((state) => state.student);
-
-  // card logo items
-  const cardLogo = {
-    All: <HiUserGroup className="inline w-12 h-auto m-2 text-blue-900" />,
-    Branch: (
-      <HiOutlineUserGroup className="inline w-12 h-auto m-2 text-blue-600" />
-    ),
-    Class: <HiUsers className="inline w-12 h-auto m-2 text-blue-400" />,
-    Block: <FaUserLock className="inline w-12 h-auto m-2 text-red-400" />,
-  };
+  const { isLoading, users, error } = useSelector((state) => state.getFetchUser);
 
   // subject dropdown list
   const subject = Array.from(new Set(users.map(({ subject }) => subject)));
@@ -44,9 +29,9 @@ const List = ({ allBranch, counts }) => {
   // initial state define
   const [search, setsearch] = useState("");
   const [filterd, setfilterd] = useState({
-    subject: subject[0] || "",
-    classes: classes[0] || "10",
-    branch: "tangail branch",
+    subject: "",
+    classes: "",
+    branch: branch[0] || "",
   });
   const [singleUser, setSingleUser] = useState(false)
 
@@ -93,10 +78,18 @@ const List = ({ allBranch, counts }) => {
 
   // branch handler
   const branchHanlder = (e) => {
-    dispatch(setBranch(e.target.value));
-    setfilterd({ ...filterd, subject: subject[0], branch: e.target.value });
+    setBranch(e.target.value)
+    setfilterd({ ...filterd,  branch: e.target.value });
   };
-
+// card logo items
+const cardLogo = {
+  All: <HiUserGroup className="inline w-12 h-auto m-2 text-blue-900" />,
+  Branch: (
+    <HiOutlineUserGroup className="inline w-12 h-auto m-2 text-blue-600" />
+  ),
+  Class: <HiUsers className="inline w-12 h-auto m-2 text-blue-400" />,
+  Block: <FaUserLock className="inline w-12 h-auto m-2 text-red-400" />,
+};
   return (
     <div className="relative">
       
@@ -180,6 +173,7 @@ const List = ({ allBranch, counts }) => {
               name="dropdown"
               id="dropdown"
             >
+              <option value="" disabled>select branch</option>
               {branch.map((branch) => (
                 <option key={branch} value={branch}>
                   {branch}
@@ -235,10 +229,12 @@ const List = ({ allBranch, counts }) => {
                       setfilterd({ ...filterd, classes: e.target.value })
                     }
                     value={filterd.classes}
-                    className="outline-none"
+                    className="outline-none bg-indigo-200 border"
                     name=""
                     id=""
                   >
+                  <option className="text-red-400"  value=''> Select Class </option>
+
                     {classes &&
                       classes.map((classes) => (
                         <option key={classes} value={classes}>
@@ -272,11 +268,12 @@ const List = ({ allBranch, counts }) => {
                     onChange={(e) =>
                       setfilterd({ ...filterd, subject: e.target.value })
                     }
-                    defaultValue={filterd.subject}
+                    value={filterd.subject}
                     className="outline-none"
                     name=""
                     id=""
                   >
+                    <option className="bg-red-400" value="">All Subject</option>
                     {subject &&
                       subject.map((subject) => (
                         <option key={subject} value={subject}>
@@ -316,7 +313,7 @@ const List = ({ allBranch, counts }) => {
                       <img
                         className="w-12 h-12 object-cover rounded-full ring"
                         
-                        src={`${currentRootAPI}/images/${image}`}
+                        src={`${rootapi}/images/${image}`}
                         alt={image}
                       />
                       <p> {name} </p>
@@ -355,7 +352,7 @@ const List = ({ allBranch, counts }) => {
                       <img
                         className="w-12 h-12 object-cover rounded-full ring"
 
-                        src={`${currentRootAPI}/images/${image}`}
+                        src={`${rootapi}/images/${image}`}
                         alt={image}
                       />
                       <p> {full_name} </p>

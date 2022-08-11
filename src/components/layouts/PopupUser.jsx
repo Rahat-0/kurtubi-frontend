@@ -1,10 +1,5 @@
 import React from 'react'
-
-// eslint-disable-next-line no-unused-vars
-const localRootAPI = 'http://localhost:5000'
-// eslint-disable-next-line no-unused-vars
-const serverRootAPI = 'http://api.kurtubi.nuisters.com'
-const currentRootAPI = localRootAPI;
+import rootapi from '../../rootAPI';
 
 const PopupUser = (props) => {
   const [singleUser, setSingleUser] = props.state
@@ -20,7 +15,7 @@ const PopupUser = (props) => {
           <div>
             <img class='w-full lg:w-36 h-auto lg:h-28 object-cover rounded-lg'
             
-              src={`${currentRootAPI}/images/${image}`}
+              src={`${rootapi}/images/${image}`}
               alt="m" />
           </div>
           <div class="text-center">

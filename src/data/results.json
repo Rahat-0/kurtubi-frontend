@@ -44,7 +44,7 @@
                 "semester": "2",
                 "student_id": "1007",
                 "subject_name": "bangla",
-                "subject_result": "78",
+                "subject_result": "28",
                 "subject_ranking": "20",
                 "teacher_id": "202201",
                 "result_time": "2022-07-08 12:03:15.533629"
@@ -56,7 +56,7 @@
                 "semester": "3",
                 "student_id": "1001",
                 "subject_name": "math",
-                "subject_result": "65",
+                "subject_result": "87",
                 "subject_ranking": "34",
                 "teacher_id": "202200",
                 "result_time": "2022-07-09 16:00:40.414041"
@@ -92,7 +92,7 @@
                 "semester": "3",
                 "student_id": "1006",
                 "subject_name": "bangla",
-                "subject_result": "80",
+                "subject_result": "32",
                 "subject_ranking": "16",
                 "teacher_id": "202201",
                 "result_time": "2022-07-09 16:00:06.244110"

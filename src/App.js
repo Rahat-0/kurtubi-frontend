@@ -8,6 +8,7 @@ import TeachersList from "./components/teachers/TeachersList";
 import Admin from "./pages/admin/Admin";
 import Dashboard from "./pages/admin/Dashboard";
 import Home from "./pages/home/Home";
+import { Login } from "./components/Login";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
       <Navber />
       <Routes>
       <Route path='/' element={<Home />} />
+      <Route path='/login' element={<Login />} />
       <Route path='/user' element={<UserProfile />} />
 
       <Route path='admin/' element={<Admin />} >

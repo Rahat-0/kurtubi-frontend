@@ -15,7 +15,7 @@ const Profile = () => {
           {/* <!-- Left Side --> */}
           <div className="w-full md:w-3/12 md:mx-2">
             {/* <!-- Profile Card --> */}
-            <div className="bg-white p-3 border-t-4 border-green-400">
+            <div className="bg-white p-3 border-t-4 border-green-400"> 
               <div className="image overflow-hidden">
                 <img className="h-auto w-full mx-auto"
                   src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
@@ -44,7 +44,7 @@ const Profile = () => {
             <div className="my-4"></div>
           </div>
           {/* <!-- Right Side --> */}
-          <div className="w-full md:w-9/12 mx-2 h-64">
+          <div className="w-full md:w-9/12 ">
             {/* <!-- Profile tab --> */}
             {/* <!-- About Section --> */}
             <div className="bg-white p-3 shadow-sm rounded-sm">
