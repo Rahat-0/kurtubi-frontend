@@ -10,7 +10,7 @@ const Setting = () => {
               <div className="flex justify-between w-full p-2 border rounded bg-red-50 shadow">
                 <div className="px-1">
                   <h4 className="font-bold text-red-700">
-                    Reset password of this account
+                    Update password for this account
                   </h4>
                   <p className="text-sm">
                     Unable to Login with Previous Password.
@@ -20,7 +20,7 @@ const Setting = () => {
                   onClick={() => (true)}
                   className=" rounded px-2  bg-yellow-700 text-white font-bold hover:bg-white hover:text-black cursor-pointer border-2 border-yellow-500"
                   type="button"
-                  value="Reset"
+                  value="Update"
                 />
               </div>
             </div>

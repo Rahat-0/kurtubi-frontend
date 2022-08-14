@@ -1,10 +1,16 @@
+
 import React from 'react'
 import { useState } from 'react'
+import rootapi from '../../rootAPI'
 
-const Profile = () => {
+
+const Profile = (props) => {
+  const {branch, classes, email, first_name, last_name, gender, image, dob, phone, roll, time, student_id,
+         designation, education, full_name, join_date, subject, teacher_id, varsity_name  } = props.data;
   const [seeMore, setSeeMore] = useState(false)
   const [addressEdit, setaddressEdit] = useState(false)
-  const address = 'fds'
+
+  const address = 'fdsa'
 
   return (
     <div className="bg-gray-100">
@@ -18,15 +24,15 @@ const Profile = () => {
             <div className="bg-white p-3 border-t-4 border-green-400"> 
               <div className="image overflow-hidden">
                 <img className="h-auto w-full mx-auto"
-                  src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
+                  src={`${rootapi}/images/${image}`}
                   alt="" />
               </div>
-              <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">Jane Doe</h1>
-              <h3 className="text-gray-600 font-lg text-semibold leading-6">Student</h3>
-              <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">Lorem ipsum dolor sit
-                amet
-                consectetur adipisicing elit.
-                Reprehenderit, eligendi dolorum sequi illum qui unde aspernatur non deserunt</p>
+              <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">{student_id ? first_name+' '+last_name : full_name}</h1>
+              <h3 className="text-green-600 font-lg text-semibold leading-6">{student_id ? 'Student' : 'Teacher'}</h3>
+              <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
+                {student_id ? 'student of kurtubi dakhil madrasah.' :
+                 'teacher of kurtubi dakhil madrasah.'}
+              </p>
               <ul
                 className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
                 <li className="flex items-center py-3">
@@ -35,8 +41,8 @@ const Profile = () => {
                     className="bg-green-500 py-1 px-2 rounded text-white text-sm">Active</span></span>
                 </li>
                 <li className="flex items-center py-3">
-                  <span>Student since</span>
-                  <span className="ml-auto">Nov 07, 2016</span>
+                  <span>{student_id ? 'Student' : 'Teacher'} since</span>
+                  <span className="ml-auto">{student_id ? new Date(time).toLocaleDateString() : new Date(join_date).toLocaleDateString() }</span>
                 </li>
               </ul>
             </div>
@@ -60,41 +66,97 @@ const Profile = () => {
               </div>
               <div className="text-gray-700">
                 <div className="grid md:grid-cols-2 text-sm">
+                 {student_id &&  <>
                   <div className="grid grid-cols-2">
                     <div className="px-4 py-2 font-semibold">Full Name</div>
-                    <div className="px-4 py-2">Jane</div>
+                    <div className="px-4 py-2">{first_name+' '+last_name}</div>
                   </div>
                   <div className="grid grid-cols-2">
                     <div className="px-4 py-2 font-semibold">Student ID</div>
-                    <div className="px-4 py-2">201853082050</div>
+                    <div className="px-4 py-2">{student_id}</div>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Branch</div>
+                    <div className="px-4 py-2">{branch}</div>
                   </div>
                   <div className="grid grid-cols-2">
                     <div className="px-4 py-2 font-semibold">Gender</div>
-                    <div className="px-4 py-2">Male</div>
+                    <div className="px-4 py-2">{gender}</div>
                   </div>
                   <div className="grid grid-cols-2">
                     <div className="px-4 py-2 font-semibold">Contact No.</div>
-                    <div className="px-4 py-2">+11 998001001</div>
+                    <div className="px-4 py-2">{phone}</div>
                   </div>
                   <div className="grid grid-cols-2">
                     <div className="px-4 py-2 font-semibold">Class</div>
-                    <div className="px-4 py-2">10</div>
+                    <div className="px-4 py-2">{classes}</div>
                   </div>
                   <div className="grid grid-cols-2">
                     <div className="px-4 py-2 font-semibold">Roll</div>
-                    <div className="px-4 py-2">43</div>
+                    <div className="px-4 py-2">{roll}</div>
                   </div>
                   <div className="grid grid-cols-2">
                     <div className="px-4 py-2 font-semibold">Email.</div>
                     <div className="px-4 py-2">
                       <a className="text-blue-800"
-                        href="mailto:jane@example.com">jane@example.com</a>
+                        href="mailto:jane@example.com">{email}</a>
                     </div>
                   </div>
                   <div className="grid grid-cols-2">
                     <div className="px-4 py-2 font-semibold">Birthday</div>
-                    <div className="px-4 py-2">Feb 06, 1998</div>
+                    <div className="px-4 py-2">{new Date(dob).toLocaleDateString()}</div>
                   </div>
+                  </>}
+
+
+                  {teacher_id &&  <>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Full Name</div>
+                    <div className="px-4 py-2">{full_name}</div>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Teacher ID</div>
+                    <div className="px-4 py-2">{teacher_id}</div>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Branch</div>
+                    <div className="px-4 py-2">{branch}</div>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Subject</div>
+                    <div className="px-4 py-2">{subject}</div>
+                  </div>
+                  {/* ispermit, join_date, subject, teacher_id, varsity_name  */}
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Designation</div>
+                    <div className="px-4 py-2">{designation}</div>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Education</div>
+                    <div className="px-4 py-2">{education}</div>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Contact No.</div>
+                    <div className="px-4 py-2">{phone}</div>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Email.</div>
+                    <div className="px-4 py-2">
+                      <a className="text-blue-800"
+                        href={`mailto:${email}`}>{email}</a>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">Birthday</div>
+                    <div className="px-4 py-2">{new Date(dob).toLocaleDateString()}</div>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <div className="px-4 py-2 font-semibold">University</div>
+                    <div className="px-4 py-2">{varsity_name}</div>
+                  </div>
+                  </>}
+                  
+                  
 
                   {seeMore && <>
                     <div className="grid grid-cols-2">

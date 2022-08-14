@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/image/logo.png";
 import AboutNav from "./AboutNav";
@@ -6,11 +6,36 @@ import AcademicsNav from "./AcademicsNav";
 import AdmissionNav from "./AdmissionNav";
 import CampusNav from "./CampusNav";
 import "./navber.css";
+import tokenHandler from "../utils/tokenHandler";
+import { useSelector } from "react-redux";
+
 const Navber = () => {
+  const {refresh} = useSelector((state)=>state.refresh)
+
   const [visible, setVisible] = useState({
     dropdown : false,
-    user : false
+    user : false,
+    active : false
   })
+ 
+  const check = tokenHandler()
+
+  useEffect(() => {
+  check.then(({student_id, teacher_id, error})=>{
+    if (error){
+      return setVisible({...visible, active : false})
+    }
+    if(student_id || teacher_id){
+      setVisible({...visible, active : true})
+    }
+  })
+  .catch((er)=>{
+    console.log(er)
+  })
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refresh])
+  
   return (
     <div>
       <nav className="fixed w-full z-50 bg-gray-200 border-gray-200 px-2 sm:px-4 py-2.5 rounded">
@@ -31,7 +56,7 @@ const Navber = () => {
 
             {/* dropdown start */}
               
-          <div className="ml-3 relative"> 
+          {visible.active && <div className=" flex items-center ml-1 md:ml-3 relative"> 
                   <div>
                     <div 
                     onClick={()=> setVisible({...visible, user : !visible.user})}
@@ -46,11 +71,11 @@ const Navber = () => {
                       </div>
                     </div>
 
-                    <div onClick={()=>setVisible({...visible, user : false})} className={`${visible.user ? 'translate-x-0' : 'translate-x-64'} user-option transform transition-all `}>
+                    <div onClick={()=>setVisible({...visible, user : false})} className={`${visible.user ? 'translate-x-0' : 'translate-x-96'} user-option transform transition-all `}>
                       <div className="origin-top-right absolute right-0 mt-2 w-48  rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <div>
                             <Link
-                              to="/user"
+                              to="/auth/user"
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
                             >
                               Your Profile
@@ -81,8 +106,7 @@ const Navber = () => {
                     </div>
                   </div>
               
-              </div>
-
+              </div>}
 
 {/* dropdown end */}
            

@@ -3,8 +3,7 @@ import React from 'react'
 const DataError = ({message}) => {
   return (
     <div
-        className=" absolute flex items-center justify-center w-full h-screen bg-gradient-to-r from-indigo-300 to-blue-50  z-10"
-      >
+        className=" absolute flex items-center justify-center w-full h-screen bg-gradient-to-r from-indigo-300 to-blue-50  z-10">
         <div class="px-40 py-20 bg-white rounded-md shadow-xl">
           <div class="flex flex-col items-center">
             <h1 class="font-bold text-blue-600 text-9xl">404</h1>
