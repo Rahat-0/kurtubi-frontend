@@ -1,40 +1,25 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
-import { postFetchAction } from '../features/fetching/postFetch'
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'js-cookie'
+import TokenHandler from './utils/tokenHandler'
+import axios from 'axios'
 export const Login = () => {
  
-    const dispatch = useDispatch()
     const navigate = useNavigate()
-    
-   const {isLoading, response, error } = useSelector((state)=> state.postFetch)
+    const check = TokenHandler()
+    check.then(({exp})=>{exp && navigate('/')})
 
-   useEffect(() => {
-    if(response.success){
-        Cookies.set('accesstoken', response.accesstoken)
-        Cookies.set('refreshtoken', response.refreshtoken)
-        navigate('/auth/user')
-    }
-    (error || response.error )&& toast.error( error || response.error, {position : 'bottom-left', autoClose : false})
-
-   
-   }, [response, error])
-
- 
-    
-  
-   
-   
     const [data, setData] = useState({
         id : '',
         password : '',
-        type : 'student_id'
+        type : 'student_id',
+        isLoading : false
     })
+
     const [warn, setWarn] = useState({ warnId : false, warnPass : false})
     useEffect(() => {
         if(!data.id){setWarn({...warn, warnId : true})}
@@ -46,13 +31,31 @@ export const Login = () => {
         else{ setWarn({...warn, warnPass : false})}   
     }, [data.password])
 
+    // login form handler 
     const formHandler = (e) =>{
         e.preventDefault()
+    setData({...data, isLoading : true})
         const send = {
             [data.type] : data.id,
             'password' : data.password
         }
-        dispatch(postFetchAction({api : 'http://localhost:5000/api/login', data : send}))
+    axios.post('http://localhost:5000/api/login', send)
+    .then((res)=>{
+        console.log(res);
+        setData({...data, isLoading : false})
+        if(res.data.success){
+            Cookies.set('accesstoken', res.data.accesstoken)
+            Cookies.set('refreshtoken', res.data.refreshtoken)
+            navigate('/auth/user')
+        }else{
+            console.log(res);
+            toast.error( res.data.error || 'error accoured!', {position : 'bottom-left', autoClose : false})
+        }
+    })
+    .catch((err)=>{
+        setData({...data, isLoading : false})
+        toast.error( err.response.error || 'error accoured!', {position : 'bottom-left', autoClose : false})
+    })  
     }
 
     return (
@@ -97,7 +100,7 @@ export const Login = () => {
                             </div>
                         </div>
                         <div className="flex items-baseline justify-between">
-                           {!isLoading ? <button type='submit' className="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900">Login</button> :
+                           {!data.isLoading ? <button type='submit' className="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900">Login</button> :
                             <button  className="px-6 py-2 mt-4 text-white bg-gray-600 rounded-lg hover:bg-gray-900">Loading</button>}
                             <a href="##" className="text-sm text-blue-600 hover:underline">Forgot password?</a>
                         </div>

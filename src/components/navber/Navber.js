@@ -7,35 +7,44 @@ import AdmissionNav from "./AdmissionNav";
 import CampusNav from "./CampusNav";
 import "./navber.css";
 import tokenHandler from "../utils/tokenHandler";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Cookies from "js-cookie";
+import { doRefresh } from "../../features/RefreshSlice";
+import PopUpConfirm from "../layouts/PopupConfirm";
+
 
 const Navber = () => {
-  const {refresh} = useSelector((state)=>state.refresh)
 
-  const [visible, setVisible] = useState({
-    dropdown : false,
-    user : false,
-    active : false
-  })
- 
+  const dispatch = useDispatch()
+  const { refresh } = useSelector((state) => state.refresh)
   const check = tokenHandler()
 
-  useEffect(() => {
-  check.then(({student_id, teacher_id, error})=>{
-    if (error){
-      return setVisible({...visible, active : false})
-    }
-    if(student_id || teacher_id){
-      setVisible({...visible, active : true})
-    }
-  })
-  .catch((er)=>{
-    console.log(er)
+
+  const [visible, setVisible] = useState({
+    dropdown: false,
+    user: false,
+    active: false
   })
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    check.then(({ exp, error }) => {
+      error && setVisible({ ...visible, active: false })
+      exp && setVisible({ ...visible, active: true })
+    })
+      .catch((er) => {
+        setVisible({ ...visible, active: false })
+      })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh])
-  
+
+  // user logout handler start here 
+  const handleLogout = () => {
+    dispatch(doRefresh())
+    Cookies.remove('accesstoken')
+    Cookies.remove('refreshtoken')
+  }
+
   return (
     <div>
       <nav className="fixed w-full z-50 bg-gray-200 border-gray-200 px-2 sm:px-4 py-2.5 rounded">
@@ -55,61 +64,62 @@ const Navber = () => {
             </button>
 
             {/* dropdown start */}
-              
-          {visible.active && <div className=" flex items-center ml-1 md:ml-3 relative"> 
-                  <div>
-                    <div 
-                    onClick={()=> setVisible({...visible, user : !visible.user})}
-                    className=" text-gray-200 cursor-pointer">
-                      <div className="bg-gray-800 flex text-sm rounded-full  focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 ">
-                        <span className="sr-only">Open user menu</span>
-                        <img
-                          className="h-8 w-8 rounded-full "
-                          src={logo}
-                          alt=""
-                        />
-                      </div>
-                    </div>
 
-                    <div onClick={()=>setVisible({...visible, user : false})} className={`${visible.user ? 'translate-x-0' : 'translate-x-96'} user-option transform transition-all `}>
-                      <div className="origin-top-right absolute right-0 mt-2 w-48  rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <div>
-                            <Link
-                              to="/auth/user"
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
-                            >
-                              Your Profile
-                            </Link>
-                         
-                        </div>
-                        <div>
-                       
-                            <Link
-                              to="/user"
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
-                            >
-                              Settings
-                            </Link>
-                       
-                        </div>
-                        <div>
-                 
-                            <a 
-                              href="##"
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
-                            >
-                              Sign out
-                            </a>
-                      
-                        </div>
-                      </div>
+            {visible.active && <div className=" flex items-center ml-1 md:ml-3 relative">
+              <div>
+                <div
+                  onClick={() => setVisible({ ...visible, user: !visible.user })}
+                  className=" text-gray-200 cursor-pointer">
+                  <div className="bg-gray-800 flex text-sm rounded-full  focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 ">
+                    <span className="sr-only">Open user menu</span>
+                    <img
+                      className="h-8 w-8 rounded-full "
+                      src={logo}
+                      alt=""
+                    />
+                  </div>
+                </div>
+
+                <div onClick={() => setVisible({ ...visible, user: false })} className={`${visible.user ? 'translate-x-0' : 'translate-x-96'} user-option transform transition-all `}>
+                  <div className="origin-top-right absolute right-0 mt-2 w-48  rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <div>
+                      <Link
+                        to="/auth/user"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
+                      >
+                        Your Profile
+                      </Link>
+
+                    </div>
+                    <div>
+
+                      <Link
+                        to="/user"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
+                      >
+                        Settings
+                      </Link>
+
+                    </div>
+                    <div>
+
+                      <Link
+                        onClick={handleLogout}
+                        to='/login'
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
+                      >
+                        Sign out
+                      </Link>
+
                     </div>
                   </div>
-              
-              </div>}
+                </div>
+              </div>
 
-{/* dropdown end */}
-           
+            </div>}
+
+            {/* dropdown end */}
+
             <button
               data-collapse-toggle="mobile-menu-4"
               type="button"
@@ -119,7 +129,7 @@ const Navber = () => {
             >
               <span className="sr-only">Open main menu</span>
               <svg
-                onClick={()=> setVisible({...visible, dropdown : !visible.dropdown})}
+                onClick={() => setVisible({ ...visible, dropdown: !visible.dropdown })}
                 className={` ${visible.dropdown && 'hidden'} w-6 h-6`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -132,7 +142,7 @@ const Navber = () => {
                 ></path>
               </svg>
               <svg
-                onClick={()=> setVisible({...visible, dropdown : !visible.dropdown})}
+                onClick={() => setVisible({ ...visible, dropdown: !visible.dropdown })}
                 className={` ${!visible.dropdown && 'hidden'} w-6 h-6`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -146,12 +156,15 @@ const Navber = () => {
               </svg>
             </button>
           </div>
+          <div className='z-50'>
+            <PopUpConfirm />
+          </div>
           <div
-            
-            className={ `  ${!visible.dropdown && '-mt-96' } md:mt-0 transform transition-all justify-between items-center w-full md:flex md:w-auto md:order-1`}
+
+            className={`  ${!visible.dropdown && '-mt-96'} md:mt-0 transform transition-all justify-between items-center w-full md:flex md:w-auto md:order-1`}
             id="mobile-menu-4"
           >
-            <ul onClick={()=> setVisible({...visible, dropdown : false})} className=" md:flex flex-col relative mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+            <ul onClick={() => setVisible({ ...visible, dropdown: false })} className=" md:flex flex-col relative mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
               <li className="nav-hover ">
                 <a
                   href="##"
@@ -200,10 +213,6 @@ const Navber = () => {
               </li>
             </ul>
           </div>
-
-
-
-
         </div>
       </nav>
       <div className="md:bg-red-600 pt-14"></div>

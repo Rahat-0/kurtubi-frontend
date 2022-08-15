@@ -118,7 +118,7 @@ function UserProfile() {
           {view.result && user.student_id && <Result data={result} name = {`${user.first_name} ${user.last_name}`} />}
         </div>
       </div>
-      <PopUpConfirm />
+      // <PopUpConfirm />
       <ToastContainer />
     </div>
   );

@@ -5,7 +5,6 @@ import rootapi from "../../rootAPI"
 
 
 const TokenHandler = async () => {
-
     try {
         const accesstoken = Cookies.get('accesstoken')
         const refreshtoken = Cookies.get('refreshtoken')
@@ -15,7 +14,7 @@ const TokenHandler = async () => {
 
         if(new Date(decode.exp * 1000) > new Date().getTime()){
             if (decode.student_id || decode.teacher_id) {
-                return { student_id: decode.student_id, teacher_id: decode.teacher_id, token : accesstoken }
+                return { student_id: decode.student_id, teacher_id: decode.teacher_id, token : accesstoken, exp : true }
             }
         }
 
@@ -25,14 +24,15 @@ const TokenHandler = async () => {
               Cookies.set('accesstoken', res.data.accesstoken)
               console.log('update token')
               const updateToken = Cookies.get('accesstoken')
-              return { student_id: decode.student_id, teacher_id: decode.teacher_id, token : updateToken }
+              return { student_id: decode.student_id, teacher_id: decode.teacher_id, token : updateToken, exp : true }
             }
           } 
 
         return null
 
     } catch (error) {
-        return {error : error.response}
+        Cookies.remove('accesstoken')
+        return {error : error.response || true, exp : false}
     }
 
 }

@@ -9,6 +9,7 @@ import Admin from "./pages/admin/Admin";
 import Dashboard from "./pages/admin/Dashboard";
 import Home from "./pages/home/Home";
 import { Login } from "./components/Login";
+import ProtectedStudent from "./components/students/ProtectedStudent";
 
 function App() {
 
@@ -19,8 +20,8 @@ function App() {
       <Route path='/' element={<Home />} />
       <Route path='/login' element={<Login />} />
       
-      <Route path='/auth' element={<UserProfile />} >
-        <Route path='/auth/user' element={<UserProfile />} />
+      <Route path='/auth' element={<ProtectedStudent />} >
+        <Route path='user' element={<UserProfile />} />
       </Route>
 
       <Route path='admin/' element={<Admin />} >

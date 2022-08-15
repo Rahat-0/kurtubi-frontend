@@ -6,7 +6,7 @@ function PopUpConfirm(props) {
    
   return (
     
-      <div  className={`text-center flex justify-center items-center opacity-90   z-10`}
+      <div  className={`text-center flex justify-center items-center opacity-90   z-50`}
       >
         <div className="  fixed bg-gray-300 shadow-2xl top-1/3 rounded-2xl">
           <div className="  w-96 h-56 flex justify-center items-center">
