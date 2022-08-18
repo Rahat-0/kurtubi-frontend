@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/image/logo.png";
 import AboutNav from "./AboutNav";
 import AcademicsNav from "./AcademicsNav";
 import AdmissionNav from "./AdmissionNav";
 import CampusNav from "./CampusNav";
-import "./navber.css";
 import tokenHandler from "../utils/tokenHandler";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { doRefresh } from "../../features/RefreshSlice";
 import PopUpConfirm from "../layouts/PopupConfirm";
+import "./navber.css";
 
 
 const Navber = () => {
-
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { refresh } = useSelector((state) => state.refresh)
   const check = tokenHandler()
-
-
+  const [logoutConfirmShow, setLogoutConfirmShow] = useState(false)
   const [visible, setVisible] = useState({
     dropdown: false,
     user: false,
@@ -43,11 +42,22 @@ const Navber = () => {
     dispatch(doRefresh())
     Cookies.remove('accesstoken')
     Cookies.remove('refreshtoken')
+    navigate('/')
   }
+
+  const PopupData = {
+    message : 'Do you want to Logout now?',
+    btn : 'Logout',
+    action : handleLogout,
+    isShow : logoutConfirmShow 
+  }
+    
+
 
   return (
     <div>
       <nav className="fixed w-full z-50 bg-gray-200 border-gray-200 px-2 sm:px-4 py-2.5 rounded">
+      <PopUpConfirm state = {[0,0]} data = {PopupData} />
         <div className="container flex flex-wrap justify-between items-center mx-auto">
           <a href="/" className="flex items-center">
             <img src={logo} className="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
@@ -65,7 +75,8 @@ const Navber = () => {
 
             {/* dropdown start */}
 
-            {visible.active && <div className=" flex items-center ml-1 md:ml-3 relative">
+            {visible.active ? 
+             <div className=" flex items-center ml-1 md:ml-3 relative">
               <div>
                 <div
                   onClick={() => setVisible({ ...visible, user: !visible.user })}
@@ -103,20 +114,27 @@ const Navber = () => {
                     </div>
                     <div>
 
-                      <Link
-                        onClick={handleLogout}
-                        to='/login'
+                      <p
+                        onClick={()=>setLogoutConfirmShow({isShow : true})}
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
                       >
                         Sign out
-                      </Link>
+                      </p>
 
                     </div>
                   </div>
                 </div>
               </div>
 
-            </div>}
+            </div> 
+            : 
+            <Link
+              to='/login'
+              type="button"
+              className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 ml-1 md:ml-3 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              LOGIN
+            </Link>}
 
             {/* dropdown end */}
 
@@ -136,9 +154,9 @@ const Navber = () => {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 ></path>
               </svg>
               <svg
@@ -149,16 +167,14 @@ const Navber = () => {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 ></path>
               </svg>
             </button>
           </div>
-          <div className='z-50'>
-            <PopUpConfirm />
-          </div>
+          
           <div
 
             className={`  ${!visible.dropdown && '-mt-96'} md:mt-0 transform transition-all justify-between items-center w-full md:flex md:w-auto md:order-1`}
@@ -168,7 +184,7 @@ const Navber = () => {
               <li className="nav-hover ">
                 <a
                   href="##"
-                  class="font-bold nav-hover block py-2 pr-4 pl-3 focus:text-red-700  text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  className="font-bold nav-hover block py-2 pr-4 pl-3 focus:text-red-700  text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   Admission
                 </a>
@@ -180,7 +196,7 @@ const Navber = () => {
               <li className="nav-hover">
                 <a
                   href="##"
-                  class="font-bold nav-hover block py-2 pr-4 pl-3 focus:text-red-700  text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  className="font-bold nav-hover block py-2 pr-4 pl-3 focus:text-red-700  text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   Academics
                 </a>

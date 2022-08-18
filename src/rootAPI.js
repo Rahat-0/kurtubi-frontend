@@ -1,4 +1,4 @@
 const rootapi = 'http://localhost:5000'
-// const rootapi = 'http://api.kurtubi.nuisters.com'
+// const rootapi = 'https://api.kurtubi.nuisters.com'
 
 export default rootapi

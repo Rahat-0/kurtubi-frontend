@@ -7,9 +7,7 @@ import HomeCard from './HomeCard'
 import HomeKurtubi from './HomeKurtubi'
 import HomeOffer from './HomeOffer'
 function Home() {
-  AOS.init({
-    once : true,
-  })
+  AOS.init()
   return (
     <div>
       {/* <Login /> */}

@@ -21,7 +21,7 @@ const Navber = () => {
             onClick={()=>setVisible(false)}
             className=" py-4 ">
                 {nablist.map(({ name, link, logo }) => (
-                    <NavLink to={link} className={({ isActive }) => isActive ? 'border-red-800 border-l-4 block p-4 transform transition-all bg-gray-400  text-gray-300' : ' text-gray-700 p-4 block'} > <div className='flex items-center justify-start gap-x-2'>
+                    <NavLink key={link} to={link} className={({ isActive }) => isActive ? 'border-red-800 border-l-4 block p-4 transform transition-all bg-gray-400  text-gray-300' : ' text-gray-700 p-4 block'} > <div className='flex items-center justify-start gap-x-2'>
                         <span>{logo}</span>
                         <span>{name}</span>
                     </div> </NavLink>

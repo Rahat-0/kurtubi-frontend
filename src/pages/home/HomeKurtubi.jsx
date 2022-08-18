@@ -35,27 +35,27 @@ const HomeKurtubi = () => {
 
             <div   className=" text-center lg:flex lg:justify-evenly">
                 <div data-aos="zoom-in" className="m-14">
-                    <p className="font-bold text-5xl py-4">
+                    <div className="font-bold text-5xl py-4">
                         <animated.div >
                             {number.to((value)=> value.toFixed())}
                         </animated.div>
-                    </p>
+                    </div>
                     <p className="text-xl">Students</p>
                 </div>
                 <div data-aos="zoom-in" className="m-14">
-                    <p className="font-bold text-5xl py-4">
+                    <div className="font-bold text-5xl py-4">
                         <animated.div >
                             {number.to((value)=> value.toFixed())}
                         </animated.div>
-                    </p>
+                    </div>
                     <p className="text-xl">Teachers</p>
                 </div>
                 <div data-aos="zoom-in" className="m-14">
-                    <p className="font-bold text-5xl py-4">
+                    <div className="font-bold text-5xl py-4">
                         <animated.div >
                             {number.to((value)=> value.toFixed())}
                         </animated.div>
-                    </p>
+                    </div>
                     <p className="text-xl">Staff</p>
                 </div>
 

@@ -24,6 +24,7 @@ const StudentList = () => {
       dispatch(userData({api : `${rootapi}/api/student/all/${branch}`}))
       countAndBranch()
       
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [branch, dispatch])
 
   const countAndBranch = async ()=>{

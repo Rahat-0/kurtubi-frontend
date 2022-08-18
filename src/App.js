@@ -24,11 +24,11 @@ function App() {
         <Route path='user' element={<UserProfile />} />
       </Route>
 
-      <Route path='admin/' element={<Admin />} >
-        <Route path='/admin/dashboard' element={<Dashboard />} />
-        <Route path='/admin/studentlist' element={<StudentList />} />
-        <Route path='/admin/teacherlist' element={<TeachersList />} />
-        <Route path='/admin/results' element={<Results />} />
+      <Route path='/admin' element={<Admin />} >
+        <Route path='dashboard' element={<Dashboard />} />
+        <Route path='studentlist' element={<StudentList />} />
+        <Route path='teacherlist' element={<TeachersList />} />
+        <Route path='results' element={<Results />} />
       </Route>
       </Routes>
     </BrowserRouter>

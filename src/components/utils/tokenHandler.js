@@ -10,8 +10,8 @@ const TokenHandler = async () => {
         const refreshtoken = Cookies.get('refreshtoken')
         const freshtoken = accesstoken.split(' ')[1]
         const decode = await jwtDecode(freshtoken)
-
-
+        const {student_id, teacher_id} = decode
+        const userType = student_id ? 'student' : teacher_id ? 'teacher' : null
         if(new Date(decode.exp * 1000) > new Date().getTime()){
             if (decode.student_id || decode.teacher_id) {
                 return { student_id: decode.student_id, teacher_id: decode.teacher_id, token : accesstoken, exp : true }
@@ -19,7 +19,7 @@ const TokenHandler = async () => {
         }
 
         if(new Date(decode.exp * 1000) < new Date().getTime()){
-            const res = await axios.post(`${rootapi}/api/student/auth`, {data : ''}, {headers : {refreshtoken}} )
+            const res = await axios.post(`${rootapi}/api/${userType}/auth`, {data : ''}, {headers : {refreshtoken}} )
             if(res.data.success){
               Cookies.set('accesstoken', res.data.accesstoken)
               console.log('update token')
@@ -28,7 +28,7 @@ const TokenHandler = async () => {
             }
           } 
 
-        return null
+        return null 
 
     } catch (error) {
         Cookies.remove('accesstoken')

@@ -8,12 +8,11 @@ const ProtectedStudent = () => {
   useEffect(() => {
     handleAuth()
     
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleAuth =()=>{
     const check =  TokenHandler()
-    console.log('protected route');
-    console.log(check);
     check.then(({error})=>{
       console.log(error);
       if(error){

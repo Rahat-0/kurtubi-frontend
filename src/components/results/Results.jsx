@@ -14,6 +14,7 @@ const Results = () => {
   
   useEffect(()=>{
     getBranchAndClass()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 const dispatch = useDispatch()
@@ -27,7 +28,7 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
 
   const [inputs, setInputs] = useState({
     classes: "10",
-    semester: "",
+    result_semester: "",
     subject_name: "",
     branch : "tangail branch", 
     allBranchClasses : [],
@@ -36,6 +37,7 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
   useEffect(() => {
       dispatch(resultAction({branch : inputs.branch, classes : inputs.classes}))
       
+   // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [inputs.branch, inputs.classes])
 
   const getBranchAndClass = async ()=>{
@@ -54,13 +56,13 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
   const branchTag = Array.from(new Set(inputs.allBranchClasses.map(({branch})=> branch)));
   const classTag = Array.from(new Set(inputs.allBranchClasses.map(({classes})=> classes)));
   const subTag =  Array.from(new Set(results.map(({subject_name})=> subject_name )))
-  const semesterTag = Array.from(new Set(results.map(({ semester }) => semester)));
+  const semesterTag = Array.from(new Set(results.map(({ result_semester }) => result_semester)));
 
     const filterd = results.filter((value) => {
     const regClasses = new RegExp(`^${inputs.classes}$`, "g")
     if(value.branch.toLowerCase().includes(inputs.branch.toLowerCase()) && 
        value.classes.toString().match(regClasses) &&
-       value.semester.toString().includes(inputs.semester)){
+       value.result_semester.toString().includes(inputs.result_semester)){
         if(value.subject_name.toLowerCase().includes(inputs.subject_name.toLowerCase())){
           return value
         }
@@ -72,7 +74,7 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
     <div className="relative">
      { isLoading && <Loading />}
      { error && <DataError message={error} />}
-      <h2 class="text-xl p-2 bg-gray-600 tracking-widest rounded-lg my-1 text-white">
+      <h2 className="text-xl p-2 bg-gray-600 tracking-widest rounded-lg my-1 text-white">
         All Result
       </h2>
       {/* counter card component */}
@@ -109,7 +111,7 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
 
         </select>
         <select
-          onChange={(e)=>setInputs({...inputs, semester : e.target.value})}
+          onChange={(e)=>setInputs({...inputs, result_semester : e.target.value})}
           className="w-full p-1 mx-4 bg-transparent outline-none"
           name=""
           id=""
@@ -172,7 +174,7 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
                     name,
                     student_id,
                     teacher_id,
-                    semester,
+                    result_semester,
                     classes,
                     subject_name,
                     subject_result,
@@ -183,6 +185,7 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
                       className={` ${index % 2 === 0 &&'bg-gray-300'} ${subject_result < 33 && 'bg-red-700 text-white hover:bg-red-500'} bg-white border-b hover:bg-red-100`}
                     >
                       <th
+                        key={index}
                         scope="row"
                         className="py-2 px-3 font-medium whitespace-nowrap dark:text-white"
                       >
@@ -191,7 +194,7 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
                       <td className="py-2 px-3">{student_id}</td>
                       <td className="py-2 px-3">{teacher_id}</td>
                       <td className="py-2 px-3">{classes}</td>
-                      <td className="py-2 px-3">{semester}</td>
+                      <td className="py-2 px-3">{result_semester}</td>
                       <td className="py-2 px-3">{subject_name}</td>
                       <td className="py-2 px-3">{subject_result}</td>
                       <td className="py-2 px-3">{subject_ranking}</td>

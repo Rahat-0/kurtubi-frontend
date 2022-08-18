@@ -7,7 +7,7 @@ const NavView = ({ data1, data2, data3, heading1, heading2, heading3 }) => {
   return (
     <div className=" index bg-gray-50  ">
       <div className="p-6 flex justify-between transform transition-all">
-        <div className={!data1 && "hidden "}>
+        <div className={!data1 ? "hidden " : ""}>
           <ul className="space-y-2">
             <li>
               <a href="##" className="font-bold text-blue-300 text-lg">
@@ -16,7 +16,7 @@ const NavView = ({ data1, data2, data3, heading1, heading2, heading3 }) => {
             </li>
 
             {data1 &&
-              data1.map(({ title, href }) => (
+              data1.map(({ title, href }, index) => (
                 <li key={title}>
                   <a href={href} className="hover:underline">
                     {title}
@@ -26,7 +26,7 @@ const NavView = ({ data1, data2, data3, heading1, heading2, heading3 }) => {
           </ul>
         </div>
         <hr />
-        <div className={!data2 && "hidden"}>
+        <div className={!data2 ? "hidden" : ""}>
           <ul className="space-y-2 border-l pl-7">
             <li>
               <a href="##" className="font-bold text-blue-300 text-lg">
@@ -34,8 +34,8 @@ const NavView = ({ data1, data2, data3, heading1, heading2, heading3 }) => {
               </a>
             </li>
             {data2 &&
-              data2.map(({ title, href }) => (
-                <li>
+              data2.map(({ title, href }, index) => (
+                <li key={index}>
                   <a href={href} className="hover:underline">
                     {title}
                   </a>
@@ -44,7 +44,7 @@ const NavView = ({ data1, data2, data3, heading1, heading2, heading3 }) => {
           </ul>
         </div>
         <hr />
-        <div className={!data3 && "hidden"}>
+        <div className={!data3 ? "hidden" : ""}>
           <ul className="space-y-2 border-l pl-7">
             <li>
               <a href="##" className="font-bold text-blue-300 text-lg">
@@ -52,8 +52,8 @@ const NavView = ({ data1, data2, data3, heading1, heading2, heading3 }) => {
               </a>
             </li>
             {data3 &&
-              data3.map(({ title, href }) => (
-                <li>
+              data3.map(({ title, href }, index) => (
+                <li key={index}>
                   <a href={href} className="hover:underline">
                     {title}
                   </a>
