@@ -164,7 +164,7 @@ const cardLogo = {
       {/* user filter section start from here  */}
       <div className=" overflow-x-auto relative shadow-md sm:rounded-lg">
         {/* user branch section  */}
-        <div className="hidden sm:flex justify-between items-center pb-4">
+        <div className="border rounded-t-lg flex flex-col sm:flex-row text-center justify-center sm:justify-around items-center py-4">
           <div>
             <select
               onChange={branchHanlder}
@@ -181,7 +181,7 @@ const cardLogo = {
               ))}
             </select>
           </div>
-          <button onClick={handlePrint}>print</button>
+          <button className="text-red-900 font-bold p-1" onClick={handlePrint}>PRINT</button>
           {/* user search section  */}
           <label htmlFor="table-search" className="sr-only">
             Search
@@ -305,9 +305,8 @@ const cardLogo = {
                     key={student_id}
                     className={` ${isblock ? 'bg-red-400 text-white hover:text-white hover:bg-red-600' : 'hover:text-gray-900 bg-white'} border-b hover:bg-gray-100 ` }
                   >
-                    <th
+                    <td
                       onClick={()=> setSingleUser(studentInfo)}
-                      scope="row"
                       className="py-4 flex items-center gap-3 px-6 cursor-pointer font-medium whitespace-nowrap dark:text-white"
                     >
                       <img
@@ -317,7 +316,7 @@ const cardLogo = {
                         alt={image}
                       />
                       <p> {name} </p>
-                    </th>
+                    </td>
                     <td className="py-4 px-6"> {student_id} </td>
                     <td className="py-4 px-6">{classes}</td>
                     <td className="hidden lg:table-cell py-4 px-6">{gender}</td>
@@ -378,10 +377,10 @@ const cardLogo = {
 
       {/* <!-- mobile phone div component --> */}
       <div className=" sm:hidden bg-red-200 text-center rounded-xl p-3">
-        <h4 className="text-red-900 text-3xl ">
+        <h4 className="text-red-900 text-lg ">
           Please use laptop/ipad/tab to view information!!
         </h4>
-        <p className="text-red-900 text-xl">
+        <p className="text-red-900 text-sm">
           Unable to view data due to small screen!!!
         </p>
       </div>

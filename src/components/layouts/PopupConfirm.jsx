@@ -22,7 +22,7 @@ function PopUpConfirm(props) {
   }
   return (
      <div  className="text-center flex justify-center items-center opacity-90 z-50" >
-          <form onSubmit={submitHandler} className={`${show ? 'scale-100' : 'scale-0'} transform transition-all  fixed bg-gray-300 shadow-2xl top-1/3 rounded-2xl`}>
+          <form onSubmit={submitHandler} className={`${show ? 'scale-100' : 'scale-0'} transform transition-all  fixed bg-gray-300 shadow-2xl top-1/3  rounded-2xl`}>
             <div className="  w-96 min:h-56 flex justify-center items-center">
               <div className="font-bold">
                 <p className="mt-20 px-2">

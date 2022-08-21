@@ -30,7 +30,6 @@ const Setting = () => {
       }
     })
     .catch((error)=>  toast.error(error.message, {position : 'bottom-left'}))
-    console.log('updated!');
   }
 
   const PopupData = {

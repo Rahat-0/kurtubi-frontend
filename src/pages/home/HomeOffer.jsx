@@ -5,54 +5,54 @@ const HomeOffer = () => {
     <div><div className="lg:flex">
         
     <div className="h-full mx-5 md:mx-14">
-        <h2 className="font-bold py-5 text-4xl">What we offer</h2>
-        <p className="text-xl"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa, neque. Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
+        <h2 className="font-bold py-5 text-3xl">What we offer</h2>
+        <p className="text-lg"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa, neque. Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2  object-cover ">
             <div data-aos="fade-up" className=" md:m-2 p-2 flex align-top">
                 <img className="rounded-full w-16 h-16 mr-2" src="https://cdn.dribbble.com/users/24078/screenshots/15522433/media/e92e58ec9d338a234945ae3d3ffd5be3.jpg?compress=1&resize=400x300" alt="a" />
                 <div className=" max-w-2xl">
-                    <h3 className="text-xl font-bold">title</h3>
-                    <p className="text-lg text leading-8">   sit amet consectetur adipisicing elit. Quam ex sapiente consectetur at aliquid obcaecati similique quasi porro dicta adipisci! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, soluta.</p>
+                    <h3 className="text-lg font-bold">title</h3>
+                    <p className="t text leading-8">   sit amet consectetur adipisicing elit. Quam ex sapiente consectetur at aliquid obcaecati similique quasi porro dicta adipisci! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, soluta.</p>
                 </div>
              </div>
 
              <div data-aos="fade-up" className=" md:m-2 p-2 flex align-top">
                 <img className="rounded-full w-16 h-16 mr-2" src="https://cdn.dribbble.com/users/24078/screenshots/15522433/media/e92e58ec9d338a234945ae3d3ffd5be3.jpg?compress=1&resize=400x300" alt="a" />
                 <div className=" max-w-2xl">
-                    <h3 className="text-xl font-bold">title</h3>
-                    <p className="text-lg text leading-8">   sit amet consectetur adipisicing elit. Quam ex sapiente consectetur at aliquid obcaecati similique quasi porro dicta adipisci! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, soluta.</p>
+                    <h3 className="text-lg font-bold">title</h3>
+                    <p className=" text leading-8">   sit amet consectetur adipisicing elit. Quam ex sapiente consectetur at aliquid obcaecati similique quasi porro dicta adipisci! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, soluta.</p>
                 </div>
              </div>
 
              <div data-aos="fade-up" className=" md:m-2 p-2 flex align-top">
                 <img className="rounded-full w-16 h-16 mr-2" src="https://cdn.dribbble.com/users/24078/screenshots/15522433/media/e92e58ec9d338a234945ae3d3ffd5be3.jpg?compress=1&resize=400x300" alt="a" />
                 <div className=" max-w-2xl">
-                    <h3 className="text-xl font-bold">title</h3>
-                    <p className="text-lg text leading-8">   sit amet consectetur adipisicing elit. Quam ex sapiente consectetur at aliquid obcaecati similique quasi porro dicta adipisci! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, soluta.</p>
+                    <h3 className="text-lg font-bold">title</h3>
+                    <p className=" text leading-8">   sit amet consectetur adipisicing elit. Quam ex sapiente consectetur at aliquid obcaecati similique quasi porro dicta adipisci! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, soluta.</p>
                 </div>
              </div>
 
              <div data-aos="fade-up" className=" md:m-2 p-2 flex align-top">
                 <img className="rounded-full w-16 h-16 mr-2" src="https://cdn.dribbble.com/users/24078/screenshots/15522433/media/e92e58ec9d338a234945ae3d3ffd5be3.jpg?compress=1&resize=400x300" alt="a" />
                 <div className=" max-w-2xl">
-                    <h3 className="text-xl font-bold">title</h3>
-                    <p className="text-lg text leading-8">   sit amet consectetur adipisicing elit. Quam ex sapiente consectetur at aliquid obcaecati similique quasi porro dicta adipisci! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, soluta.</p>
+                    <h3 className="text-lg font-bold">title</h3>
+                    <p className=" text leading-8">   sit amet consectetur adipisicing elit. Quam ex sapiente consectetur at aliquid obcaecati similique quasi porro dicta adipisci! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, soluta.</p>
                 </div>
              </div>
 
              <div data-aos="fade-up" className=" md:m-2 p-2 flex align-top">
                 <img className="rounded-full w-16 h-16 mr-2" src="https://cdn.dribbble.com/users/24078/screenshots/15522433/media/e92e58ec9d338a234945ae3d3ffd5be3.jpg?compress=1&resize=400x300" alt="a" />
                 <div className=" max-w-2xl">
-                    <h3 className="text-xl font-bold">title</h3>
-                    <p className="text-lg text leading-8">   sit amet consectetur adipisicing elit. Quam ex sapiente consectetur at aliquid obcaecati similique quasi porro dicta adipisci! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, soluta.</p>
+                    <h3 className="text-lg font-bold">title</h3>
+                    <p className=" text leading-8">   sit amet consectetur adipisicing elit. Quam ex sapiente consectetur at aliquid obcaecati similique quasi porro dicta adipisci! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, soluta.</p>
                 </div>
              </div>
 
              <div data-aos="fade-up" className=" md:m-2 p-2 flex align-top">
                 <img className="rounded-full w-16 h-16 mr-2" src="https://cdn.dribbble.com/users/24078/screenshots/15522433/media/e92e58ec9d338a234945ae3d3ffd5be3.jpg?compress=1&resize=400x300" alt="a" />
                 <div className=" max-w-2xl">
-                    <h3 className="text-xl font-bold">title</h3>
-                    <p className="text-lg text leading-8">   sit amet consectetur adipisicing elit. Quam ex sapiente consectetur at aliquid obcaecati similique quasi porro dicta adipisci! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, soluta.</p>
+                    <h3 className="text-lg font-bold">title</h3>
+                    <p className=" text leading-8">   sit amet consectetur adipisicing elit. Quam ex sapiente consectetur at aliquid obcaecati similique quasi porro dicta adipisci! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, soluta.</p>
                 </div>
              </div>
         </div>

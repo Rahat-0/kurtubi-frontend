@@ -6,10 +6,11 @@ import List from "../layouts/List";
 import { useState } from "react";
 import rootapi from "../../rootAPI";
 import { userData } from "../../features/fetching/getFetchUser";
+import { useSelector } from "react-redux";
 
 const StudentList = () => {
   const dispatch = useDispatch()
-  
+  const {refresh} = useSelector((state)=> state.refresh)
   const [branch, setBranch] = useState('tangail branch')
   const [data, setData] = useState({
     branch : [{branch : 'tangail branch'}],  
@@ -25,7 +26,7 @@ const StudentList = () => {
       countAndBranch()
       
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [branch, dispatch])
+  }, [branch, dispatch, refresh ])
 
   const countAndBranch = async ()=>{
     const res1 = await axios.get(`${rootapi}/api/student/branch`)

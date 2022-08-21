@@ -22,8 +22,8 @@ const HomeKurtubi = () => {
                     
                 </div>
                 <div data-aos="fade-down" className="md:w-full md:h-full">
-                    <h2 className=" text-4xl font-bold my-7">Kurtubi Madrasah</h2>
-                    <p className=" text-xl text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum,
+                    <h2 className=" text-3xl font-bold my-7">Kurtubi Madrasah</h2>
+                    <p className="text-lg text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum,
                         numquam? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore repudiandae tempore
                         doloribus aliquam deleniti maxime voluptatem fugiat dolorem temporibus illo? Lorem ipsum dolor
                         sit amet consectetur adipisicing elit. Ad, exercitationem! Lorem ipsum dolor sit amet
@@ -40,7 +40,7 @@ const HomeKurtubi = () => {
                             {number.to((value)=> value.toFixed())}
                         </animated.div>
                     </div>
-                    <p className="text-xl">Students</p>
+                    <p className="text-lg">Students</p>
                 </div>
                 <div data-aos="zoom-in" className="m-14">
                     <div className="font-bold text-5xl py-4">
@@ -48,7 +48,7 @@ const HomeKurtubi = () => {
                             {number.to((value)=> value.toFixed())}
                         </animated.div>
                     </div>
-                    <p className="text-xl">Teachers</p>
+                    <p className="text-lg">Teachers</p>
                 </div>
                 <div data-aos="zoom-in" className="m-14">
                     <div className="font-bold text-5xl py-4">
@@ -56,13 +56,13 @@ const HomeKurtubi = () => {
                             {number.to((value)=> value.toFixed())}
                         </animated.div>
                     </div>
-                    <p className="text-xl">Staff</p>
+                    <p className="text-lg">Staff</p>
                 </div>
 
             </div>
 
             <div className="text-center">
-                <button className="text-xl bg-blue-900 rounded border hover:border-yellow-300  p-2 hover:bg-transparent">visit our
+                <button className="text-lg bg-blue-900 rounded border hover:border-yellow-300  p-2 hover:bg-transparent">visit our
                     campus</button>
             </div>
         </div>

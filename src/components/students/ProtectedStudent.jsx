@@ -14,7 +14,6 @@ const ProtectedStudent = () => {
   const handleAuth =()=>{
     const check =  TokenHandler()
     check.then(({error})=>{
-      console.log(error);
       if(error){
         Cookies.remove('accesstoken')
         Cookies.remove('refreshtoken')
