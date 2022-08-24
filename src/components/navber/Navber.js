@@ -60,7 +60,7 @@ const Navber = () => {
       <PopUpConfirm state = {[0,0]} data = {PopupData} />
         <div className="container flex flex-wrap justify-between items-center mx-auto">
           <a href="/" className="flex items-center">
-            <img src={logo} className="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
+            <img src={logo} className="mr-3 h-6 sm:h-9" alt="kcm" />
             <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
               Kurtubi
             </span>
@@ -86,7 +86,7 @@ const Navber = () => {
                     <img
                       className="h-8 w-8 rounded-full "
                       src={logo}
-                      alt=""
+                      alt="kcm"
                     />
                   </div>
                 </div>

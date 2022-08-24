@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { ToastContainer } from "react-toastify";
 import Setting from "./Setting";
 import Profile from "./Profile";
 import Result from "./Result";
@@ -12,7 +11,7 @@ import axios from "axios";
 import tokenHandler from "../utils/tokenHandler";
 import { doRefresh } from "../../features/RefreshSlice";
 import { useNavigate } from "react-router-dom";
-
+import Cookies from "js-cookie";
 
 function UserProfile() {
 
@@ -41,7 +40,6 @@ function UserProfile() {
     const check = tokenHandler()
     check.then(async ({ student_id, teacher_id, token, error }) => {
       if (error) {
-        dispatch(doRefresh())
         navigate('/login')
         return
       }
@@ -58,7 +56,9 @@ function UserProfile() {
       dispatch(doRefresh())
     })
       .catch((er) => {
-        console.log(er)
+        Cookies.remove('accesstoken')
+        Cookies.remove('refreshtoken')
+        dispatch(doRefresh())
       })
 
   }
@@ -113,8 +113,6 @@ function UserProfile() {
           {view.result && user.student_id && <Result data={result} name={`${user.first_name} ${user.last_name}`} />}
         </div>
       </div>
-      {/* // <PopUpConfirm /> */}
-      <ToastContainer />
     </div>
   );
 }

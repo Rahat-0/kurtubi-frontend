@@ -10,7 +10,8 @@ import Dashboard from "./pages/admin/Dashboard";
 import Home from "./pages/home/Home";
 import { Login } from "./components/Login";
 import ProtectedStudent from "./components/students/ProtectedStudent";
-
+import swDev from "./swDev";
+swDev()
 function App() {
 
   return (

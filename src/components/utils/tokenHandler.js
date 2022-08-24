@@ -19,12 +19,14 @@ const TokenHandler = async () => {
         }
 
         if(new Date(decode.exp * 1000) < new Date().getTime()){
+            console.log('token update');
             const res = await axios.post(`${rootapi}/api/${userType}/auth`, {data : ''}, {headers : {refreshtoken}} )
             if(res.data.success){
               Cookies.set('accesstoken', res.data.accesstoken)
-              console.log('update token')
               const updateToken = Cookies.get('accesstoken')
               return { student_id: decode.student_id, teacher_id: decode.teacher_id, token : updateToken, exp : true }
+            }else{
+                return {error : true, exp : false}
             }
           } 
 
