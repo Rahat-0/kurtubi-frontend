@@ -10,13 +10,10 @@ import DataError from "../layouts/DataError";
 import axios from "axios";
 import tokenHandler from "../utils/tokenHandler";
 import { doRefresh } from "../../features/RefreshSlice";
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 
 function UserProfile() {
 
   const dispatch = useDispatch()
-  const navigate = useNavigate()
 
   const [visible, setVisible] = useState(true)
   const [view, setview] = useState({
@@ -29,38 +26,43 @@ function UserProfile() {
 
   const { isLoading, users, error } = useSelector((state) => state.getFetchUser)
 
+
   useEffect(() => {
     if (users[0]) {
       setUser(users[0])
+      localStorage.setItem('user', JSON.stringify(users[0]))
     }
 
   }, [users])
 
   const tokenresponse = async () => {
-    const check = tokenHandler()
-    check.then(async ({ student_id, teacher_id, token, error }) => {
-      if (error) {
-        navigate('/login')
-        return
-      }
-      if (student_id) {
-        dispatch(userData({ api: `${rootapi}/api/student/single`, token: { 'accesstoken': token } }))
-        const res = await axios.get(`${rootapi}/api/student/result`, { headers: { 'accesstoken': token } })
-        if (res.data[0].student_id) {
-          setresult(res.data)
-        }
-      }
-      if (teacher_id) {
-        dispatch(userData({ api: `${rootapi}/api/teacher/single`, token: { 'accesstoken': token } }))
-      }
-      dispatch(doRefresh())
-    })
-      .catch((er) => {
-        Cookies.remove('accesstoken')
-        Cookies.remove('refreshtoken')
-        dispatch(doRefresh())
-      })
+    try {
+      const { student_id, teacher_id, token, error } = await tokenHandler()
 
+      if (error === 'Network Error') {
+        let user1 = localStorage.getItem('user')
+        let result1 = localStorage.getItem('result')
+        setUser(JSON.parse(user1))
+        setresult(JSON.parse(result1))
+      }
+      else {
+        if (student_id) {
+          dispatch(userData({ api: `${rootapi}/api/student/single`, token: { 'accesstoken': token } }))
+          const res = await axios.get(`${rootapi}/api/student/result`, { headers: { 'accesstoken': token } })
+          localStorage.setItem('result', JSON.stringify(res.data))
+          if (res.data[0].student_id) {
+            setresult(res.data)
+          }
+        }
+
+        if (teacher_id) {
+          dispatch(userData({ api: `${rootapi}/api/teacher/single`, token: { 'accesstoken': token } }))
+        }
+        dispatch(doRefresh())
+      }
+    } catch (error) {
+      dispatch(doRefresh())
+    }
   }
 
   useEffect(() => {

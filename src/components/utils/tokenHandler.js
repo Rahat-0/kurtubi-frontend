@@ -5,16 +5,18 @@ import rootapi from "../../rootAPI"
 
 
 const TokenHandler = async () => {
+
+    const accesstoken = Cookies.get('accesstoken')
+    const refreshtoken = Cookies.get('refreshtoken')
+    const freshtoken = accesstoken && accesstoken.split(' ')[1]
+    const decode = freshtoken && await jwtDecode(freshtoken)
+    
     try {
-        const accesstoken = Cookies.get('accesstoken')
-        const refreshtoken = Cookies.get('refreshtoken')
-        const freshtoken = accesstoken.split(' ')[1]
-        const decode = await jwtDecode(freshtoken)
-        const {student_id, teacher_id} = decode
-        const userType = student_id ? 'student' : teacher_id ? 'teacher' : null
+        const {student_id, teacher_id, admin_id, image} = decode
+        const userType = student_id ? 'student' : teacher_id ? 'teacher' : admin_id ? 'admin' : null
         if(new Date(decode.exp * 1000) > new Date().getTime()){
-            if (decode.student_id || decode.teacher_id) {
-                return { student_id: decode.student_id, teacher_id: decode.teacher_id, token : accesstoken, exp : true }
+            if (decode.student_id || decode.teacher_id || decode.admin_id) {
+                return { student_id: decode.student_id, teacher_id: decode.teacher_id, admin_id : decode.admin_id , token : accesstoken, image, exp : true }
             }
         }
 
@@ -24,7 +26,7 @@ const TokenHandler = async () => {
             if(res.data.success){
               Cookies.set('accesstoken', res.data.accesstoken)
               const updateToken = Cookies.get('accesstoken')
-              return { student_id: decode.student_id, teacher_id: decode.teacher_id, token : updateToken, exp : true }
+              return { student_id: decode.student_id, teacher_id: decode.teacher_id, admin_id : decode.admin_id, token : updateToken, image, exp : true }
             }else{
                 return {error : true, exp : false}
             }
@@ -33,8 +35,8 @@ const TokenHandler = async () => {
         return null 
 
     } catch (error) {
-        Cookies.remove('accesstoken')
-        return {error : error.response || true, exp : false}
+        // Cookies.remove('accesstoken')
+        return {error : error.message || true, student_id: decode && decode.student_id , admin_id : decode && decode.admin_id, teacher_id: decode && decode.teacher_id , image : decode && decode.image, exp : false}
     }
 
 }

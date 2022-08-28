@@ -1,9 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-import rootapi from '../../rootAPI'
 
-export const resultAction = createAsyncThunk('result/all', async ({branch, classes})=>{
-    const res = await axios.get(`${rootapi}/api/result/all/${branch}/${classes}`)
+export const resultAction = createAsyncThunk('result/all', async ({api, token})=>{
+    const res = await axios.get(api, {headers : token})
     return res.data.result
 })
 

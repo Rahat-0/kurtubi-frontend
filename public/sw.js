@@ -1,4 +1,4 @@
-let cacheData = 'kurtubiV1'
+const cacheData = 'kurtubiV1'
 
 this.addEventListener('install', (event) => {
    
@@ -17,7 +17,9 @@ this.addEventListener('install', (event) => {
                     '/static/js/main.d368ee87.chunk.js',
                     '/static/media/logo.1453d03c.png',
                     '/manifest.json',
-                    '/auth/user'
+                    '/favicon.ico',
+                    '/auth/user',
+                    '/login'
                 ])
             }).catch(err => console.log(err))
     )

@@ -11,53 +11,73 @@ import Cookies from "js-cookie";
 import { doRefresh } from "../../features/RefreshSlice";
 import PopUpConfirm from "../layouts/PopupConfirm";
 import "./navber.css";
+import rootapi from "../../rootAPI";
 
 
 const Navber = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { refresh } = useSelector((state) => state.refresh)
-  const check = tokenHandler()
   const [logoutConfirmShow, setLogoutConfirmShow] = useState(false)
   const [visible, setVisible] = useState({
     dropdown: false,
     user: false,
-    active: false
+    isAdmin: false,
+    active: false,
+    image: null
   })
 
+
+
   useEffect(() => {
-    check.then(({ exp, error }) => {
-      error && setVisible({ ...visible, active: false })
-      exp && setVisible({ ...visible, active: true })
-    })
-      .catch((er) => {
-        setVisible({ ...visible, active: false })
-      })
+    tokenCheck()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh])
 
+
+  const tokenCheck = async () => {
+    try {
+      const { error, exp, admin_id } = await tokenHandler()
+      console.log('working nav', error, exp);
+
+      let user = localStorage.getItem('user')
+      let image = user && JSON.parse(user).image
+
+      if (exp || (error === 'Network Error')) {
+        setVisible({ ...visible, active: true, image })
+        admin_id && setVisible({ ...visible, active: true, image, isAdmin: true })
+      }
+      if (error || !exp) {
+        return setVisible({ ...visible, active: false })
+      }
+
+    } catch (error) {
+      console.log('nav error', error);
+      setVisible({ ...visible, active: false, isAdmin: false })
+    }
+  }
+
   // user logout handler start here 
   const handleLogout = () => {
-    dispatch(doRefresh())
+    setVisible({ ...visible, active: false, isAdmin: false })
     Cookies.remove('accesstoken')
     Cookies.remove('refreshtoken')
+    dispatch(doRefresh())
     navigate('/')
   }
 
   const PopupData = {
-    message : 'Do you want to Logout now?',
-    btn : 'Logout',
-    action : handleLogout,
-    isShow : logoutConfirmShow 
+    message: 'Do you want to Logout now?',
+    btn: 'Logout',
+    action: handleLogout,
+    isShow: logoutConfirmShow
   }
-    
-
-
+  
   return (
     <div>
       <nav className="fixed w-full z-50 bg-gray-200 border-gray-200 px-2 sm:px-4 py-2.5 rounded">
-      <PopUpConfirm state = {[0,0]} data = {PopupData} />
+        <PopUpConfirm state={[0, 0]} data={PopupData} />
         <div className="container flex flex-wrap justify-between items-center mx-auto">
           <a href="/" className="flex items-center">
             <img src={logo} className="mr-3 h-6 sm:h-9" alt="kcm" />
@@ -75,69 +95,87 @@ const Navber = () => {
 
             {/* dropdown start */}
 
-            {visible.active ? 
-             <div className=" flex items-center ml-1 md:ml-3 relative">
-              <div>
-                <div
-                  onClick={() => setVisible({ ...visible, user: !visible.user })}
-                  className=" text-gray-200 cursor-pointer">
-                  <div className="bg-gray-800 flex text-sm rounded-full  focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 ">
-                    <span className="sr-only">Open user menu</span>
-                    <img
-                      className="h-8 w-8 rounded-full "
-                      src={logo}
-                      alt="kcm"
-                    />
+            {visible.active ?
+              <div className=" flex items-center ml-1 md:ml-3 relative">
+                <div>
+                  <div
+                    onClick={() => setVisible({ ...visible, user: !visible.user })}
+                    className=" text-gray-200 cursor-pointer">
+                    <div className="bg-gray-800 flex text-sm rounded-full  focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 ">
+                      <span className="sr-only">Open user menu</span>
+                      <img
+                        className="h-8 w-8 rounded-full "
+                        src={`${rootapi}/images/${visible.image}`}
+                        alt=""
+                      />
+                    </div>
+                  </div>
+
+                  <div onClick={() => setVisible({ ...visible, user: false })} className={`${visible.user ? 'translate-x-0' : 'translate-x-96'} user-option transform transition-all `}>
+                    <div className="origin-top-right absolute right-0 mt-2 w-48  rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      {visible.isAdmin ?
+                        <>
+                          <div>
+                            <Link
+                              to="/0/dashboard"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
+                            >
+                              Dashboard
+                            </Link>
+
+                          </div>
+                        </>
+                        : <>
+                          <div>
+                            <Link
+                              to="/auth/user"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
+                            >
+                              Your Profile
+                            </Link>
+
+                          </div>
+                          <div>
+
+                            <Link
+                              to="/user"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
+                            >
+                              Settings
+                            </Link>
+
+                          </div>
+                        </>}
+
+                      <div>
+
+                        <p
+                          onClick={() => setLogoutConfirmShow({ isShow: true })}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
+                        >
+                          Sign out
+                        </p>
+
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div onClick={() => setVisible({ ...visible, user: false })} className={`${visible.user ? 'translate-x-0' : 'translate-x-96'} user-option transform transition-all `}>
-                  <div className="origin-top-right absolute right-0 mt-2 w-48  rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <div>
-                      <Link
-                        to="/auth/user"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
-                      >
-                        Your Profile
-                      </Link>
-
-                    </div>
-                    <div>
-
-                      <Link
-                        to="/user"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
-                      >
-                        Settings
-                      </Link>
-
-                    </div>
-                    <div>
-
-                      <p
-                        onClick={()=>setLogoutConfirmShow({isShow : true})}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
-                      >
-                        Sign out
-                      </p>
-
-                    </div>
-                  </div>
-                </div>
               </div>
+              :
+              <Link
 
-            </div> 
-            : 
-            <Link
-              to='/login'
-              type="button"
-              className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 ml-1 md:ml-3 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-2 sm:px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              LOGIN
-            </Link>}
+                onDoubleClick={() => navigate('/admin')}
+                to='/login'
+                type="button"
+                className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 ml-1 md:ml-3 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-2 sm:px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                LOGIN
+              </Link>}
 
             {/* dropdown end */}
 
+            {/* mobile toggle button start from here  */}
             <button
               data-collapse-toggle="mobile-menu-4"
               type="button"
@@ -173,11 +211,10 @@ const Navber = () => {
                 ></path>
               </svg>
             </button>
+            {/* mobile toggle button end here  */}
           </div>
-          
-          <div
 
-            className={`  ${!visible.dropdown && '-mt-96'} md:mt-0 transform transition-all justify-between items-center w-full md:flex md:w-auto md:order-1`}
+          <div className={`  ${!visible.dropdown && '-mt-96'} md:mt-0 transform transition-all justify-between items-center w-full md:flex md:w-auto md:order-1`}
             id="mobile-menu-4"
           >
             <ul onClick={() => setVisible({ ...visible, dropdown: false })} className=" md:flex flex-col relative mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">

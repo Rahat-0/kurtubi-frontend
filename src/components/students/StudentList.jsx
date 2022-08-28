@@ -7,7 +7,8 @@ import { useState } from "react";
 import rootapi from "../../rootAPI";
 import { userData } from "../../features/fetching/getFetchUser";
 import { useSelector } from "react-redux";
-
+import TokenHandler from "../utils/tokenHandler";
+import { doRefresh } from "../../features/RefreshSlice";
 const StudentList = () => {
   const dispatch = useDispatch()
   const {refresh} = useSelector((state)=> state.refresh)
@@ -21,8 +22,14 @@ const StudentList = () => {
     }]
   })
 
+  const studentData = async ()=>{
+    const {token, exp} = await TokenHandler()
+    dispatch(userData({api : `${rootapi}/api/student/all/${branch}`, token: { 'accesstoken': token }}))
+    !exp && dispatch(doRefresh())
+  }
+
   useEffect(() => {
-      dispatch(userData({api : `${rootapi}/api/student/all/${branch}`}))
+      studentData()
       countAndBranch()
       
   // eslint-disable-next-line react-hooks/exhaustive-deps

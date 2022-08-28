@@ -1,11 +1,13 @@
 import Cookies from 'js-cookie'
-import React, { useEffect } from 'react'
+import React, {useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import { Outlet, useNavigate } from 'react-router-dom'
 import TokenHandler from '../utils/tokenHandler'
-const ProtectedStudent = () => {
+import Navber from './Navber'
 
-  const navigate = useNavigate()
+const Admin = () => {
+    
+    const navigate = useNavigate()
   const { refresh } = useSelector((state) => state.refresh)
   useEffect(() => {
     handleAuth()
@@ -14,28 +16,36 @@ const ProtectedStudent = () => {
 
   const handleAuth = async () => {
     try {
-      const { error } = await TokenHandler()
-      if (error && !(error === 'Network Error')) {
+      const { admin_id, error, exp } = await TokenHandler()
+      if (!admin_id && !(error === 'Network Error')) {
+        Cookies.remove('accesstoken')
+        Cookies.remove('refreshtoken')
+        return navigate('/login')
+      }
+      if(!exp){
         Cookies.remove('accesstoken')
         Cookies.remove('refreshtoken')
         return navigate('/login')
       }
 
     } catch (error) {
+        console.log('except', error);
       Cookies.remove('accesstoken')
       Cookies.remove('refreshtoken')
       localStorage.removeItem('user')
       localStorage.removeItem('result')
       return navigate('/login')
-
     }
   }
 
-
-  return (
-    <div ><Outlet /> </div>
-  )
-
+    return (
+        <div>
+            <Navber />
+            <div className="md:ml-72 bg-gray-40 p-3">
+                <Outlet />
+            </div> 
+        </div>
+    )
 }
 
-export default ProtectedStudent
+export default Admin

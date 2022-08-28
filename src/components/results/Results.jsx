@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../layouts/Loading";
 import DataError from "../layouts/DataError";
 import rootapi from "../../rootAPI";
+import TokenHandler from "../utils/tokenHandler";
 
 const Results = () => {
   
@@ -34,9 +35,15 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
     allBranchClasses : [],
     
   });
+
+  const resultData = async ()=>{
+    const {token} = await TokenHandler()
+    dispatch(resultAction({api :`${rootapi}/api/result/all/${inputs.branch}/${inputs.classes}`, token : {'accesstoken' : token} }))
+  }
+
   useEffect(() => {
-      dispatch(resultAction({branch : inputs.branch, classes : inputs.classes}))
-      
+    resultData()
+
    // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [inputs.branch, inputs.classes])
 

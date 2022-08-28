@@ -5,15 +5,16 @@ import { useDispatch } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import { doRefresh } from '../../features/RefreshSlice';
 import rootapi from '../../rootAPI';
+import TokenHandler from '../utils/tokenHandler';
 import PopUpConfirm from './PopupConfirm';
 
 const PopupUser = (props) => {
   const dispatch = useDispatch()
-  
+
   const [toggle, setToggle] = useState(false)
   const [popToggle, setpopToggle] = useState({
-    block : false,
-    passreset : false
+    block: false,
+    passreset: false
   })
   const [singleUser, setSingleUser] = props.state
   const { branch, classes, dob, email, gender, image, isblock, name, phone, roll, student_id, time,
@@ -21,42 +22,61 @@ const PopupUser = (props) => {
 
   const blockUnblockToggle = isblock === 0 ? 'Block' : 'Unblock'
 
-  const blockHandler = async()=>{
-     const payload = student_id ? {student_id, block : isblock === 0 ? 1 : 0} : {teacher_id, block : isblock === 0 ? 1 : 0}
+  // teacher block handling function start from here
+  const blockHandler = async () => {
+    const payload = student_id ? { student_id, block: isblock === 0 ? 1 : 0 } : { teacher_id, block: isblock === 0 ? 1 : 0 }
     const user = teacher_id ? 'teacher' : 'student'
-    const res = await  axios.post(`${rootapi}/api/${user}/block`, payload)
-    if(res.data.changedRows === 1){
+    try {
+      const { token } = await TokenHandler()
+      const res = await axios.post(`${rootapi}/api/${user}/block`, payload, { headers: { 'accesstoken': token } })
+      if (res.data.changedRows === 1) {
         setSingleUser(false)
         dispatch(doRefresh())
-    }else{
-      toast.error(res.data.error || 'block request failed!', {position : 'top-center'})
-    }
+      } else {
+        toast.error(res.data.error || 'block request failed!', { position: 'top-center' })
+      }
+
+    } catch (error) {
+      console.log(error.response.data.error);
+      toast.error('block request failed!', { position: 'top-center' })
     }
 
-    const passResetHandler = async ()=>{
-      const payload = student_id ? {student_id} : {teacher_id}
-    const user = teacher_id ? 'teacher' : 'student'
-    const res = await  axios.put(`${rootapi}/api/${user}/reset`, payload)
-    if(res.data.affectedRows === 1){
-      toast.success('password reseted!', {position : 'top-center'})
-    }else{
-      toast.error(res.data.error || 'password reset request failed!', {position : 'top-center'})
-    }
-    }
-
-
-  const blockPopupData = {
-    message : `do you want to ${blockUnblockToggle} this account ?`,
-    btn : blockUnblockToggle,
-    action : blockHandler,
-    isShow : popToggle.block
   }
 
+  // teacher password reset handling function start from here
+  const passResetHandler = async () => {
+    try {
+      const { token } = await TokenHandler()
+      const payload = student_id ? { student_id } : { teacher_id }
+      const user = teacher_id ? 'teacher' : 'student'
+      const res = await axios.put(`${rootapi}/api/${user}/reset`, payload, { headers: { 'accesstoken': token } })
+      if (res.data.affectedRows === 1) {
+        toast.success('password reseted!', { position: 'top-center' })
+      } else {
+        toast.error(res.data.error || 'password reset request failed!', { position: 'top-center' })
+      }
+
+    } catch (error) {
+      console.log(error.response.data.error);
+      toast.error('reset request failed!', { position: 'top-center' })
+    }
+
+  }
+
+  // block popup option define for popupConfirm component
+  const blockPopupData = {
+    message: `do you want to ${blockUnblockToggle} this account ?`,
+    btn: blockUnblockToggle,
+    action: blockHandler,
+    isShow: popToggle.block
+  }
+
+  // password reset popup options define for popupConfirm component
   const resetPasswordPopupData = {
-    message : `reset password for this account ?`,
-    btn : 'Reset',
-    action : passResetHandler,
-    isShow : popToggle.passreset
+    message: `reset password for this account ?`,
+    btn: 'Reset',
+    action: passResetHandler,
+    isShow: popToggle.passreset
   }
 
   return (
@@ -181,17 +201,17 @@ const PopupUser = (props) => {
           </table>}
 
         {toggle && <div className='grid md:grid-cols-3 text-center'>
-          <a  href='#t' onClick={() => setpopToggle({block : {show : true}})} className='rounded px-1 my-1 p-1 bg-pink-700 hover:border-gray-400 border-2 text-white'>{blockUnblockToggle}</a>
-          <a  href='#t' className='rounded px-1 my-1 p-1 bg-indigo-700 hover:border-gray-400 border-2 text-white'>Edit</a>
-          <a  href='#t' onClick={() => setpopToggle({passreset : {show : true}})} className='rounded px-1 my-1 p-1 bg-red-700 hover:border-gray-400 border-2 text-white'>Reset Password</a>
+          <a href='#t' onClick={() => setpopToggle({ block: { show: true } })} className='rounded px-1 my-1 p-1 bg-pink-700 hover:border-gray-400 border-2 text-white'>{blockUnblockToggle}</a>
+          <a href='#t' className='rounded px-1 my-1 p-1 bg-indigo-700 hover:border-gray-400 border-2 text-white'>Edit</a>
+          <a href='#t' onClick={() => setpopToggle({ passreset: { show: true } })} className='rounded px-1 my-1 p-1 bg-red-700 hover:border-gray-400 border-2 text-white'>Reset Password</a>
         </div>}
 
         <button onClick={() => setToggle(!toggle)} className="bg-red-300 block w-full scroll-smooth rounded my-2 text-gray-800 border">{toggle ? 'Hide Advance' : 'Show Advance'}</button>
       </div>
 
-            <PopUpConfirm  state={[0, 0]} data = {blockPopupData} />
-            <PopUpConfirm  state={[0, 0]} data = {resetPasswordPopupData} />
-            <ToastContainer />
+      <PopUpConfirm state={[0, 0]} data={blockPopupData} />
+      <PopUpConfirm state={[0, 0]} data={resetPasswordPopupData} />
+      <ToastContainer />
     </div>
 
 

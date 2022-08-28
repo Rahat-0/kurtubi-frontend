@@ -4,6 +4,8 @@ import List from '../layouts/List'
 import { useDispatch, useSelector } from 'react-redux'
 import rootapi  from '../../rootAPI'
 import { userData } from '../../features/fetching/getFetchUser'
+import TokenHandler from '../utils/tokenHandler'
+import { doRefresh } from '../../features/RefreshSlice'
 
 const TeachersList = () => {
 const dispatch = useDispatch()
@@ -18,10 +20,15 @@ const [data, setData] = useState({
     }]
   })
 
-  useEffect(() => {
+  const teacherData = async ()=>{
+    const {token, exp} = await TokenHandler()
+    dispatch(userData({api : `${rootapi}/api/teacher/all/${branch}`, token: { 'accesstoken': token }}))
+    !exp && dispatch(doRefresh())
+  }
 
-      dispatch(userData({api : `${rootapi}/api/teacher/all/${branch}` }))
-      countAndBranch()
+  useEffect(() => {
+    teacherData()
+    countAndBranch()
     
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [branch, refresh])

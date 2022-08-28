@@ -54,7 +54,7 @@ export const Login = () => {
     .catch((err)=>{
         console.log('error here');
         setData({...data, isLoading : false})
-        toast.error('error accoured!', {position : 'bottom-left', autoClose : false})
+        toast.error(err.message || 'error accoured!', {position : 'bottom-left', autoClose : false})
     })  
     }
 
