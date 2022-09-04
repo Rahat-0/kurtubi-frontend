@@ -25,7 +25,9 @@ function UserProfile() {
   const [result, setresult] = useState([])
 
   const { isLoading, users, error } = useSelector((state) => state.getFetchUser)
+  const { language } = useSelector((state) => state.language)
 
+  const changelg = (language.language === 'EN') || false
 
   useEffect(() => {
     if (users[0]) {
@@ -79,7 +81,7 @@ function UserProfile() {
         <div className={`${visible ? 'left-0' : '-left-72'}  md:left-0  transform transition-all bg-gray-200 w-72 fixed z-40 lg:overflow-scroll  h-screen `}>
 
           <button onClick={() => setVisible(!visible)} className='bg-red-900 absolute md:hidden w-3 h-14 rounded-r-3xl border-2 -right-2 top-0'></button>
-          <h3 className="font-bold text-4xl py-3">Settings</h3>
+          <h3 className="font-bold text-4xl py-3">{changelg ? 'সেটিংস' : 'Settings'}</h3>
           <ul onClick={() => setVisible(false)}>
             <li
               className={`${view.profile && "bg-red-300 text-white"
@@ -87,21 +89,21 @@ function UserProfile() {
               onClick={() => setview({ profile: true })}
             >
               {" "}
-              Public profile
+             { changelg ? 'পাবলিক প্রফাইল' : ' Public profile'}
             </li>
             <li
               className={`${view.setting && "bg-red-300 text-white"
                 } p-2 bg-gray-100 my-2 rounded-lg hover:bg-red-400 cursor-pointer`}
               onClick={() => setview({ setting: true })}
             >
-              Account settings
+              { changelg ? 'একাউন্ট সেটিংস' : 'Account settings'}
             </li>
             {user.student_id && <li
               className={`${view.result && "bg-red-300 text-white"
                 } p-2 bg-gray-100 my-2 rounded-lg hover:bg-red-400 cursor-pointer`}
               onClick={() => setview({ result: true })}
             >
-              Results
+              {changelg ? 'রেজাল্টস' : 'Results'}
             </li>}
           </ul>
         </div>

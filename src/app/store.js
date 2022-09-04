@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit"
 import getFetchReducer from "../features/fetching/getFetchUser";
 import postFetchReducer from "../features/fetching/postFetch";
+import languageReducer from "../features/language/languageSlice";
 import RefreshReducer from "../features/RefreshSlice";
 import resultReducer from "../features/result/resultSlice";
 
@@ -9,7 +10,8 @@ const store = configureStore({
         result : resultReducer,
         getFetchUser : getFetchReducer,
         postFetch : postFetchReducer, 
-        refresh : RefreshReducer
+        refresh : RefreshReducer,
+        language : languageReducer
     }
 })
 

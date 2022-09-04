@@ -9,6 +9,7 @@ import Loading from "./Loading";
 import DataError from "./DataError";
 import PopupUser from "./PopupUser";
 import rootapi from "../../rootAPI";
+import PopUpUserMutation from "./PopUpUserMutation";
 
 const List = (props) => {
   const { allBranch, counts } = props
@@ -34,6 +35,7 @@ const List = (props) => {
     branch: branch[0] || "",
   });
   const [singleUser, setSingleUser] = useState(false)
+  const [addUser, setaddUser] = useState(false)
 
   // student filter handler
   const Stufiltered =
@@ -96,7 +98,8 @@ const cardLogo = {
      { isLoading && <Loading /> }
 
      { error && <DataError message={error} />}
-     <PopupUser data = {singleUser} state = {[singleUser, setSingleUser]} />
+      <PopupUser data = {singleUser} state = {[singleUser, setSingleUser]} />
+      <PopUpUserMutation data = {addUser} state = {[addUser, setaddUser]} />
 
       {/* <!-- here is the main div --> */}
       <h2 className="text-xl p-2 bg-gray-600 tracking-widest rounded-lg my-1 text-white">
@@ -182,6 +185,7 @@ const cardLogo = {
             </select>
           </div>
           <button className="text-red-900 font-bold p-1" onClick={handlePrint}>PRINT</button>
+          <button className="text-red-900 font-bold p-1" onClick={()=>setaddUser(users[0] && users[0].student_id ? {user : 'student'} : {user : 'teacher'})}>ADD</button>
           {/* user search section  */}
           <label htmlFor="table-search" className="sr-only">
             Search

@@ -12,12 +12,14 @@ import { doRefresh } from "../../features/RefreshSlice";
 import PopUpConfirm from "../layouts/PopupConfirm";
 import "./navber.css";
 import rootapi from "../../rootAPI";
-
+import { languageAction } from "../../features/language/languageSlice";
 
 const Navber = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { refresh } = useSelector((state) => state.refresh)
+  const { language } = useSelector((state) => state.language)
+  const changelg = language.language === 'EN'
   const [logoutConfirmShow, setLogoutConfirmShow] = useState(false)
   const [visible, setVisible] = useState({
     dropdown: false,
@@ -27,6 +29,20 @@ const Navber = () => {
     image: null
   })
 
+  // language localization func start from here
+  const [langu, setLangu] = useState(true)
+
+  const changeLanguageHanlder = (e) => {
+    const lang = langu ? 'EN' : 'BN'
+    localStorage.setItem('language', lang)
+    setLangu(!langu)
+  }
+
+  useEffect(() => {
+    const lang = localStorage.getItem('language')
+    dispatch(languageAction({ language: lang }))
+
+  }, [langu])
 
 
   useEffect(() => {
@@ -34,7 +50,6 @@ const Navber = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh])
-
 
   const tokenCheck = async () => {
     try {
@@ -68,12 +83,12 @@ const Navber = () => {
   }
 
   const PopupData = {
-    message: 'Do you want to Logout now?',
-    btn: 'Logout',
+    message: changelg ? 'আপনি কি এখনি লগউট করতে চান ?' : 'Do you want to Logout now?',
+    btn: changelg ? 'লগউট' : 'Logout',
     action: handleLogout,
     isShow: logoutConfirmShow
   }
-  
+
   return (
     <div>
       <nav className="fixed w-full z-50 bg-gray-200 border-gray-200 px-2 sm:px-4 py-2.5 rounded">
@@ -82,7 +97,7 @@ const Navber = () => {
           <a href="/" className="flex items-center">
             <img src={logo} className="mr-3 h-6 sm:h-9" alt="kcm" />
             <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-              Kurtubi
+              {changelg ? 'কুরতুবী' : ' Kurtubi'}
             </span>
           </a>
           <div className="flex md:order-2">
@@ -90,7 +105,7 @@ const Navber = () => {
               type="button"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 sm:px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              Apply Now
+              {changelg ? 'এপ্লাই করুন' : 'Apply Now'}
             </button>
 
             {/* dropdown start */}
@@ -120,7 +135,7 @@ const Navber = () => {
                               to="/0/dashboard"
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
                             >
-                              Dashboard
+                              {changelg ? 'ড্যাশবোর্ড' : 'Dashboard'}
                             </Link>
 
                           </div>
@@ -131,7 +146,7 @@ const Navber = () => {
                               to="/auth/user"
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
                             >
-                              Your Profile
+                              {changelg ? 'আপনার প্রফাইল' : 'Your Profile'}
                             </Link>
 
                           </div>
@@ -141,7 +156,7 @@ const Navber = () => {
                               to="/user"
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
                             >
-                              Settings
+                              {changelg ? 'সেটিংস' : 'Settings'}
                             </Link>
 
                           </div>
@@ -153,7 +168,7 @@ const Navber = () => {
                           onClick={() => setLogoutConfirmShow({ isShow: true })}
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
                         >
-                          Sign out
+                          {changelg ? 'সাইন আউট' : 'Sign out'}
                         </p>
 
                       </div>
@@ -170,7 +185,7 @@ const Navber = () => {
                 type="button"
                 className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 ml-1 md:ml-3 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-2 sm:px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                LOGIN
+                {changelg ? 'লগইন' : 'LOGIN'}
               </Link>}
 
             {/* dropdown end */}
@@ -223,7 +238,7 @@ const Navber = () => {
                   href="##"
                   className="font-bold nav-hover block py-2 pr-4 pl-3 focus:text-red-700  text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  Admission
+                  {changelg ? ' আ্যডমিশন' : 'Admission'}
                 </a>
                 <div className=" nav-hover-item hidden absolute top-4  pt-6  h-auto  bg-gray-200 shadow-md ">
                   <AdmissionNav />
@@ -235,7 +250,7 @@ const Navber = () => {
                   href="##"
                   className="font-bold nav-hover block py-2 pr-4 pl-3 focus:text-red-700  text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  Academics
+                  {changelg ? 'একাডেমিকস' : 'Academics'}
                 </a>
                 <div className=" nav-hover-item hidden absolute top-4  pt-6  h-auto  bg-gray-200 shadow-md">
                   <AcademicsNav />
@@ -246,7 +261,7 @@ const Navber = () => {
                   href="##"
                   className="font-bold nav-hover block py-2 pr-4  focus:text-red-700 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  Campus
+                  {changelg ? 'ক্যাম্পাস' : 'Campus'}
                 </a>
                 <div className=" nav-hover-item hidden absolute top-4  pt-6 h-auto  bg-gray-200 shadow-md">
                   <CampusNav />
@@ -257,11 +272,20 @@ const Navber = () => {
                   href="##"
                   className="font-bold nav-hover block py-2 pr-4  focus:text-red-700 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  About
+                  {changelg ? 'এবাউট' : 'About'}
                 </a>
                 <div className=" nav-hover-item hidden absolute top-4  pt-6  h-auto  bg-gray-200 shadow-md ">
                   <AboutNav />
                 </div>
+
+              </li>
+              <li className="nav-hover">
+                <button
+                  onClick={changeLanguageHanlder}
+                  className="font-bold w-full text-left nav-hover block py-2 pr-4  focus:text-red-700 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                >
+                  {language.language === 'EN' ? "(English)" : "(বাংলা)"}
+                </button>
 
               </li>
             </ul>
