@@ -1,0 +1,18 @@
+{
+    "EN" : {
+        "popConPlaceOld" : "Old Password",
+        "popConPlaceNew" : "New Password",
+        "popConPlaceRepeat" : "Repeat New Password",
+         "popConPassNotMatch" : "password not match!",
+         "popConCancel" : "cancel"
+
+    },
+"BN" : {
+        "popConPlaceOld" : "পুরাতন পাসওয়ার্ড",
+        "popConPlaceNew" : "নতুন পাসওয়ার্ড",
+        "popConPlaceRepeat" : "পুনরায় নতুন পাসওয়ার্ড",
+        "popConPassNotMatch" : "পাসওয়ার্ড মিলেনি!",
+        "popConCancel" : "বাদ দিন"
+
+    }
+}

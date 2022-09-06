@@ -8,7 +8,7 @@ import TeachersList from "./components/teachers/TeachersList";
 import Admin from "./components/admin/Admin";
 import Dashboard from "./components/admin/Dashboard";
 import Home from "./pages/home/Home";
-import { Login } from "./components/Login";
+import { Login } from "./components/login/Login";
 import ProtectedStudent from "./components/students/ProtectedStudent";
 import swDev from "./swDev";
 import LoginAdmin from "./components/admin/LoginAdmin";

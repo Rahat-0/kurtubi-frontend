@@ -1,0 +1,47 @@
+{
+    "EN" : {
+        "userSetting" : "Settings",
+        "userProfile" : " Public profile",
+        "userAccount" : "Account settings",
+        "userResult" : "Results",
+        
+        "results" : "Results",
+        "resultOrgLocation" : "Kurtubi madrasah, tangail.",
+        "resultWelcome" : "welcome to use Teaching Management System.",
+        "resultClass" : "Class",
+        "resultAll" : "all",
+        "resultSemester" : "semester",
+        "resultSubject" : "subject",
+        "resultScore" : "score",
+        "resultRanking" : "ranking",
+
+        "settingPopup" : "Update password!",
+        "settingProfile":"Profile Setting",
+        "settingMgTitle" : "Update password for this account",
+        "settingMgMessage" : "Unable to Login with Previous Password.",
+        "settingBtn" : "Update"
+    },
+
+    "BN" : {
+        "userSetting" : "সেটিংস",
+        "userProfile" : "পাবলিক প্রফাইল",
+        "userAccount" : "একাউন্ট সেটিংস",
+        "userResult" : "রেজাল্টস",
+
+        "results" : "রেজাল্টস",
+        "resultOrgLocation" : "কুরতুবী মাদরাসা, টাংগাইল ।",
+        "resultWelcome" : "টিচিং ম্যানেজমেন্ট সিস্টেম ব্যাবহার করার জন্য আপনাকে সাগতম!",
+        "resultClass" : "ক্লাস",
+        "resultAll" : "সব",
+        "resultSemester" : "সেমিস্টার",
+        "resultSubject" : "বিষয়",
+        "resultScore" : "নাম্বার",
+        "resultRanking" : "র‍্যাংকিং",
+
+        "settingPopup" : "পাসওয়াড পরিবতন!",
+        "settingProfile":"প্রফাইল সেটিংস",
+        "settingMgTitle" : "এই একাউন্ট এর জন্য পাসওয়াড পরিবতন করুন",
+        "settingMgMessage" : "আগের পাসওয়াড দিয়ে আর লগইন করতে পাড়বেন না।",
+        "settingBtn" : "আপডেট"
+    }
+}

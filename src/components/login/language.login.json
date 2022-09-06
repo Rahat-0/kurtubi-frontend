@@ -1,0 +1,24 @@
+{
+    "BN" : {
+        "title" : "আপনার একাউন্টে লগইন করুন",
+        "id" : "আইডি",
+        "idWarning" : "আইডি দিতে হবে!",
+        "password" : "পাসওয়াড",
+        "passWarning" : "পাসওয়াড দিতে হবে!",
+        "student" : "ছাত্র",
+        "teacher" : "শিক্ষক",
+        "login" : "লগইন",
+        "forgot" : "পাসওয়ার্ড ভুলে গেছেন?"
+    },
+    "EN" : {
+        "title" : "Login to your account",
+        "id" : "ID",
+        "idWarning" : "ID field is required!",
+        "password" : "Password",
+        "passWarning" : "Password field is required!",
+        "student" : "Student",
+        "teacher" : "teacher",
+        "login" : "Login",
+        "forgot" : "Forgot password?"
+    }
+}

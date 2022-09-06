@@ -1,0 +1,32 @@
+{
+    "EN" : {
+        "popupMsg" : "Do you want to Logout now?",
+        "popupbtn" : "Logout",
+        "logoName" : "Kurtubi",
+        "apply" : "Apply Now",
+        "dashboard" : "Dashboard",
+        "profile" : "Your Profile",
+        "settings" : "Settings",
+        "logout" : "Sign out",
+        "login" : "LOGIN",
+        "admission" : "Admission",
+        "academics" : "Academics",
+        "campus" : "Campus",
+        "about" : "About"    
+    },
+    "BN" : {
+        "popupMsg" : "আপনি কি এখনি লগউট করতে চান ?",
+        "popupbtn" : "লগউট",
+        "logoName" : "কুরতুবী",
+        "apply" : "এপ্লাই করুন",
+        "dashboard" : "ড্যাশবোর্ড",
+        "profile" : "আপনার প্রফাইল",
+        "settings" : "সেটিংস",
+        "logout" : "সাইন আউট",
+        "login" : "লগইন",
+        "admission" : "আ্যডমিশন",
+        "academics" : "একাডেমিকস",
+        "campus" : "ক্যাম্পাস",
+        "about" : "এবাউট"
+    }
+}

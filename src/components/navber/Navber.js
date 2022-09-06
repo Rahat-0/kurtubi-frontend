@@ -12,14 +12,15 @@ import { doRefresh } from "../../features/RefreshSlice";
 import PopUpConfirm from "../layouts/PopupConfirm";
 import "./navber.css";
 import rootapi from "../../rootAPI";
-import { languageAction } from "../../features/language/languageSlice";
-
+import { translateAction } from "../../features/translate/translateSlice";
+import languageNav from './language.navber.json'
 const Navber = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { refresh } = useSelector((state) => state.refresh)
-  const { language } = useSelector((state) => state.language)
-  const changelg = language.language === 'EN'
+  const { language } = useSelector((state) => state.translate.language)
+  // const changelg = language === "EN" 
+  const type = language || "EN"
   const [logoutConfirmShow, setLogoutConfirmShow] = useState(false)
   const [visible, setVisible] = useState({
     dropdown: false,
@@ -30,17 +31,17 @@ const Navber = () => {
   })
 
   // language localization func start from here
-  const [langu, setLangu] = useState(true)
+  const [langu, setLangu] = useState('')
 
   const changeLanguageHanlder = (e) => {
-    const lang = langu ? 'EN' : 'BN'
+    const lang = e.target.value
+    setLangu(lang)
     localStorage.setItem('language', lang)
-    setLangu(!langu)
   }
 
   useEffect(() => {
     const lang = localStorage.getItem('language')
-    dispatch(languageAction({ language: lang }))
+    dispatch(translateAction({ language: lang }))
 
   }, [langu])
 
@@ -54,22 +55,33 @@ const Navber = () => {
   const tokenCheck = async () => {
     try {
       const { error, exp, admin_id } = await tokenHandler()
-      console.log('working nav', error, exp);
-
       let user = localStorage.getItem('user')
       let image = user && JSON.parse(user).image
+      
+      
 
-      if (exp || (error === 'Network Error')) {
+      if (error === 'Network Error') {
+        console.log(error);
         setVisible({ ...visible, active: true, image })
         admin_id && setVisible({ ...visible, active: true, image, isAdmin: true })
+        return
       }
-      if (error || !exp) {
+      if (error && (error !== 'Network Error')) {
         return setVisible({ ...visible, active: false })
       }
 
+      if (!error && exp) {
+        setVisible({ ...visible, active: true, image })
+        admin_id && setVisible({ ...visible, active: true, image, isAdmin: true })
+      }
+
     } catch (error) {
-      console.log('nav error', error);
-      setVisible({ ...visible, active: false, isAdmin: false })
+      if (error.message === 'Network Error') {
+        console.log(error);
+        setVisible({ ...visible, active: true })
+      } else {
+        setVisible({ ...visible, active: false, isAdmin: false })
+      }
     }
   }
 
@@ -83,8 +95,8 @@ const Navber = () => {
   }
 
   const PopupData = {
-    message: changelg ? 'আপনি কি এখনি লগউট করতে চান ?' : 'Do you want to Logout now?',
-    btn: changelg ? 'লগউট' : 'Logout',
+    message: languageNav[type].popupMsg,
+    btn: languageNav[type].popupbtn,
     action: handleLogout,
     isShow: logoutConfirmShow
   }
@@ -97,7 +109,7 @@ const Navber = () => {
           <a href="/" className="flex items-center">
             <img src={logo} className="mr-3 h-6 sm:h-9" alt="kcm" />
             <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-              {changelg ? 'কুরতুবী' : ' Kurtubi'}
+              {languageNav[type].logoName}
             </span>
           </a>
           <div className="flex md:order-2">
@@ -105,7 +117,7 @@ const Navber = () => {
               type="button"
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 sm:px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              {changelg ? 'এপ্লাই করুন' : 'Apply Now'}
+              {languageNav[type].apply}
             </button>
 
             {/* dropdown start */}
@@ -135,7 +147,7 @@ const Navber = () => {
                               to="/0/dashboard"
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
                             >
-                              {changelg ? 'ড্যাশবোর্ড' : 'Dashboard'}
+                              {languageNav[type].dashboard}
                             </Link>
 
                           </div>
@@ -146,7 +158,7 @@ const Navber = () => {
                               to="/auth/user"
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
                             >
-                              {changelg ? 'আপনার প্রফাইল' : 'Your Profile'}
+                              {languageNav[type].profile}
                             </Link>
 
                           </div>
@@ -156,7 +168,7 @@ const Navber = () => {
                               to="/user"
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
                             >
-                              {changelg ? 'সেটিংস' : 'Settings'}
+                              {languageNav[type].settings}
                             </Link>
 
                           </div>
@@ -168,7 +180,7 @@ const Navber = () => {
                           onClick={() => setLogoutConfirmShow({ isShow: true })}
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
                         >
-                          {changelg ? 'সাইন আউট' : 'Sign out'}
+                          {languageNav[type].logout}
                         </p>
 
                       </div>
@@ -185,7 +197,7 @@ const Navber = () => {
                 type="button"
                 className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 ml-1 md:ml-3 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-2 sm:px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                {changelg ? 'লগইন' : 'LOGIN'}
+                {languageNav[type].login}
               </Link>}
 
             {/* dropdown end */}
@@ -232,13 +244,13 @@ const Navber = () => {
           <div className={`  ${!visible.dropdown && '-mt-96'} md:mt-0 transform transition-all justify-between items-center w-full md:flex md:w-auto md:order-1`}
             id="mobile-menu-4"
           >
-            <ul onClick={() => setVisible({ ...visible, dropdown: false })} className=" md:flex flex-col relative mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+            <ul onTouchMove={() => setVisible({ ...visible, dropdown: false })} className=" md:flex flex-col relative mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
               <li className="nav-hover ">
                 <a
                   href="##"
                   className="font-bold nav-hover block py-2 pr-4 pl-3 focus:text-red-700  text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  {changelg ? ' আ্যডমিশন' : 'Admission'}
+                  {languageNav[type].admission}
                 </a>
                 <div className=" nav-hover-item hidden absolute top-4  pt-6  h-auto  bg-gray-200 shadow-md ">
                   <AdmissionNav />
@@ -250,7 +262,7 @@ const Navber = () => {
                   href="##"
                   className="font-bold nav-hover block py-2 pr-4 pl-3 focus:text-red-700  text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  {changelg ? 'একাডেমিকস' : 'Academics'}
+                  {languageNav[type].academics}
                 </a>
                 <div className=" nav-hover-item hidden absolute top-4  pt-6  h-auto  bg-gray-200 shadow-md">
                   <AcademicsNav />
@@ -261,7 +273,7 @@ const Navber = () => {
                   href="##"
                   className="font-bold nav-hover block py-2 pr-4  focus:text-red-700 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  {changelg ? 'ক্যাম্পাস' : 'Campus'}
+                  {languageNav[type].campus}
                 </a>
                 <div className=" nav-hover-item hidden absolute top-4  pt-6 h-auto  bg-gray-200 shadow-md">
                   <CampusNav />
@@ -272,7 +284,7 @@ const Navber = () => {
                   href="##"
                   className="font-bold nav-hover block py-2 pr-4  focus:text-red-700 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  {changelg ? 'এবাউট' : 'About'}
+                  {languageNav[type].about}
                 </a>
                 <div className=" nav-hover-item hidden absolute top-4  pt-6  h-auto  bg-gray-200 shadow-md ">
                   <AboutNav />
@@ -280,12 +292,24 @@ const Navber = () => {
 
               </li>
               <li className="nav-hover">
-                <button
+                {/* <button
                   onClick={changeLanguageHanlder}
                   className="font-bold w-full text-left nav-hover block py-2 pr-4  focus:text-red-700 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  {language.language === 'EN' ? "(English)" : "(বাংলা)"}
-                </button>
+                  (English)
+                </button> */}
+
+                <select value={localStorage.getItem('language')} className="font-bold w-full text-left nav-hover bg-transparent outline-none block py-2 pr-4  focus:text-red-700 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" onChange={changeLanguageHanlder}>
+                  <option value="EN">English</option>
+                  <option value="BN" >বাংলা</option>
+                </select>
+
+                {/* <button
+                  onClick={changeLanguageHanlder}
+                  className="font-bold w-full text-left nav-hover block py-2 pr-4  focus:text-red-700 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                >
+                  (English)
+                </button> */}
 
               </li>
             </ul>

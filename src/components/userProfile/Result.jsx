@@ -1,11 +1,13 @@
 import React from 'react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux';
+import contentResult from './language.userProfile.json'
 const Result = (props) => {
     const result = props.data;
     const name = props.name;
-    const {language} = useSelector((state)=> state.language)
-    const changelg = language.language === 'EN'
+    const {language} = useSelector((state)=> state.translate.language)
+    const type = language || "EN"
+    
     const semester = Array.from(new Set(result.map(({result_semester})=> result_semester)))
     const classes = Array.from(new Set(result.map(({result_class})=> result_class)))
     const subject = Array.from(new Set(result.map(({subject_name})=> subject_name)))
@@ -27,30 +29,30 @@ const Result = (props) => {
     
   return (
     <div className=" bg-gray-300 h-10 text-sm md:text-base">
-        <h3 className="text-center md:text-left text-3xl p-2 bg-green-200 md:bg-white">{changelg ? 'রেজাল্টস' : 'Results'}</h3>
-        <p className='p-2'> { changelg ? 'কুরতুবী মাদরাসা, টাংগাইল ।' : 'Kurtubi madrasah, tangail.'} <span className='font-extrabold uppercase'>{name}</span>({result[0].student_id}), { changelg ? 'টিচিং ম্যানেজমেন্ট সিস্টেম ব্যাবহার করার জন্য আপনাকে সাগতম!' : 'welcome to use Teaching Management System.'} </p>
+        <h3 className="text-center md:text-left text-3xl p-2 bg-green-200 md:bg-white">{contentResult[type].results}</h3>
+        <p className='p-2'> {contentResult[type].resultOrgLocation} <span className='font-extrabold uppercase'>{name}</span>({result[0].student_id}), { contentResult[type].resultWelcome} </p>
 
         <div className='flex justify-evenly my-2 bg-blue-50 text-blue-900 font-bold'>
-            <label htmlFor="class">{changelg ? 'ক্লাস' : 'Class'}</label> 
+            <label htmlFor="class">{contentResult[type].resultClass}</label> 
             <select onClick={(e)=> setinputs({...inputs, classes : e.target.value })} className=' outline-none bg-transparent block' id="class">
-                <option value="">{changelg ? 'সব' : 'all'}</option>
+                <option value="">{contentResult[type].resultAll}</option>
                 {classes.map((classes, index)=>(
                     <option key={index} value={classes}> {classes} </option>
                 ))}
                 
             </select>
 
-            <label htmlFor="semester">{changelg ? 'সেমিস্টার' : 'Semester'}</label> 
+            <label htmlFor="semester">{contentResult[type].resultSemester}</label> 
             <select onClick={(e)=> setinputs({...inputs, semester : e.target.value })} className=' outline-none bg-transparent block' id="semester">
-                <option value="">{changelg ? 'সব' : 'all'}</option>
+                <option value="">{contentResult[type].resultAll}</option>
                 {semester.map((semester)=>(
                     <option key={semester} value={semester}> {semester} </option>
                 ))}
             </select>
 
-            <label htmlFor="subject">{changelg ? 'বিষয়' : 'Subject'}</label> 
+            <label htmlFor="subject">{contentResult[type].resultSubject}</label> 
             <select onClick={(e)=> setinputs({...inputs, subject : e.target.value })} className=' outline-none bg-transparent block' id="subject">
-                <option value="">{changelg ? 'সব' : 'all'}</option>
+                <option value="">{contentResult[type].resultAll}</option>
                 {subject.map((subject)=>(
                     <option key={subject} value={subject}> {subject} </option>
                 ))}
@@ -59,11 +61,11 @@ const Result = (props) => {
         <table className='w-full overflow-scroll text-center rounded bg-indigo-50 shadow-lg '>
             <thead>
                 <tr>
-                    <th>{changelg ? 'ক্লাস' : 'class'}</th>
-                    <th>{ changelg ? 'সেমিস্টার' : 'semester'}</th>
-                    <th>{ changelg ? 'বিষয়' : 'subject'}</th>
-                    <th>{ changelg ? 'নাম্বার' : 'score'}</th>
-                    <th>{ changelg ? 'র‍্যাংকিং' : 'ranking'}</th>
+                    <th>{contentResult[type].resultClass}</th>
+                    <th>{ contentResult[type].resultSemester}</th>
+                    <th>{ contentResult[type].resultSubject}</th>
+                    <th>{ contentResult[type].resultScore}</th>
+                    <th>{ contentResult[type].resultRanking}</th>
                 </tr>
             </thead>
             <tbody>
