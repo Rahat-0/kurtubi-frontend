@@ -14,14 +14,16 @@ import "./navber.css";
 import rootapi from "../../rootAPI";
 import { translateAction } from "../../features/translate/translateSlice";
 import languageNav from './language.navber.json'
+
 const Navber = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { refresh } = useSelector((state) => state.refresh)
   const { language } = useSelector((state) => state.translate.language)
-  // const changelg = language === "EN" 
-  const type = language || "EN"
+  const type = languageNav[language] ? language : "EN"
+
   const [logoutConfirmShow, setLogoutConfirmShow] = useState(false)
+  const [langu, setLangu] = useState('')
   const [visible, setVisible] = useState({
     dropdown: false,
     user: false,
@@ -31,7 +33,6 @@ const Navber = () => {
   })
 
   // language localization func start from here
-  const [langu, setLangu] = useState('')
 
   const changeLanguageHanlder = (e) => {
     const lang = e.target.value
@@ -43,6 +44,7 @@ const Navber = () => {
     const lang = localStorage.getItem('language')
     dispatch(translateAction({ language: lang }))
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [langu])
 
 
@@ -57,8 +59,8 @@ const Navber = () => {
       const { error, exp, admin_id } = await tokenHandler()
       let user = localStorage.getItem('user')
       let image = user && JSON.parse(user).image
-      
-      
+
+
 
       if (error === 'Network Error') {
         console.log(error);
@@ -106,12 +108,12 @@ const Navber = () => {
       <nav className="fixed w-full z-50 bg-gray-200 border-gray-200 px-2 sm:px-4 py-2.5 rounded">
         <PopUpConfirm state={[0, 0]} data={PopupData} />
         <div className="container flex flex-wrap justify-between items-center mx-auto">
-          <a href="/" className="flex items-center">
+          <Link to='/' className="flex items-center">
             <img src={logo} className="mr-3 h-6 sm:h-9" alt="kcm" />
             <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
               {languageNav[type].logoName}
             </span>
-          </a>
+          </Link>
           <div className="flex md:order-2">
             <button
               type="button"
@@ -244,7 +246,7 @@ const Navber = () => {
           <div className={`  ${!visible.dropdown && '-mt-96'} md:mt-0 transform transition-all justify-between items-center w-full md:flex md:w-auto md:order-1`}
             id="mobile-menu-4"
           >
-            <ul onTouchMove={() => setVisible({ ...visible, dropdown: false })} className=" md:flex flex-col relative mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+            <ul onTouchMove={() => setVisible({ ...visible, dropdown: false })} onAbort ={() => setVisible({ ...visible, dropdown: false })} className=" md:flex flex-col relative mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
               <li className="nav-hover ">
                 <a
                   href="##"
@@ -289,28 +291,12 @@ const Navber = () => {
                 <div className=" nav-hover-item hidden absolute top-4  pt-6  h-auto  bg-gray-200 shadow-md ">
                   <AboutNav />
                 </div>
-
               </li>
               <li className="nav-hover">
-                {/* <button
-                  onClick={changeLanguageHanlder}
-                  className="font-bold w-full text-left nav-hover block py-2 pr-4  focus:text-red-700 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  (English)
-                </button> */}
-
                 <select value={localStorage.getItem('language')} className="font-bold w-full text-left nav-hover bg-transparent outline-none block py-2 pr-4  focus:text-red-700 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" onChange={changeLanguageHanlder}>
                   <option value="EN">English</option>
                   <option value="BN" >বাংলা</option>
                 </select>
-
-                {/* <button
-                  onClick={changeLanguageHanlder}
-                  className="font-bold w-full text-left nav-hover block py-2 pr-4  focus:text-red-700 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  (English)
-                </button> */}
-
               </li>
             </ul>
           </div>

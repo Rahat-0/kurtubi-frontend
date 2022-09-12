@@ -7,11 +7,11 @@ import TokenHandler from '../utils/tokenHandler'
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import contentSetting from './language.userProfile.json'
+import content from './language.userProfile.json'
 const Setting = () => {
  const navigate = useNavigate()
  const {language} = useSelector((state)=> state.translate.language)
- const type = language || "EN"
+ const type = content[language] ? language : "EN"
   const check = TokenHandler()
   const [isshow, setIsshow] = useState(false)
   const [data, setdata] = useState({
@@ -37,8 +37,8 @@ const Setting = () => {
   }
 
   const PopupData = {
-    message : contentSetting[type].settingPopup,
-    btn : contentSetting[type].settingBtn,
+    message : content[type].settingPopup,
+    btn : content[type].settingBtn,
     updatePassword : true,
     action : passwordUpdateHandler,
     isShow : isshow 
@@ -47,23 +47,23 @@ const Setting = () => {
   return (
     <div className="">
             <h3 className="text-center md:text-left text-3xl p-2 bg-green-200 md:bg-white">
-              { contentSetting[type].settingProfile}
+              { content[type].settingProfile}
             </h3>
             <div className="flex flex-col justify-between  md:items-start m-2 space-y-3 border p-2 rounded shadow-lg">
               <div className="flex justify-between w-full p-2 border rounded bg-red-50 shadow">
                 <div className="px-1">
                   <h4 className="font-bold text-red-700">
-                    { contentSetting[type].settingMgTitle}
+                    { content[type].settingMgTitle}
                   </h4>
                   <p className="text-sm">
-                    { contentSetting[type].settingMgMessage}
+                    { content[type].settingMgMessage}
                   </p>
                 </div>
                 <input
                   onClick={() => setIsshow({show : true})}
                   className=" rounded px-2  bg-yellow-700 text-white font-bold hover:bg-white hover:text-black cursor-pointer border-2 border-yellow-500"
                   type="button"
-                  value={ contentSetting[type].settingBtn}
+                  value={ content[type].settingBtn}
                 />
               </div>
             </div>

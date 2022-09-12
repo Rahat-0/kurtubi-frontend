@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
-import contentConfirm from "./language.popUp.json";
+import contentConfirm from "./content/language.popUp.json";
 
 function PopUpConfirm(props) {
   const { language } = useSelector((state) => state.translate.language)
-  const type = language || 'EN'
+  const type = contentConfirm[language] ? language : 'EN'
   const [data, setData] = props.state;
   const { message, action, btn, isShow, updatePassword } = props.data;
   const [show, setShow] = useState(false)

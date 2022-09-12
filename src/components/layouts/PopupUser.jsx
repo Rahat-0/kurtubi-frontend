@@ -1,15 +1,18 @@
 import axios from 'axios';
 import React from 'react'
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import { doRefresh } from '../../features/RefreshSlice';
 import rootapi from '../../rootAPI';
 import TokenHandler from '../utils/tokenHandler';
 import PopUpConfirm from './PopupConfirm';
+import content from './content/popupUser.content.json'
 
 const PopupUser = (props) => {
   const dispatch = useDispatch()
+  const {language} = useSelector((state)=> state.translate.language)
+  const type = content[language] ? language : "EN"
 
   const [toggle, setToggle] = useState(false)
   const [popToggle, setpopToggle] = useState({
@@ -20,7 +23,7 @@ const PopupUser = (props) => {
   const { branch, classes, dob, email, gender, image, isblock, name, phone, roll, student_id, time,
     teacher_id, designation, education, ispermit, varsity_name, full_name, subject, join_date } = props.data;
 
-  const blockUnblockToggle = isblock === 0 ? 'Block' : 'Unblock'
+  const blockUnblockToggle = isblock === 0 ? content[type].block : content[type].unblock
 
   // teacher block handling function start from here
   const blockHandler = async () => {
@@ -33,12 +36,12 @@ const PopupUser = (props) => {
         setSingleUser(false)
         dispatch(doRefresh())
       } else {
-        toast.error(res.data.error || 'block request failed!', { position: 'top-center' })
+        toast.error(res.data.error || content[type].errBlock, { position: 'top-center' })
       }
 
     } catch (error) {
       console.log(error.response.data.error);
-      toast.error('block request failed!', { position: 'top-center' })
+      toast.error( content[type].errBlock, { position: 'top-center' })
     }
 
   }
@@ -51,21 +54,21 @@ const PopupUser = (props) => {
       const user = teacher_id ? 'teacher' : 'student'
       const res = await axios.put(`${rootapi}/api/${user}/reset`, payload, { headers: { 'accesstoken': token } })
       if (res.data.affectedRows === 1) {
-        toast.success('password reseted!', { position: 'top-center' })
+        toast.success( content[type].sucPassReset , { position: 'top-center' })
       } else {
-        toast.error(res.data.error || 'password reset request failed!', { position: 'top-center' })
+        toast.error(res.data.error || content[type].errPassReset, { position: 'top-center' })
       }
 
     } catch (error) {
       console.log(error.response.data.error);
-      toast.error('reset request failed!', { position: 'top-center' })
+      toast.error( content[type].errPassReset, { position: 'top-center' })
     }
 
   }
 
   // block popup option define for popupConfirm component
   const blockPopupData = {
-    message: `do you want to ${blockUnblockToggle} this account ?`,
+    message: `${content[type].doWant} ${blockUnblockToggle} ${content[type].thisAccount}`,
     btn: blockUnblockToggle,
     action: blockHandler,
     isShow: popToggle.block
@@ -73,8 +76,8 @@ const PopupUser = (props) => {
 
   // password reset popup options define for popupConfirm component
   const resetPasswordPopupData = {
-    message: `reset password for this account ?`,
-    btn: 'Reset',
+    message: content[type].mesResetPass,
+    btn: content[type].btnReset,
     action: passResetHandler,
     isShow: popToggle.passreset
   }
@@ -94,10 +97,10 @@ const PopupUser = (props) => {
             <p className="py-1 uppercase font-bold text-2xl lg:py-0 "> {name || full_name} </p>
             <div className="lg:absolute lg:bottom-0 lg:flex font-semibold lg:justify-evenly ">
               <p className="bg-pink-200 p-1 lg:mx-1 my-2 lg:my-0 rounded capitalize">{branch}</p>
-              {isblock === 0 ? <p className="bg-green-100 p-1 lg:mx-1 my-2 lg:my-0 rounded">Active </p>
+              {isblock === 0 ? <p className="bg-green-100 p-1 lg:mx-1 my-2 lg:my-0 rounded">{content[type].active} </p>
                 :
-                <p className="bg-red-800 text-white p-1 lg:mx-1 my-2 lg:my-0 rounded">Block </p>}
-              <p className=" bg-indigo-200 p-1 lg:mx-1 my-2 lg:my-0 rounded">{student_id ? 'Student' : 'Teacher'}</p>
+                <p className="bg-red-800 text-white p-1 lg:mx-1 my-2 lg:my-0 rounded">{content[type].block} </p>}
+              <p className=" bg-indigo-200 p-1 lg:mx-1 my-2 lg:my-0 rounded">{student_id ? content[type].student : content[type].teacher}</p>
             </div>
           </div>
         </div>
@@ -106,41 +109,41 @@ const PopupUser = (props) => {
         {student_id &&
           <table className="w-full my-6 text-left ">
             <tr className=" border-2 border-transparent  bg-gradient-to-r to-gray-50 from-gray-300">
-              <th>Name</th>
+              <th>{content[type].name}</th>
               <td>: {name}</td>
             </tr>
             <tr className=" border-2 border-transparent ">
-              <th>Student ID</th>
+              <th>{content[type].studentId}</th>
               <td>: {student_id}</td>
             </tr>
             <tr className=" border-2 border-transparent bg-gradient-to-r to-gray-50 from-gray-300">
-              <th>Class</th>
+              <th>{content[type].class}</th>
               <td>: {classes}</td>
             </tr>
             <tr className=" border-2 border-transparent ">
-              <th>Roll</th>
+              <th>{content[type].roll}</th>
               <td>: {roll}</td>
             </tr>
 
             <tr className=" border-2 border-transparent bg-gradient-to-r to-gray-50 from-gray-300">
-              <th>Gender</th>
+              <th>{content[type].gender}</th>
               <td>: {gender}</td>
             </tr>
             <tr className=" border-2 border-transparent  ">
-              <th>Phone</th>
+              <th>{content[type].phone}</th>
               <td>: {phone}</td>
             </tr>
 
             <tr className=" border-2 border-transparent bg-gradient-to-r to-gray-50 from-gray-300">
-              <th>Email</th>
+              <th>{content[type].email}</th>
               <td>: {email}</td>
             </tr>
             <tr className=" border-2 border-transparent ">
-              <th>DOB</th>
+              <th>{content[type].dob}</th>
               <td>: {dob}</td>
             </tr>
             <tr className=" border-2 border-transparent bg-gradient-to-r to-gray-50 from-gray-300">
-              <th>Join</th>
+              <th>{content[type].join}</th>
               <td>: {time}</td>
             </tr>
           </table>}
@@ -149,64 +152,64 @@ const PopupUser = (props) => {
         {teacher_id &&
           <table className="w-full my-6 text-left ">
             <tr className=" border-2 border-transparent  bg-gradient-to-r to-gray-50 from-gray-300">
-              <th>Name</th>
+              <th>{content[type].name}</th>
               <td>: {full_name}</td>
             </tr>
             <tr className=" border-2 border-transparent ">
-              <th>Teacher ID</th>
+              <th>{content[type].teacherId}</th>
               <td>: {teacher_id}</td>
             </tr>
             <tr className=" border-2 border-transparent ">
-              <th>Result add</th>
-              <td>: {ispermit === 0 ? 'Has permit to update' : 'unable to permited'}</td>
+              <th>{content[type].resultAdd}</th>
+              <td>: {ispermit === 0 ? content[type].hasPermit : content[type].unablePermit}</td>
             </tr>
             <tr className=" border-2 border-transparent bg-gradient-to-r to-gray-50 from-gray-300">
-              <th>Designation</th>
+              <th>{content[type].designation}</th>
               <td>: {designation}</td>
             </tr>
             <tr className=" border-2 border-transparent ">
-              <th>Subject</th>
+              <th>{content[type].subject}</th>
               <td>: {subject}</td>
             </tr>
             <tr className=" border-2 border-transparent ">
-              <th>Education</th>
+              <th>{content[type].education}</th>
               <td>: {education}</td>
             </tr>
             <tr className=" border-2 border-transparent ">
-              <th>University</th>
+              <th>{content[type].varsity}</th>
               <td>: {varsity_name}</td>
             </tr>
 
             <tr className=" border-2 border-transparent bg-gradient-to-r to-gray-50 from-gray-300">
-              <th>Gender</th>
+              <th>{content[type].gender}</th>
               <td>: {gender}</td>
             </tr>
             <tr className=" border-2 border-transparent  ">
-              <th>Phone</th>
+              <th>{content[type].phone}</th>
               <td>: {phone}</td>
             </tr>
 
             <tr className=" border-2 border-transparent bg-gradient-to-r to-gray-50 from-gray-300">
-              <th>Email</th>
+              <th>{content[type].email}</th>
               <td>: {email}</td>
             </tr>
             <tr className=" border-2 border-transparent ">
-              <th>DOB</th>
+              <th>{content[type].dob}</th>
               <td>: {dob}</td>
             </tr>
             <tr className=" border-2 border-transparent bg-gradient-to-r to-gray-50 from-gray-300">
-              <th>Join</th>
+              <th>{content[type].join}</th>
               <td>: {join_date}</td>
             </tr>
           </table>}
 
         {toggle && <div className='grid md:grid-cols-3 text-center'>
           <a href='#t' onClick={() => setpopToggle({ block: { show: true } })} className='rounded px-1 my-1 p-1 bg-pink-700 hover:border-gray-400 border-2 text-white'>{blockUnblockToggle}</a>
-          <a href='#t' className='rounded px-1 my-1 p-1 bg-indigo-700 hover:border-gray-400 border-2 text-white'>Edit</a>
-          <a href='#t' onClick={() => setpopToggle({ passreset: { show: true } })} className='rounded px-1 my-1 p-1 bg-red-700 hover:border-gray-400 border-2 text-white'>Reset Password</a>
+          <a href='#t' className='rounded px-1 my-1 p-1 bg-indigo-700 hover:border-gray-400 border-2 text-white'>{content[type].edit}</a>
+          <a href='#t' onClick={() => setpopToggle({ passreset: { show: true } })} className='rounded px-1 my-1 p-1 bg-red-700 hover:border-gray-400 border-2 text-white'>{content[type].resetPass}</a>
         </div>}
 
-        <button onClick={() => setToggle(!toggle)} className="bg-red-300 block w-full scroll-smooth rounded my-2 text-gray-800 border">{toggle ? 'Hide Advance' : 'Show Advance'}</button>
+        <button onClick={() => setToggle(!toggle)} className="bg-red-300 block w-full scroll-smooth rounded my-2 text-gray-800 border">{toggle ? content[type].hideAdv : content[type].showAdv}</button>
       </div>
 
       <PopUpConfirm state={[0, 0]} data={blockPopupData} />

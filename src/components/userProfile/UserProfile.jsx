@@ -10,14 +10,14 @@ import DataError from "../layouts/DataError";
 import axios from "axios";
 import tokenHandler from "../utils/tokenHandler";
 import { doRefresh } from "../../features/RefreshSlice";
-import contentUser from "./language.userProfile.json";
+import content from "./language.userProfile.json";
 import { useNavigate } from "react-router-dom";
 function UserProfile() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(false)
   const [view, setview] = useState({
     setting: false,
     profile: true,
@@ -28,7 +28,7 @@ function UserProfile() {
 
   const { isLoading, users, error } = useSelector((state) => state.getFetchUser)
   const { language } = useSelector((state) => state.translate.language)
-  const type = language || "EN"
+  const type = content[language] ? language : "EN"
 
   useEffect(() => {
     if (users[0]) {
@@ -92,8 +92,8 @@ function UserProfile() {
         {/* static user seciton (user navber) */}
         <div className={`${visible ? 'left-0' : '-left-72'}  md:left-0  transform transition-all bg-gray-200 w-72 fixed z-40 lg:overflow-scroll  h-screen `}>
 
-          <button onClick={() => setVisible(!visible)} className='bg-red-900 absolute md:hidden w-3 h-14 rounded-r-3xl border-2 -right-2 top-0'></button>
-          <h3 className="font-bold text-4xl py-3">{contentUser[type].userSetting}</h3>
+          <button onClick={() => setVisible(!visible)} className='bg-red-900 absolute md:hidden w-3 h-14 rounded-r-3xl border-2 -right-2 top-0'> <span className="bg-red-900 absolute md:hidden animate-ping w-2 h-10 rounded-r-3xl  right-0 top-1"></span> </button>
+          <h3 className="font-bold text-4xl py-3">{content[type].userSetting}</h3>
           <ul onClick={() => setVisible(false)}>
             <li
               className={`${view.profile && "bg-red-300 text-white"
@@ -101,21 +101,21 @@ function UserProfile() {
               onClick={() => setview({ profile: true })}
             >
               {" "}
-             { contentUser[type].userProfile}
+             { content[type].userProfile}
             </li>
             <li
               className={`${view.setting && "bg-red-300 text-white"
                 } p-2 bg-gray-100 my-2 rounded-lg hover:bg-red-400 cursor-pointer`}
               onClick={() => setview({ setting: true })}
             >
-              { contentUser[type].userAccount}
+              { content[type].userAccount}
             </li>
             {user.student_id && <li
               className={`${view.result && "bg-red-300 text-white"
                 } p-2 bg-gray-100 my-2 rounded-lg hover:bg-red-400 cursor-pointer`}
               onClick={() => setview({ result: true })}
             >
-              {contentUser[type].userResult}
+              {content[type].userResult}
             </li>}
           </ul>
         </div>

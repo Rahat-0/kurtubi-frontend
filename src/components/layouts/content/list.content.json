@@ -1,0 +1,65 @@
+{
+    "EN" : {
+        "students" : "Students",
+        "teachers" : "Teachers",
+        "block" : "Block",
+        "studentList" : "Student List",
+        "teacherList" : "Teacher List",
+        "allStudent" : "All Students",
+        "totalStudentOfBranch" : "Total Students of",
+        "totalStudentOfClass" : "Total Students of class",
+        "allTeacher" : "All Teachers",
+        "totalTeacherOfBranch" : "Total Teachers of",
+        "totalTeacherOfSubject" : "Total Teachers of subject",
+        "selectBranch" : "select branch",
+        "print" : "PRINT", 
+        "add" : "ADD",
+        "searchPlaceHolder" : "Search for name, id or phone",
+        "name" : "name",
+        "id" : "ID",
+        "selectClass" : "Select Class",
+        "class" : "class",
+        "gender" : "Gender",
+        "phone" : "Phone",
+        "action" : "Action",
+        "allSubject" : "All Subject",
+        "subject" : "Subject",
+        "edit" : "Edit",
+        "alert1" : "Please use laptop/ipad/tab to view information!!",
+        "alert2" : "Unable to view data due to small screen!!!"
+
+
+    },
+
+    "BN" : {
+        "students" : "ছাত্র",
+        "teachers" : "শিক্ষক",
+        "block" : "ব্লক",
+        "studentList" : "ছাত্রদের লিস্ট",
+        "teacherList" : "শিক্ষকদের লিস্ট",
+        "allStudent" : "সকল ছাত্র",
+        "totalStudentOfBranch" : "সকল ছাত্র",
+        "totalStudentOfClass" : "ক্লাসের মোট ছাত্র",
+        "allTeacher" : "সকল শিক্ষক",
+        "totalTeacherOfBranch" : "মোট শিক্ষক",
+        "totalTeacherOfSubject" : "বিষয়ের মোট শিক্ষক",
+        "selectBranch" : "শাখা নির্বাচন করুন",
+        "print" : "ছাপা", 
+        "add" : "যোগ করুন",
+        "searchPlaceHolder" : "নাম, আইডি বা ফোন অনুসন্ধান করুন",
+        "name" : "নাম",
+        "id" : "আইডি",
+        "selectClass" : "ক্লাস নির্বাচন করুন",
+        "class" : "ক্লাস",
+        "gender" : "লিঙ্গ",
+        "phone" : "ফোন",
+        "action" : "কর্ম",
+        "allSubject" : "সকল বিষয়",
+        "subject" : "বিষয়",
+        "edit" : "সম্পাদনা করুন",
+        "alert1" : "তথ্য দেখতে ল্যাপটপ/আইপ্যাড/ট্যাব ব্যবহার করুন!!",
+        "alert2" : "ছোট পর্দার কারণে ডেটা দেখতে অক্ষম!!!"
+
+
+    }
+}

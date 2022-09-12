@@ -10,6 +10,7 @@ import DataError from "./DataError";
 import PopupUser from "./PopupUser";
 import rootapi from "../../rootAPI";
 import PopUpUserMutation from "./PopUpUserMutation";
+import content from './content/list.content.json'
 
 const List = (props) => {
   const { allBranch, counts } = props
@@ -21,7 +22,11 @@ const List = (props) => {
   });
 
   // redux state actions
+  const { language } = useSelector((state) => state.translate.language);
   const { isLoading, users, error } = useSelector((state) => state.getFetchUser);
+
+  // language translation action
+  const type = content[language] ? language : "EN"
 
   // subject dropdown list
   const subject = Array.from(new Set(users.map(({ subject }) => subject)));
@@ -103,32 +108,32 @@ const cardLogo = {
 
       {/* <!-- here is the main div --> */}
       <h2 className="text-xl p-2 bg-gray-600 tracking-widest rounded-lg my-1 text-white">
-        {Stufiltered ? "Student List" : "Teacher List"}
+        {Stufiltered ? content[type].studentList : content[type].teacherList}
       </h2>
       {/* student counter section  */}
       {Stufiltered && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 text-white ">
           <CountCard
             link="/"
-            title="All Students"
+            title={content[type].allStudent}
             image={cardLogo.All}
             count={counts.count_student || 0}
           />
           <CountCard
             link="/"
-            title={`Total Students of ${filterd.branch}`}
+            title={`${content[type].totalStudentOfBranch} ${filterd.branch}`}
             image={cardLogo.Branch}
             count={counts.count_branch || 0}
           />
           <CountCard
             link="/"
-            title={`Total Students of class  ${filterd.classes}`}
+            title={`${content[type].totalStudentOfClass}  ${filterd.classes}`}
             image={cardLogo.Class}
             count={Stufiltered.length}
           />
           <CountCard
             link="/"
-            title="Block Students"
+            title={content[type].block + ' '+ content[type].students}
             image={cardLogo.Block}
             count={counts.count_block || 0}
           />
@@ -139,25 +144,25 @@ const cardLogo = {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 text-white ">
           <CountCard
             link="/"
-            title="All Teachers"
+            title={content[type].allTeacher}
             image={cardLogo.All}
             count={counts.count_teacher || 0}
           />
           <CountCard
             link="/"
-            title={`Total Teachers of ${filterd.branch}`}
+            title={`${content[type].totalTeacherOfBranch} ${filterd.branch}`}
             image={cardLogo.Branch}
             count={counts.count_branch || 0}
           />
           <CountCard
             link="/"
-            title={`Total Teachers of ${filterd.subject} subject`}
+            title={`${content[type].totalTeacherOfSubject} ${filterd.subject} `}
             image={cardLogo.Class}
             count={Teachfiltered.length}
           />
           <CountCard
             link="/"
-            title={`Block ${Stufiltered ? "Students" : "Teachers"}`}
+            title={`${content[type].block} ${Stufiltered ? content[type].students : content[type].teachers}`}
             image={cardLogo.Block}
             count={counts.count_block || 0}
           />
@@ -176,7 +181,7 @@ const cardLogo = {
               name="dropdown"
               id="dropdown"
             >
-              <option value="" disabled>select branch</option>
+              <option value="" disabled>{content[type].selectBranch}</option>
               {branch.map((branch) => (
                 <option key={branch} value={branch}>
                   {branch}
@@ -184,8 +189,8 @@ const cardLogo = {
               ))}
             </select>
           </div>
-          <button className="text-red-900 font-bold p-1" onClick={handlePrint}>PRINT</button>
-          <button className="text-red-900 font-bold p-1" onClick={()=>setaddUser(users[0] && users[0].student_id ? {user : 'student'} : {user : 'teacher'})}>ADD</button>
+          <button className="text-red-900 font-bold p-1" onClick={handlePrint}>{content[type].print}</button>
+          <button className="text-red-900 font-bold p-1" onClick={()=>setaddUser(users[0] && users[0].student_id ? {user : 'student'} : {user : 'teacher'})}>{content[type].add}</button>
           {/* user search section  */}
           <label htmlFor="table-search" className="sr-only">
             Search
@@ -211,7 +216,7 @@ const cardLogo = {
               type="text"
               id="table-search"
               className="block p-2 pl-10 outline-none w-80 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300  "
-              placeholder="Search for name, id or phone"
+              placeholder={content[type].searchPlaceHolder}
             />
           </div>
         </div>
@@ -222,10 +227,10 @@ const cardLogo = {
             {Stufiltered && (
               <tr>
                 <th scope="col" className="py-3 px-6">
-                  Student name
+                 {content[type].students + ' ' + content[type].name}
                 </th>
                 <th scope="col" className="py-3 px-6">
-                  ID
+                  {content[type].id}
                 </th>
                 <th scope="col" className="py-3 px-6">
                   <select
@@ -237,7 +242,7 @@ const cardLogo = {
                     name=""
                     id=""
                   >
-                  <option className="text-red-400"  value=''> Select Class </option>
+                  <option className="text-red-400"  value=''> {content[type].selectClass} </option>
 
                     {classes &&
                       classes.map((classes) => (
@@ -248,13 +253,13 @@ const cardLogo = {
                   </select>
                 </th>
                 <th scope="col" className="hidden lg:table-cell py-3 px-6">
-                  Gender
+                  {content[type].gender}
                 </th>
                 <th scope="col" className="py-3 px-6">
-                  Phone
+                  {content[type].phone}
                 </th>
                 <th scope="col" className="hidden lg:table-cell py-3 px-6">
-                  Action
+                  {content[type].action}
                 </th>
               </tr>
             )}
@@ -262,10 +267,10 @@ const cardLogo = {
             {Teachfiltered && (
               <tr>
                 <th scope="col" className="py-3 px-6">
-                  Teacher name
+                {content[type].teachers + ' ' + content[type].name}
                 </th>
                 <th scope="col" className="py-3 px-6">
-                  ID
+                 {content[type].id}
                 </th>
                 <th scope="col" className="py-3 px-6">
                   <select
@@ -277,23 +282,23 @@ const cardLogo = {
                     name=""
                     id=""
                   >
-                    <option className="bg-red-400" value="">All Subject</option>
+                    <option className="bg-red-400" value="">{content[type].allSubject}</option>
                     {subject &&
                       subject.map((subject) => (
                         <option key={subject} value={subject}>
-                          Subject [ {subject} ]
+                          {content[type].subject} [ {subject} ]
                         </option>
                       ))}
                   </select>
                 </th>
                 <th scope="col" className="hidden lg:table-cell py-3 px-6">
-                  Gender
+                  {content[type].gender}
                 </th>
                 <th scope="col" className="py-3 px-6">
-                  Phone
+                  {content[type].phone}
                 </th>
                 <th scope="col" className="hidden lg:table-cell py-3 px-6">
-                  Action
+                  {content[type].action}
                 </th>
               </tr>
             )}
@@ -330,7 +335,7 @@ const cardLogo = {
                         href="##"
                         className=" font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >
-                        Edit
+                        {content[type].edit}
                       </a>
                     </td>
                   </tr>
@@ -369,7 +374,7 @@ const cardLogo = {
                         href="##"
                         className=" font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >
-                        Edit
+                        {content[type].edit}
                       </a>
                     </td>
                   </tr>
@@ -382,10 +387,10 @@ const cardLogo = {
       {/* <!-- mobile phone div component --> */}
       <div className=" sm:hidden bg-red-200 text-center rounded-xl p-3">
         <h4 className="text-red-900 text-lg ">
-          Please use laptop/ipad/tab to view information!!
+         {content[type].alert1}
         </h4>
         <p className="text-red-900 text-sm">
-          Unable to view data due to small screen!!!
+          {content[type].alert2}
         </p>
       </div>
     </div>
