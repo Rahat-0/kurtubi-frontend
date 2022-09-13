@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/image/logo.png";
 import AboutNav from "./AboutNav";
@@ -14,6 +14,7 @@ import "./navber.css";
 import rootapi from "../../rootAPI";
 import { translateAction } from "../../features/translate/translateSlice";
 import languageNav from './language.navber.json'
+import useOutsideToHide from "../../hooks/useOutsideToHide";
 
 const Navber = () => {
   const navigate = useNavigate()
@@ -32,9 +33,27 @@ const Navber = () => {
     image: null
   })
 
+  const userRef = useRef(null)
+  const navRef = useRef(null)
+
+  // outside focus to hidden popup part start from here
+  const seen = useOutsideToHide(userRef, false)
+  const dropdown = useOutsideToHide(navRef, false)
+// console.log(seen);
+  useEffect(() => {
+    setVisible({...visible, user : seen.trigger})
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seen])
+
+  useEffect(() => {
+    setVisible({...visible, dropdown : dropdown.trigger})
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dropdown])
+  // outside focus to hidden popup part start from here
+  
   // language localization func start from here
 
-  const changeLanguageHanlder = (e) => {
+  const changeLanguageHandler = (e) => {
     const lang = e.target.value
     setLangu(lang)
     localStorage.setItem('language', lang)
@@ -105,7 +124,7 @@ const Navber = () => {
 
   return (
     <div>
-      <nav className="fixed w-full z-50 bg-gray-200 border-gray-200 px-2 sm:px-4 py-2.5 rounded">
+      <nav ref={navRef} className="fixed w-full z-50 bg-gray-200 border-gray-200 px-2 sm:px-4 py-2.5 rounded">
         <PopUpConfirm state={[0, 0]} data={PopupData} />
         <div className="container flex flex-wrap justify-between items-center mx-auto">
           <Link to='/' className="flex items-center">
@@ -125,7 +144,7 @@ const Navber = () => {
             {/* dropdown start */}
 
             {visible.active ?
-              <div className=" flex items-center ml-1 md:ml-3 relative">
+              <div ref={userRef} className=" flex items-center ml-1 md:ml-3 relative">
                 <div>
                   <div
                     onClick={() => setVisible({ ...visible, user: !visible.user })}
@@ -293,7 +312,7 @@ const Navber = () => {
                 </div>
               </li>
               <li className="nav-hover">
-                <select value={localStorage.getItem('language')} className="font-bold w-full text-left nav-hover bg-transparent outline-none block py-2 pr-4  focus:text-red-700 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" onChange={changeLanguageHanlder}>
+                <select value={localStorage.getItem('language')} className="font-bold w-full text-left nav-hover bg-transparent outline-none block py-2 pr-4  focus:text-red-700 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" onChange={changeLanguageHandler}>
                   <option value="EN">English</option>
                   <option value="BN" >বাংলা</option>
                 </select>

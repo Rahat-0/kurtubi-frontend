@@ -12,6 +12,8 @@ import tokenHandler from "../utils/tokenHandler";
 import { doRefresh } from "../../features/RefreshSlice";
 import content from "./language.userProfile.json";
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
+import useOutsideToHide from "../../hooks/useOutsideToHide";
 function UserProfile() {
 
   const navigate = useNavigate()
@@ -79,6 +81,16 @@ function UserProfile() {
     }
   }
 
+  // outside focus to hide popup section start from here
+  const leftUserSectionRef = useRef(null)
+  const seen =  useOutsideToHide(leftUserSectionRef, false)
+
+  useEffect(() => {
+    setVisible(seen.trigger)
+  
+  }, [seen])
+  // outside focus to hide popup section end here
+
   useEffect(() => {
     tokenresponse()
 
@@ -90,7 +102,7 @@ function UserProfile() {
 
       <div >
         {/* static user seciton (user navber) */}
-        <div className={`${visible ? 'left-0' : '-left-72'}  md:left-0  transform transition-all bg-gray-200 w-72 fixed z-40 lg:overflow-scroll  h-screen `}>
+        <div ref={leftUserSectionRef} className={`${visible ? 'left-0' : '-left-72'}  md:left-0  transform transition-all bg-gray-200 w-72 fixed z-40 lg:overflow-scroll  h-screen `}>
 
           <button onClick={() => setVisible(!visible)} className='bg-red-900 absolute md:hidden w-3 h-14 rounded-r-3xl border-2 -right-2 top-0'> <span className="bg-red-900 absolute md:hidden animate-ping w-2 h-10 rounded-r-3xl  right-0 top-1"></span> </button>
           <h3 className="font-bold text-4xl py-3">{content[type].userSetting}</h3>
