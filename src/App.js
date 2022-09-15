@@ -15,6 +15,8 @@ import LoginAdmin from "./components/admin/LoginAdmin";
 import ErrorPage from "./components/layouts/ErrorPage";
 import { useRef } from "react";
 import { useEffect } from "react";
+import Test from "./test/Test";
+import AddResult from "./components/results/AddResult";
 swDev()
 function App() {
   const refs = useRef(null)
@@ -44,7 +46,9 @@ function App() {
           <Route path='studentlist' element={<StudentList />} />
           <Route path='teacherlist' element={<TeachersList />} />
           <Route path='results' element={<Results />} />
+          <Route path='add_result' element={<AddResult />} />
         </Route>
+        <Route path="test" element={<Test />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <a ref={refs} className='fixed bottom-4 right-4' href='#s'>scroll</a>

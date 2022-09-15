@@ -18,12 +18,12 @@ const CountCard = ({link, image, count, title }) => {
         {image}
       </div>
       <div>
-        <p className="text-3xl font-bold text-gray-600">
+       {count && <p className="text-3xl font-bold text-gray-600">
           <animated.div className='inline'>
             {number.to((num)=> num.toFixed())}
           </animated.div>
           +
-        </p>
+        </p>}
         <p className="text-gray-600 m-1">{title} </p>
       </div>
     </Link>

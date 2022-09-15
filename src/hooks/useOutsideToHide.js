@@ -12,9 +12,9 @@ const useOutsideToHide = (itemRef, initialValue) => {
                 return error.message
             }
         }
-        document.addEventListener('click', eventHandler)
+        document.addEventListener('mousedown', eventHandler)
         return () => {
-            document.removeEventListener('click', eventHandler)
+            document.removeEventListener('mousedown', eventHandler)
         }
     }, [itemRef])
 

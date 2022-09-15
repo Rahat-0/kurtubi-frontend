@@ -89,7 +89,7 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
         <CountCard link='/' image={cardLogo.all} title='All Examinee' count={110} />
         <CountCard link='/' image={cardLogo.pass} title='Total Pass' count={50} />
         <CountCard link='/' image={cardLogo.fail} title='Total Fail' count={10} />
-        <CountCard link='/' image={cardLogo.top10} title='Top10 Student' count={5} />
+        <CountCard link='/0/add_result' image={cardLogo.top10} title='Add Result'  />
       </div>
 
       {/* select filter start from here  */}

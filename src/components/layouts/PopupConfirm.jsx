@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
+import useOutsideToHide from '../../hooks/useOutsideToHide';
 import contentConfirm from "./content/language.popUp.json";
 
 function PopUpConfirm(props) {
@@ -9,6 +10,13 @@ function PopUpConfirm(props) {
   const { message, action, btn, isShow, updatePassword } = props.data;
   const [show, setShow] = useState(false)
 
+  const popupRef = useRef(null)
+  const seen = useOutsideToHide(popupRef)
+
+  useEffect(() => {
+    isShow && setShow(seen.trigger)
+  }, [seen])
+  
   useEffect(() => {
     isShow && setShow(true)
   }, [isShow])
@@ -24,7 +32,7 @@ function PopUpConfirm(props) {
 
   }
   return (
-    <div className="text-center flex justify-center items-center opacity-90 z-50" >
+    <div ref={popupRef} className="text-center flex justify-center items-center opacity-90 z-50" >
       <form onSubmit={submitHandler} className={`${show ? 'scale-100' : 'scale-0'} transform transition-all  fixed bg-gray-300 shadow-2xl top-1/3  rounded-2xl`}>
         <div className="  w-96 min:h-56 flex justify-center items-center">
           <div className="font-bold">

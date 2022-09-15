@@ -320,7 +320,7 @@ const cardLogo = {
                     >
                       <img
                         className="w-12 h-12 object-cover rounded-full ring"
-                        
+                        loading="lazy"
                         src={`${rootapi}/images/${image}`}
                         alt={image}
                       />
@@ -359,7 +359,7 @@ const cardLogo = {
                     >
                       <img
                         className="w-12 h-12 object-cover rounded-full ring"
-
+                        loading="lazy"
                         src={`${rootapi}/images/${image}`}
                         alt={image}
                       />
