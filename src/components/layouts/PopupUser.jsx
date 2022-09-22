@@ -161,7 +161,7 @@ const PopupUser = (props) => {
             </tr>
             <tr className=" border-2 border-transparent ">
               <th>{content[type].resultAdd}</th>
-              <td>: {ispermit === 0 ? content[type].hasPermit : content[type].unablePermit}</td>
+              <td>: {ispermit === 0 ? content[type].unablePermit : content[type].hasPermit}</td>
             </tr>
             <tr className=" border-2 border-transparent bg-gradient-to-r to-gray-50 from-gray-300">
               <th>{content[type].designation}</th>

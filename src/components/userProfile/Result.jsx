@@ -19,7 +19,7 @@ const Result = (props) => {
     })
 
     const filteredData = result.filter((value)=>{
-        if(value.result_class.includes(inputs.classes) &&
+        if(value.result_class.toString().includes(inputs.classes) &&
           value.result_semester.toString().includes(inputs.semester) &&
           value.subject_name.toLocaleLowerCase().includes(inputs.subject.toLocaleLowerCase())){
             return value

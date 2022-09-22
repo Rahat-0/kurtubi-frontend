@@ -16,7 +16,7 @@ const List = (props) => {
   const { allBranch, counts } = props
   const [setBranch] = props.branch
   
-  const componentRef = useRef()
+  const componentRef = useRef(null)
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });

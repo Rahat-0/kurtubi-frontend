@@ -1,17 +1,21 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { toast, ToastContainer } from 'react-toastify'
+import rootapi from '../../rootAPI'
 import PopUpConfirm from '../layouts/PopupConfirm'
+import TokenHandler from '../utils/tokenHandler'
 
 const AddResult = () => {
+
     const [data, setData] = useState([])
     const [updateBtn, setUpdateBtn] = useState(false)
     const [popup, setPopup] = useState(false)
     const [warn, setWarn] = useState(false)
+    const [isTeacher, setisTeacher] = useState(false)
     const [inputValue, setInputValue] = useState({
-        name: "",
         student_id: "",
         teacher_id: "",
-        classes: "",
+        result_class: "",
         result_semester: "",
         subject_name: "",
         subject_result: "",
@@ -21,10 +25,11 @@ const AddResult = () => {
 
     const formHandler = (e) => {
         e.preventDefault()
-        if (e.target.lastElementChild.name === 'update') {return updateHandler(e.target.lastElementChild.value)};
-        if (!data[0]) { return setData([...data, inputValue])};
+        if (e.target.lastElementChild.name === 'update') { return updateHandler(e.target.lastElementChild.value) };
+        if (!data[0]) { return setData([...data, inputValue]) };
         if (data.find((ary) => ary.student_id === inputValue.student_id)) {
             setWarn(true)
+            toast.warn('student ID duplicate detected!', {position : "top-center"})
         } else {
             setData([...data, inputValue])
         }
@@ -42,22 +47,40 @@ const AddResult = () => {
         setUpdateBtn(false)
     }
 
-    const handleSave = async ()=>{
+    useEffect(() => {
+        const test = async ()=>{
+            const {teacher_id, subject} = await TokenHandler()
+            const token = await TokenHandler()
+            console.log(token);
+            setInputValue({...inputValue, teacher_id, subject_name: subject})
+            setisTeacher(teacher_id && true)
+        }
+    
+        test()
+        
+   
+    }, [])
+    
+    
+    const handleSave = async () => {
         try {
-            const res = await axios.post('', data, {headers : ''})
-            console.log(res);
-            alert('success!')
+        const {token} = await TokenHandler()
+            const apiType = isTeacher ? "teacheraddmany" : "addmany"
+            const res = await axios.post(`${rootapi}/api/result/${apiType}`, data, { headers: {'accessToken': token} })
+            setData([])
+            toast.success(`${res.data.affectedRows} result added successful!`, {autoClose : false, position : "top-center"})
         } catch (error) {
-            console.log(error.response);
-            alert(error.message)
+            const err = error.response.data.error;
+            const studentIdError = (err[0].student_id && err.map((id)=> id.student_id)) 
+            toast.error( (studentIdError && `student doesn't exist ID (${studentIdError})`) || err , {position : 'top-center', autoClose : false})
         }
     }
 
-    const popUpData ={
-        message : 'do you want to add all results ?',
-        btn : 'Add All',
-        isShow : popup,
-        action : handleSave
+    const popUpData = {
+        message: 'do you want to add all results ?',
+        btn: 'Add All',
+        isShow: popup,
+        action: handleSave
     }
 
     return (
@@ -70,9 +93,6 @@ const AddResult = () => {
                         <thead className=" text-gray-700 uppercase bg-gray-50 ">
                             <tr>
                                 <th scope="col" className="py-2 px-3">
-                                    Student name
-                                </th>
-                                <th scope="col" className="py-2 px-3">
                                     student ID
                                 </th>
                                 <th scope="col" className="py-2 px-3">
@@ -83,7 +103,7 @@ const AddResult = () => {
                                 </th>
                                 <th scope="col" className="py-2 px-3">
                                     Semester
-                                </th>
+                                 </th>
                                 <th scope="col" className="py-2 px-3">
                                     subject
                                 </th>
@@ -99,11 +119,11 @@ const AddResult = () => {
                         <tbody>
                             {data.map(
                                 (value, index) => {
-                                    const { name,
+                                    const { 
                                         student_id,
                                         teacher_id,
                                         result_semester,
-                                        classes,
+                                        result_class,
                                         subject_name,
                                         subject_result,
                                         subject_ranking } = value;
@@ -120,17 +140,11 @@ const AddResult = () => {
                                             key={index}
                                             className={` ${index % 2 === 0 && 'bg-gray-300'} ${subject_result < 33 && 'bg-red-700 text-white hover:bg-red-500'} bg-white border-b hover:bg-red-100`}
                                         >
-                                            <th
-
-                                                key={index}
-                                                scope="row"
-                                                className="py-2 px-3 font-medium whitespace-nowrap dark:text-white"
-                                            >
-                                                <button value={student_id} onClick={inputUpdate} > {name}</button>
-                                            </th>
-                                            <td className="py-2 px-3">{student_id}</td>
+                                        <td className="py-2 px-3">
+                                            <button className='w-full' value={student_id} onClick={inputUpdate} > {student_id}</button>
+                                        </td>
                                             <td className="py-2 px-3">{teacher_id}</td>
-                                            <td className="py-2 px-3">{classes}</td>
+                                            <td className="py-2 px-3">{result_class}</td>
                                             <td className="py-2 px-3">{result_semester}</td>
                                             <td className="py-2 px-3">{subject_name}</td>
                                             <td className="py-2 px-3">{subject_result}</td>
@@ -151,22 +165,22 @@ const AddResult = () => {
 
                 <form onSubmit={formHandler} className='md:w-4/12 md:absolute md:top-0 md:right-0 md:p-2'>
                     <div className="mb-2">
-                        <label for="name" className="block  text-sm font-medium text-gray-900 dark:text-gray-300">student name</label>
-                        <input value={inputValue.name} onChange={(e) => setInputValue({ ...inputValue, name: e.target.value })} type="text" id="name" className="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-                    </div>
-                    <div className="mb-2">
                         <label for="stu_id" className="block  text-sm font-medium text-gray-900 dark:text-gray-300">student ID {warn && <span className='text-red-800'>(duplicate student ID)</span>} </label>
-                        <input value={inputValue.student_id} onChange={(e) => { 
+                        <input value={inputValue.student_id} onChange={(e) => {
                             setWarn(false)
-                            setInputValue({ ...inputValue, student_id: e.target.value })}} type="number" id="stu_id" className={` ${warn && 'bg-red-200 border-red-800'}  outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`} required />
+                            setInputValue({ ...inputValue, student_id: e.target.value })
+                        }} type="number" id="stu_id" className={` ${warn && 'bg-red-200 border-red-800'}  outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`} required />
                     </div>
                     <div className="mb-2">
                         <label for="stu_id" className="block  text-sm font-medium text-gray-900 dark:text-gray-300">teacher ID</label>
+                       { isTeacher ?
+                        <input disabled value={inputValue.teacher_id} onChange={(e) => setInputValue({ ...inputValue, teacher_id: e.target.value })} type="number" id="stu_id" className="outline-none bg-green-50 border border-green-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required /> :
                         <input value={inputValue.teacher_id} onChange={(e) => setInputValue({ ...inputValue, teacher_id: e.target.value })} type="number" id="stu_id" className="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                        }
                     </div>
                     <div className="mb-2">
                         <label for="stu_id" className="block  text-sm font-medium text-gray-900 dark:text-gray-300">class</label>
-                        <input value={inputValue.classes} onChange={(e) => setInputValue({ ...inputValue, classes: e.target.value })} type="number" id="stu_id" className="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                        <input value={inputValue.result_class} onChange={(e) => setInputValue({ ...inputValue, result_class: e.target.value })} type="number" id="stu_id" className="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
                     </div>
                     <div className="mb-2">
                         <label for="stu_id" className="block  text-sm font-medium text-gray-900 dark:text-gray-300">semester</label>
@@ -174,7 +188,10 @@ const AddResult = () => {
                     </div>
                     <div className="mb-2">
                         <label for="stu_id" className="block  text-sm font-medium text-gray-900 dark:text-gray-300">subject</label>
-                        <input value={inputValue.subject_name} onChange={(e) => setInputValue({ ...inputValue, subject_name: e.target.value })} type="text" id="stu_id" className="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                        { isTeacher ? 
+                        <input disabled value={inputValue.subject_name} type="text" id="stu_id" className="outline-none bg-green-50 border border-green-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required /> :
+                            <input value={inputValue.subject_name} onChange={(e) => setInputValue({ ...inputValue, subject_name: e.target.value })} type="text" id="stu_id" className="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                        }
                     </div>
                     <div className="mb-2">
                         <label for="stu_id" className="block  text-sm font-medium text-gray-900 dark:text-gray-300">score</label>
@@ -191,8 +208,12 @@ const AddResult = () => {
                 </form>
             </div>
 
-            <p onClick={()=> setPopup({popup : true})} className=" cursor-pointer my-2 text-white  bottom-0 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Check & Submit</p>
-            <PopUpConfirm data={popUpData} state={[0, 0]} />
+            { data[0] ? 
+            <p onClick={() => setPopup({ popup: true })} className=" cursor-pointer my-2 text-white  bottom-0 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Check & Submit</p> 
+            :
+            <p className=" cursor-not-allowed my-2 text-white  bottom-0 bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm  sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Check & Submit</p>}
+            <PopUpConfirm data={popUpData} state = {[0, 0]} />
+            <ToastContainer />
         </div>
     )
 }

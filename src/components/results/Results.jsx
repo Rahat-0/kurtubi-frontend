@@ -22,9 +22,9 @@ const dispatch = useDispatch()
 const {results, isLoading, error} = useSelector((state)=> state.result)
 
 // printing handler 
-  const componentRef = useRef()
+  const componentRef = useRef(null)
   const printHandler = useReactToPrint({
-    content : ()=> (componentRef.current)
+    content : ()=> componentRef.current
   })
 
   const [inputs, setInputs] = useState({
@@ -61,14 +61,14 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
   }
 
   const branchTag = Array.from(new Set(inputs.allBranchClasses.map(({branch})=> branch)));
-  const classTag = Array.from(new Set(inputs.allBranchClasses.map(({classes})=> classes)));
+  const classTag = Array.from(new Set(inputs.allBranchClasses.map(({result_class})=> result_class)));
   const subTag =  Array.from(new Set(results.map(({subject_name})=> subject_name )))
   const semesterTag = Array.from(new Set(results.map(({ result_semester }) => result_semester)));
 
     const filterd = results.filter((value) => {
     const regClasses = new RegExp(`^${inputs.classes}$`, "g")
     if(value.branch.toLowerCase().includes(inputs.branch.toLowerCase()) && 
-       value.classes.toString().match(regClasses) &&
+       value.result_class.toString().match(regClasses) &&
        value.result_semester.toString().includes(inputs.result_semester)){
         if(value.subject_name.toLowerCase().includes(inputs.subject_name.toLowerCase())){
           return value
@@ -76,6 +76,8 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
     }
     return null
   });
+
+  console.log(results);
 
   return (
     <div className="relative">
@@ -107,6 +109,7 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
          
         </select>
         <select
+          value={inputs.classes}
           onChange={(e)=>setInputs({...inputs, classes : e.target.value})}
           className="w-full p-1 mx-4 bg-transparent outline-none"
           name=""
@@ -118,6 +121,7 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
 
         </select>
         <select
+          value={inputs.result_semester}
           onChange={(e)=>setInputs({...inputs, result_semester : e.target.value})}
           className="w-full p-1 mx-4 bg-transparent outline-none"
           name=""
@@ -182,7 +186,7 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
                     student_id,
                     teacher_id,
                     result_semester,
-                    classes,
+                    result_class,
                     subject_name,
                     subject_result,
                     subject_ranking
@@ -200,7 +204,7 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
                       </th>
                       <td className="py-2 px-3">{student_id}</td>
                       <td className="py-2 px-3">{teacher_id}</td>
-                      <td className="py-2 px-3">{classes}</td>
+                      <td className="py-2 px-3">{result_class}</td>
                       <td className="py-2 px-3">{result_semester}</td>
                       <td className="py-2 px-3">{subject_name}</td>
                       <td className="py-2 px-3">{subject_result}</td>

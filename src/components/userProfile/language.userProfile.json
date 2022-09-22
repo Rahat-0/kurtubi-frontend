@@ -4,6 +4,7 @@
         "userProfile" : " Public profile",
         "userAccount" : "Account settings",
         "userResult" : "Results",
+        "userResultAdd" : "Add Results",
         
         "results" : "Results",
         "resultOrgLocation" : "Kurtubi madrasah, tangail.",
@@ -27,6 +28,7 @@
         "userProfile" : "পাবলিক প্রফাইল",
         "userAccount" : "একাউন্ট সেটিংস",
         "userResult" : "রেজাল্টস",
+        "userResultAdd" : "রেজাল্টস যোগ",
 
         "results" : "রেজাল্টস",
         "resultOrgLocation" : "কুরতুবী মাদরাসা, টাংগাইল ।",

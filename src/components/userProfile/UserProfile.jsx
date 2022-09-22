@@ -14,6 +14,8 @@ import content from "./language.userProfile.json";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import useOutsideToHide from "../../hooks/useOutsideToHide";
+import AddResult from "../results/AddResult";
+import TeacherLog from './TeacherLog'
 function UserProfile() {
 
   const navigate = useNavigate()
@@ -23,7 +25,9 @@ function UserProfile() {
   const [view, setview] = useState({
     setting: false,
     profile: true,
-    result: false
+    result: false,
+    teacherAddResult : false,
+    teacherLog : false
   });
   const [user, setUser] = useState([])
   const [result, setresult] = useState([])
@@ -39,6 +43,8 @@ function UserProfile() {
     }
 
   }, [users])
+
+  console.log(result);
 
   const tokenresponse = async () => {
     try {
@@ -129,6 +135,26 @@ function UserProfile() {
             >
               {content[type].userResult}
             </li>}
+
+            {user.teacher_id && 
+            <>
+            <li
+              className={`${view.teacherAddResult && "bg-red-300 text-white"
+                } p-2 bg-gray-100 my-2 rounded-lg hover:bg-red-400 cursor-pointer`}
+              onClick={() => setview({ teacherAddResult: true })}
+            >
+              {content[type].userResultAdd}
+            </li>
+            <li
+              className={`${view.teacherLog && "bg-red-300 text-white"
+                } p-2 bg-gray-100 my-2 rounded-lg hover:bg-red-400 cursor-pointer`}
+              onClick={() => setview({ teacherLog: true })}
+            >
+              {'Log'}
+            </li>
+            </>
+            
+            }
           </ul>
         </div>
 
@@ -139,6 +165,9 @@ function UserProfile() {
           {view.profile && <Profile data={user} />}
           {view.setting && <Setting />}
           {view.result && user.student_id && <Result data={result} name={`${user.first_name} ${user.last_name}`} />}
+          {view.teacherAddResult && <AddResult />}
+          {view.teacherLog && <TeacherLog />}
+
         </div>
       </div>
     </div>
