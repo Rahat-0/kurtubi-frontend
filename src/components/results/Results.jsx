@@ -11,7 +11,7 @@ import DataError from "../layouts/DataError";
 import rootapi from "../../rootAPI";
 import TokenHandler from "../utils/tokenHandler";
 
-const Results = () => {
+const Results = ({user}) => {
   
   useEffect(()=>{
     getBranchAndClass()
@@ -38,7 +38,12 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
 
   const resultData = async ()=>{
     const {token} = await TokenHandler()
-    dispatch(resultAction({api :`${rootapi}/api/result/all/${inputs.branch}/${inputs.classes}`, token : {'accesstoken' : token} }))
+    if(user === 'teacher'){
+      // all/teacher/:classes
+      dispatch(resultAction({api :`${rootapi}/api/result/teacher/all/${inputs.classes}`, token : {'accesstoken' : token} }))
+    }else{
+      dispatch(resultAction({api :`${rootapi}/api/result/all/${inputs.branch}/${inputs.classes}`, token : {'accesstoken' : token} }))
+    }
   }
 
   useEffect(() => {
@@ -67,7 +72,8 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
 
     const filterd = results.filter((value) => {
     const regClasses = new RegExp(`^${inputs.classes}$`, "g")
-    if(value.branch.toLowerCase().includes(inputs.branch.toLowerCase()) && 
+
+    if( 
        value.result_class.toString().match(regClasses) &&
        value.result_semester.toString().includes(inputs.result_semester)){
         if(value.subject_name.toLowerCase().includes(inputs.subject_name.toLowerCase())){
@@ -77,7 +83,6 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
     return null
   });
 
-  console.log(results);
 
   return (
     <div className="relative">
@@ -96,18 +101,16 @@ const {results, isLoading, error} = useSelector((state)=> state.result)
 
       {/* select filter start from here  */}
       <div className="flex justify-between rounded-lg text-sm bg-blue-300 py-1 my-1 items-center">
-        <select
+        {user !== 'teacher' && <select
           onChange={(e)=> setInputs({...inputs, branch : e.target.value}) }
           value={inputs.branch}
           className="w-full  p-1 mr-4 bg-transparent outline-none"
-          name=""
-          id=""
         >
           {branchTag.map((branch)=>(
             <option key={branch} value={branch}>{branch}</option>
           ))}
          
-        </select>
+        </select>}
         <select
           value={inputs.classes}
           onChange={(e)=>setInputs({...inputs, classes : e.target.value})}

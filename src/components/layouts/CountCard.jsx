@@ -1,7 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import { animated, useSpring } from 'react-spring'
-const CountCard = ({link, image, count, title }) => {
+const CountCard = ({link = "/", image, count, title, bg ='' }) => {
   const countNum = parseInt(count)
     const {number} = useSpring({
         from : {number : 0},
@@ -12,6 +12,7 @@ const CountCard = ({link, image, count, title }) => {
   return (
     <Link
       to={link}
+      style={{backgroundColor : bg}}
       className="flex justify-start items-center space-x-4 md:space-x-3 py-5 hover:border-transparent my-1 rounded-tl-3xl transition rounded-br-3xl border-2 hover:shadow-2xl hover:bg-indigo-100"
     >
       <div className="w-12 h-auto m-2">

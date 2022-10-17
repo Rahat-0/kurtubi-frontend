@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import useOutsideToHide from '../../hooks/useOutsideToHide';
 import contentConfirm from "./content/language.popUp.json";
 
-function PopUpConfirm(props) {
+function PopUpConfirm({state = [0, 0], ...props}) {
   const { language } = useSelector((state) => state.translate.language)
   const type = contentConfirm[language] ? language : 'EN'
-  const [data, setData] = props.state;
+  const [data , setData ] = state;
   const { message, action, btn, isShow, updatePassword } = props.data;
   const [show, setShow] = useState(false)
 
@@ -15,6 +15,7 @@ function PopUpConfirm(props) {
 
   useEffect(() => {
     isShow && setShow(seen.trigger)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seen])
   
   useEffect(() => {

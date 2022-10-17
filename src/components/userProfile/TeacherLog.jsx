@@ -1,8 +1,15 @@
 import React from 'react'
+import Results from '../results/Results';
 
 const TeacherLog = () => {
+
+ 
+
+
   return (
-    <div>TeacherLog</div>
+    <>
+      <Results user='teacher' />
+    </>
   )
 }
 

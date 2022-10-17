@@ -1,23 +1,25 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from 'js-cookie'
-import TokenHandler from '../utils/tokenHandler'
 import axios from 'axios'
 import rootapi from '../../rootAPI'
 import { useSelector } from 'react-redux'
 import content from './language.login.json'
-export const Login = () => {
-    const navigate = useNavigate()
+import withAuth from '../HOC/withAuth'
 
+const Login = ({adminAuth, userAuth}) => {
+    const navigate = useNavigate()
+    console.log(adminAuth, userAuth);
     useEffect(() => {
-        const check = TokenHandler()
-        return check.then(({ exp }) => { exp && navigate('/') })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        if(adminAuth || userAuth){
+            navigate('/')
+        }
+ 
+    }, [adminAuth, userAuth, navigate])
 
     const { language } = useSelector((state) => state.translate.language)
     const type = content[language] ?  language : "EN"
@@ -129,7 +131,7 @@ export const Login = () => {
                                 </button>
                                 // <button  className="px-6 py-2 mt-4 text-white bg-gray-600 rounded-lg hover:bg-gray-900">Loading</button>
                             }
-                            <a href="##" className="text-sm text-blue-600 hover:underline">{content[type].forgot}</a>
+                            <Link to='/forgotpass' className="text-sm text-blue-600 hover:underline">{content[type].forgot}</Link>
                         </div>
 
                     </div>
@@ -139,3 +141,5 @@ export const Login = () => {
         </div>
     )
 }
+
+export default withAuth(Login)

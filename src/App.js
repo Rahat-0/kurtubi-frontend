@@ -8,23 +8,18 @@ import TeachersList from "./components/teachers/TeachersList";
 import Admin from "./components/admin/Admin";
 import Dashboard from "./components/admin/Dashboard";
 import Home from "./pages/home/Home";
-import { Login } from "./components/login/Login";
+import  Login  from "./components/login/Login";
 import ProtectedStudent from "./components/students/ProtectedStudent";
 import swDev from "./swDev";
 import LoginAdmin from "./components/admin/LoginAdmin";
 import ErrorPage from "./components/layouts/ErrorPage";
 import { useRef } from "react";
-import { useEffect } from "react";
 import AddResult from "./components/results/AddResult";
+import ForgotPass from "./components/forgotPassword/ForgotPass";
+
 swDev()
 function App() {
   const refs = useRef(null)
-
-     useEffect(() => {
-       setTimeout(() => {
-      refs.current.focus()
-       }, 5000);
-     }, [])
      
    
   return (
@@ -34,6 +29,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/forgotpass' element={<ForgotPass />} />
 
         <Route path='/auth' element={<ProtectedStudent />} >
           <Route path='user' element={<UserProfile />} />

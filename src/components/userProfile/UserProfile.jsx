@@ -44,7 +44,6 @@ function UserProfile() {
 
   }, [users])
 
-  console.log(result);
 
   const tokenresponse = async () => {
     try {
