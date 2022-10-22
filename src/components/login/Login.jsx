@@ -10,10 +10,11 @@ import rootapi from '../../rootAPI'
 import { useSelector } from 'react-redux'
 import content from './language.login.json'
 import withAuth from '../HOC/withAuth'
+import useDebounce from '../../hooks/useDebounce'
 
 const Login = ({adminAuth, userAuth}) => {
     const navigate = useNavigate()
-    console.log(adminAuth, userAuth);
+    const debounce = useDebounce()
     useEffect(() => {
         if(adminAuth || userAuth){
             navigate('/')
@@ -55,30 +56,30 @@ const Login = ({adminAuth, userAuth}) => {
     const formHandler = (e) => {
         e.preventDefault()
         setData({ ...data, isLoading: true })
-        const send = {
-            [data.type]: data.id,
-            'password': data.password
-        }
-        axios.post(`${rootapi}/api/login`, send)
-            .then((res) => {
-                setData({ ...data, isLoading: false })
-                if (res.data.success) {
-                    Cookies.set('accesstoken', res.data.accesstoken)
-                    Cookies.set('refreshtoken', res.data.refreshtoken)
-                    navigate('/auth/user')
-                } else {
-                    toast.error(res.data.error || 'error accoured!', { position: 'bottom-left', autoClose: false })
-                }
-            })
-            .catch((err) => {
-                console.log('error here');
-                setData({ ...data, isLoading: false })
-                toast.error(err.message || 'error accoured!', { position: 'bottom-left', autoClose: false })
-            })
+        debounce(()=>{
+            const send = {
+                [data.type]: data.id,
+                'password': data.password
+            }
+            axios.post(`${rootapi}/api/login`, send)
+                .then((res) => {
+                    setData({ ...data, isLoading: false })
+                    if (res.data.success) {
+                        Cookies.set('accesstoken', res.data.accesstoken)
+                        Cookies.set('refreshtoken', res.data.refreshtoken)
+                        navigate('/auth/user')
+                    } else {
+                        toast.error(res.data.error || 'error accoured!', { position: 'bottom-left', autoClose: false })
+                    }
+                })
+                .catch((err) => {
+                    console.log('error here');
+                    setData({ ...data, isLoading: false })
+                    toast.error(err.response?.data || 'error accoured!', { position: 'bottom-left', autoClose: false })
+                })
+        }, 500)()
+        
     }
-
-
-
 
     return (
         <div className="flex fixed w-screen h-screen items-center justify-center top-4 bg-gray-100 bg-opacity-50 z-20">

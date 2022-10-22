@@ -8,7 +8,10 @@ import { useEffect } from 'react'
 
 const ForgotPass = () => {
     const navigate = useNavigate()
-    const [isSend, setIsSend] = useState(false)
+    const [isSend, setIsSend] = useState({
+        send : false,
+        image : ''
+    })
     const [warn, setWarn] = useState(false)
     const [time, setTime] = useState({ min: 10, sec: 0 })
     const [data, setData] = useState({
@@ -18,8 +21,16 @@ const ForgotPass = () => {
     })
 
 
+    const navigateToLogin = ()=>{
+        let timeout = setTimeout(() => {
+            navigate('/login')
+            clearTimeout(timeout)
+        }, 6000);
+    }
+
     useEffect(() => {
         if (time.min === 0 && time.sec === 0) {
+            navigate('/login')
             return
         }
         if (time.sec === 0) {
@@ -40,15 +51,17 @@ const ForgotPass = () => {
         e.preventDefault()
         let eventClick = e.target.lastElementChild.name;
         if (eventClick === 'code') {
-
+            setWarn(true)
             axios.post(rootapi + '/api/forgot', { email: data.email })
                 .then((res) => {
-                    if (res.data.accepted[0]) {
+                    let resp = res.data;
+                    if (resp?.info?.accepted[0]) {
                         setTime({ min: 10, sec: 0 })
-                        setIsSend(true)
+                        setIsSend({send : true, image : resp?.result[0]?.image})
                     } else {
-                        toast.error('mail send failed!', { position: "top-center" })
+                        toast.error('mail send failed!', { position: "top-center" })     
                     }
+                    setWarn(false)
                 })
                 .catch((err) => {
                     console.log(err.message);
@@ -59,23 +72,23 @@ const ForgotPass = () => {
         }
 
         if (eventClick === 'submit') {
+            setWarn(true)
             axios.get(`${rootapi}/api/auto/${data.code}/${data.password}`)
                 .then((res) => {
+                    setWarn(false)
                     if (res.data.changedRows === 1) {
                         toast.success('password successfully updated!', { position: "top-center" })
-                        let timeout = setTimeout(() => {
-                            navigate('/login')
-                            clearTimeout(timeout)
-                        }, 6000);
+                        navigateToLogin()
                     } else {
-                        toast.error('password successfully updated!', { position: "top-center" })
-
+                        toast.error('password update failed!', { position: "top-center" })
+                        navigateToLogin()
                     }
-
                 })
                 .catch((err) => {
                     console.log(err.message);
                     toast.error(err.response?.data || 'operation failed!', { position: "top-center" })
+                    setWarn(false)
+                    navigateToLogin()
                 })
 
         }
@@ -92,15 +105,14 @@ const ForgotPass = () => {
 
                         <div className="w-full h-auto xl:w-3/4 lg:w-11/12 flex">
 
-                            <div
-                                className="w-full h-auto bg-gray-400 hidden lg:block lg:w-1/2 bg-cover rounded-l-lg"
-                                style={{ backgroundImage: " url('https://source.unsplash.com/oWTW-jNGl9I/600x800')" }}
-                            ></div>
+                            <div className=" h-auto bg-gray-400 hidden lg:block  lg:w-1/2  rounded-l-lg" >
+                                <img className='w-full rounded-l-lg h-full object-cover' src={isSend.image ? `${rootapi}/images/${isSend.image}` : 'https://nuisters.com/kurtubi.jpg'} alt='' />
+                            </div>
 
                             <div className="w-full lg:w-1/2 bg-white p-5 rounded-lg lg:rounded-l-none">
                                 <div className="px-8 mb-4 text-center">
                                     <h3 className="pt-4 mb-2 text-2xl">Forgot Your Password?</h3>
-                                    {isSend ? <>
+                                    {isSend.send ? <>
                                         <p className="mb-4 text-sm text-gray-700">
                                             We've send Verification Code to <strong>{data.email}</strong> . please provide that code here and set your new password for your account.
                                         </p>
@@ -115,7 +127,7 @@ const ForgotPass = () => {
                                 </div>
                                 <form onSubmit={passwordHandler} className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
                                     <div className="mb-4">
-                                        {isSend ?
+                                        {isSend.send ?
                                             <>
                                                 <label className="block mb-2 text-sm font-bold text-gray-700" for="code">
                                                     Verification Code
@@ -164,11 +176,11 @@ const ForgotPass = () => {
                                         }
                                     </div>
 
-                                    {isSend ?
+                                    {isSend.send ?
                                         <input
-                                            className="w-full px-4 py-2 cursor-pointer font-bold text-white bg-red-500 rounded-full hover:bg-red-700 focus:outline-none focus:shadow-outline"
-                                            type="submit"
-                                            value='Submit'
+                                        className={` ${warn ? 'bg-gray-500 hover:bg-gray-700 cursor-not-allowed' : 'bg-red-500 hover:bg-red-700 cursor-pointer'}   w-full px-4 py-2  font-bold text-white rounded-full  focus:outline-none focus:shadow-outline`}
+                                        type="submit"
+                                            value={`${warn ? 'Loading...' : 'Submit'}`}
                                             name='submit'
                                         />
                                         :
@@ -176,7 +188,6 @@ const ForgotPass = () => {
                                         <input
                                             className={` ${warn ? 'bg-gray-500 hover:bg-gray-700 cursor-not-allowed' : 'bg-red-500 hover:bg-red-700 cursor-pointer'}   w-full px-4 py-2  font-bold text-white rounded-full  focus:outline-none focus:shadow-outline`}
                                             type='submit'
-                                            onClick={() => setWarn(true)}
                                             value={`${warn ? 'Loading...' : 'Send Code'}`}
                                             name='code'
 

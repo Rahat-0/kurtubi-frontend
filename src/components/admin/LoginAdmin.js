@@ -42,7 +42,7 @@ const loginHandler = async(e)=>{
       <form className="w-full">
         <div className="inline-grid w-full mb-3">
           <label className="mb-2" htmlFor="">ID</label>
-          <input required onChange={(e)=>setData({...data, admin_id : e.target.value})} type="id" name="id" className="focus:outline-none focus:ring-2 ring-purple-300 placeholder-gray-600 bg-gray-200 w-full p-2 rounded" placeholder="Email address" />
+          <input required onChange={(e)=>setData({...data, admin_id : e.target.value})} type="id" name="id" className="focus:outline-none focus:ring-2 ring-purple-300 placeholder-gray-600 bg-gray-200 w-full p-2 rounded" placeholder="ID" />
         </div>
         <div className="inline-grid w-full mb-3">
           <label className="mb-2" htmlFor="">PIN</label>

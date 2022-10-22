@@ -3,8 +3,9 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux';
 import content from './language.userProfile.json'
 const Result = (props) => {
-    const result = props.data;
+    const result = props.data || [];
     const name = props.name;
+    const student_id = props.student_id;
     const {language} = useSelector((state)=> state.translate.language)
     const type = content[language] ? language : "EN"
 
@@ -30,7 +31,7 @@ const Result = (props) => {
   return (
     <div className=" bg-gray-300 h-10 text-sm md:text-base">
         <h3 className="text-center md:text-left text-3xl p-2 bg-green-200 md:bg-white">{content[type].results}</h3>
-        <p className='p-2'> {content[type].resultOrgLocation} <span className='font-extrabold uppercase'>{name}</span>({result[0].student_id}), { content[type].resultWelcome} </p>
+        <p className='p-2'> {content[type].resultOrgLocation} <span className='font-extrabold uppercase'>{name}</span>({student_id}), { content[type].resultWelcome} </p>
 
         <div className='flex justify-evenly my-2 bg-blue-50 text-blue-900 font-bold'>
             <label htmlFor="class">{content[type].resultClass}</label> 
@@ -82,10 +83,16 @@ const Result = (props) => {
                     </tr>
                     )
                 })}
+               
                 
                 
             </tbody>
         </table>
+        {!filteredData[0] && 
+                <div className='h-96 bg-blue-50 flex justify-center items-center '>
+                    <p  className='text-2xl text-gray-400'>Result Not Found!</p>
+                </div>
+                 }
     </div>
   )
 }

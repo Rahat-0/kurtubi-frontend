@@ -163,7 +163,7 @@ function UserProfile() {
           {(error && error !== "Network Error") && <DataError message={error} />}
           {view.profile && <Profile data={user} />}
           {view.setting && <Setting />}
-          {view.result && user.student_id && <Result data={result} name={`${user.first_name} ${user.last_name}`} />}
+          {view.result && user.student_id && <Result data={result} student_id={user?.student_id} name={`${user.first_name} ${user.last_name}`} />}
           {view.teacherAddResult && <AddResult />}
           {view.teacherLog && <TeacherLog />}
 
